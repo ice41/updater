@@ -1,9 +1,0 @@
-[repository]
-name = "updater"
-expiration_days = 365
-
-[roles]
-root = { threshold = 1, key_ids = ["9013a083faff41eb328e88a2cc175a972a9d1432c834c1db392b2a177af5c94c"] }
-targets = { threshold = 1, key_ids = ["<0e9934494e993df25c0cf5c730f141997c5d98098c1a110e1a559d147dde6cd0>"] }
-snapshot = { threshold = 1, key_ids = ["e63d8a8600d7a8145f307769a5cc23ac681bed8f4a3ec04598ed5b1bb78a0a8c"] }
-timestamp = { threshold = 1, key_ids = ["95afe814ff29ad3aaaf9f92b0c4d7db452a10783131ffff174e639276cdd0701"] }
