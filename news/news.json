@@ -13,10 +13,5 @@
     "title": "Manutenção do servidor",
     "description": "O servidor estará em manutenção no dia 25 de outubro às 22h. Verifique o status na nossa página.",
     "image_url": "https://example.com/images/manutencao.png"
-  },
-  {
-    "title": "Novos jogos no catálogo",
-    "description": "Novos jogos adicionados ao catálogo! Verifique na aba Jogos.",
-    "image_url": "https://i.imgur.com/9hs7AsQ.jpeg"
   }
 ]
