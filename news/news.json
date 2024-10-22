@@ -1,7 +1,7 @@
 [
   {
     "title": "Atualização lançada!",
-    "description": "Agora a versão 0.0.20 está disponível com várias correções de bugs e melhorias.",
+    "description": "Agora a versão 0.0.21 está disponível com várias correções de bugs e melhorias.",
     "image_url": "https://example.com/images/atualizacao.png"
   },
   {
@@ -17,6 +17,6 @@
   {
     "title": "Novos jogos no catálogo",
     "description": "Novos jogos adicionados ao catálogo! Verifique na aba Jogos.",
-    "image_url": "https://example.com/images/novos_jogos.png"
+    "image_url": "https://example.com/images/novos_jogos.gif"
   }
 ]
