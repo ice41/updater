@@ -9,7 +9,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
 
 # URL do JSON com os arquivos necessários para cada jogo
-JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/main/jogos_necessarios.json"
+JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
