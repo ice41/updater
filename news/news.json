@@ -2,7 +2,7 @@
   {
     "title": "Atualização lançada!",
     "description": "Agora a versão 0.0.21 está disponível com várias correções de bugs e melhorias.",
-    "image_url": "https://github.com/ice41/updater/blob/main/news/jogos.png?raw=true"
+    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/jogos.png"
   },
   {
     "title": "Nova função de notícias",
