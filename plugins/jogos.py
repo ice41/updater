@@ -6,70 +6,20 @@ from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
-from kivy.clock import Clock  # Importar para agendar atualizações
+from kivy.clock import Clock
 
-# Defina os arquivos necessários para cada jogo
-jogos_necessarios = {
-    "firstdwarf": ["FirstDwarf.exe",
-                   "Engine/Binaries/ThirdParty/DbgHelp/dbghelp.dll",
-                   "Engine/Binaries/ThirdParty/MsQuic/v220/win64/msquic.dll",
-                   "Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64/GFSDK_Aftermath_Lib.x64.dll",
-                   "Engine/Binaries/ThirdParty/Ogg/Win64/VS2015/libogg_64.dll",
-                   "Engine/Binaries/ThirdParty/Steamworks/Steamv157/Win64/steam_api64.dll",
-                   "Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbisfile_64.dll",
-                   "Engine/Binaries/ThirdParty/Vorbis/Win64/VS2015/libvorbis_64.dll",
-                   "Engine/Binaries/ThirdParty/Windows/XAudio2_9/x64/xaudio2_9redist.dll",
-                   "Engine/Binaries/Win64/CrashReportClient.exe",
-                   "Engine/Binaries/Win64/tbb.dll",
-                   "Engine/Binaries/Win64/tbbmalloc.dll",
-                   "Engine/Content/Renderer/TessellationTable.bin",
-                   "Engine/Content/Slate/Cursor/invisible.cur",
-                   "Engine/Content/SlateDebug/Fonts/LastResort.tps",
-                   "Engine/Content/SlateDebug/Fonts/LastResort.ttf",
-                   "Engine/Programs/CrashReportClient/Content/Paks/CrashReportClient.pak",
-                   "FirstDwarf/Binaries/Win64/FirstDwarf-Win64-Shipping.exe",
-                   "FirstDwarf/Binaries/Win64/OpenImageDenoise.dll",
-                   "FirstDwarf/Binaries/Win64/tbb.dll",
-                   "FirstDwarf/Binaries/Win64/tbb12.dll",
-                   "FirstDwarf/Binaries/Win64/tbbmalloc.dll",
-                   "FirstDwarf/Binaries/Win64/D3D12/D3D12Core.dll",
-                   "FirstDwarf/Binaries/Win64/D3D12/d3d12SDKLayers.dll",
-                   "FirstDwarf/Content/Movies/Assigning_and_unlocking_Skills.bk2",
-                   "FirstDwarf/Content/Movies/Assigning_and_unlocking_Skills.uasset",
-                   "FirstDwarf/Content/Movies/Assigning_and_unlocking_Skills_Tex.uasset",
-                   "FirstDwarf/Content/Movies/Combo_Tutorial.bk2",
-                   "FirstDwarf/Content/Movies/Combo_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/Combo_Tutorial_Tex.uasset",
-                   "FirstDwarf/Content/Movies/gameplay.bk2",
-                   "FirstDwarf/Content/Movies/gameplay.uasset",
-                   "FirstDwarf/Content/Movies/intro.bk2",
-                   "FirstDwarf/Content/Movies/intro.uasset",
-                   "FirstDwarf/Content/Movies/Jetpack_Tutorial.bk2",
-                   "FirstDwarf/Content/Movies/Jetpack_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/Jetpack_Tutorial_Tex.uasset",
-                   "FirstDwarf/Content/Movies/Loading4Loop.bk2",
-                   "FirstDwarf/Content/Movies/Loading4Loop.uasset",
-                   "FirstDwarf/Content/Movies/logos.bk2",
-                   "FirstDwarf/Content/Movies/logos.uasset",
-                   "FirstDwarf/Content/Movies/M_Assigning_and_unlocking_Skills_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/M_Combo_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/M_Jetpack_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/M_RisingSettlement_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/M_SwitchingCharacters_Tutorial.uasset",
-                   "FirstDwarf/Content/Movies/Rising_Settlement.bk2",
-                   "FirstDwarf/Content/Movies/Rising_Settlement.uasset",
-                   "FirstDwarf/Content/Movies/Rising_Settlement_Tex.uasset",
-                   "FirstDwarf/Content/Movies/Switching_Characters.bk2",
-                   "FirstDwarf/Content/Movies/Switching_Characters.uasset",
-                   "FirstDwarf/Content/Movies/Switching_Characters_Tex.uasset",
-                   "FirstDwarf/Content/Paks/FirstDwarf-Windows.pak",
-                   "FirstDwarf/Content/Splash/Splash.bmp",
-                   "FirstDwarf/Plugins/DLSS/Binaries/ThirdParty/Win64/nvngx_dlss.dll",
-                   "FirstDwarf/Plugins/XeSS/Binaries/ThirdParty/Win64/libxess.dll"
-                   ],
-    "Jogo2": ["config.exe", "arquivo1.dat"],
-    "Jogo3": ["config.exe", "arquivo1.dat", "arquivo2.dat", "arquivo3.dat"],
-}
+# URL do JSON com os arquivos necessários para cada jogo
+JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/main/jogos_necessarios.json"
+
+def carregar_jogos_necessarios():
+    """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
+    try:
+        resposta = requests.get(JOGOS_NECESSARIOS_URL)
+        resposta.raise_for_status()
+        return resposta.json()
+    except requests.RequestException as e:
+        print(f"Erro ao carregar jogos necessários: {e}")
+        return {}
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -78,6 +28,7 @@ class JogoWidget(BoxLayout):
         self.padding = 10
         self.spacing = 10
         self.selected_game = None
+        self.jogos_necessarios = carregar_jogos_necessarios()  # Carrega a lista de arquivos necessários
 
         # Rótulo para escolher o jogo
         self.add_widget(Label(text='Escolha o jogo:', size_hint_y=None, height=40))
@@ -88,7 +39,7 @@ class JogoWidget(BoxLayout):
 
         # Adicionando ToggleButtons para cada jogo
         self.jogo_buttons = {}
-        for jogo in jogos_necessarios.keys():
+        for jogo in self.jogos_necessarios.keys():
             button = ToggleButton(text=jogo, group='jogos')
             button.bind(on_press=self.on_toggle_button_press)
             self.jogos_layout.add_widget(button)
@@ -121,7 +72,7 @@ class JogoWidget(BoxLayout):
             caminho_jogos = os.path.join("jogos", jogo_selecionado)
 
             if os.path.exists(caminho_jogos):
-                arquivos_faltando = self.verificar_arquivos(caminho_jogos, jogos_necessarios[jogo_selecionado])
+                arquivos_faltando = self.verificar_arquivos(caminho_jogos, self.jogos_necessarios.get(jogo_selecionado, []))
 
                 if not arquivos_faltando:
                     executavel = os.path.join(caminho_jogos, "abrir.bat")
