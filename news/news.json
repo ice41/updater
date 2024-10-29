@@ -12,6 +12,6 @@
   {
     "title": "Manutenção do servidor",
     "description": "O servidor estará em manutenção no dia 25 de outubro às 22h. Verifique o status na nossa página.",
-    "image_url": "https://example.com/images/manutencao.png"
+    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/manutencao.png"
   }
 ]
