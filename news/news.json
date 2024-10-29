@@ -7,7 +7,7 @@
   {
     "title": "Nova função de notícias",
     "description": "A função de notícias foi adicionada para manter você atualizado sobre as mudanças do launcher.",
-    "image_url": "https://example.com/images/news_feature.png"
+    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/noticias.png"
   },
   {
     "title": "Manutenção do servidor",
