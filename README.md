@@ -124,9 +124,10 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
 
 ## Contato para esta versão Ice41
 - **Comercial: geral@ice41.pt**
-<a href="[https://discord.gg/Qsr9s6x9Mv]">
+[<a href="[https://discord.gg/Qsr9s6x9Mv]">
     <img src="https://img.shields.io/badge/discord?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
-</a>
+</a>](https://img.shields.io/discord/1074111566217220176?style=flat&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv
+)
 - **Discord: **
 - **Website: https://ice41.pt**
 
