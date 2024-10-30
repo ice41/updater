@@ -42,6 +42,8 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
     Os jogos cracked devem ser apenas usados para teste do jogo.
     Se gostar do mesmo pense sempre em o adquirir.
     <br />
+</p>
+<p align="center">
 links
     <br />
     <a href="https://github.com/ice41/minecraft-1.21-NPED"><strong>Explore the docs »</strong></a>
