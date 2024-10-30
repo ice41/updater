@@ -40,8 +40,6 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 
 <div align="center">
   
-<h3 align="center">NPED Minecraft 1.21.1</h3>
-
   <p align="center">
     project_description
     <br />
