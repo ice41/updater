@@ -32,7 +32,7 @@
 
 <div align="center">
   
-  <p align="center">
+  <p>
 Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
 <br />
 Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
