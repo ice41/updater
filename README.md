@@ -26,14 +26,13 @@
   <a href="https://github.com/ice41/updater">
     <img src="https://cdn.discordapp.com/attachments/1074126570920345740/1243687894552674437/NPEDLOGO2023-sem_fundo2.1.png?ex=6724009c&is=6722af1c&hm=f9a1471bf54f0e13dd3d9413c453c08d513d02c367824895c9085bab21c2d246&" alt="Logo" width="140" height="180">
   </a>
+
+  
 - Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
 - Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
-## Nota
 
-
-    Os jogos cracked devem ser apenas usados para teste do jogo.
-    Se gostar do mesmo pense sempre em o adquirir.
-<h3 align="center">NPED Minecraft 1.21.1</h3>
+    
+<h3 align="center">NPED Laucher</h3>
  
   <p align="center">
 
