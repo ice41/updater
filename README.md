@@ -131,7 +131,7 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
     <img alt="Discord" src="https://img.shields.io/discord/1074111566217220176?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv">
   </a>
   <a href="[https://ice41.pt]">
-    <img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fice41.pt">
+    <img alt="Website" src="https://img.shields.io/badge/site">
   </a>
 </div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
