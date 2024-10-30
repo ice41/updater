@@ -41,7 +41,6 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 ## Nota
     Os jogos cracked devem ser apenas usados para teste do jogo.
     Se gostar do mesmo pense sempre em o adquirir.
-    <br />
 </p>
 <p align="center">
 links
