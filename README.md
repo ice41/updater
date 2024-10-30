@@ -124,7 +124,10 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
 
 ## Contato para esta versão Ice41
 - **Comercial: geral@ice41.pt**
-- **Discord: https://discord.gg/Qsr9s6x9Mv**
+<a href="[[link to your Tableau profile](https://discord.gg/Qsr9s6x9Mv)]">
+    <img src="https://img.shields.io/badge/discord?style=for-the-badge&logo=tableau&logoColor=white" alt="Discord"/>
+</a>
+- **Discord: **
 - **Website: https://ice41.pt**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
