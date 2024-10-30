@@ -28,6 +28,11 @@
   </a>
 </div>
   
+
+
+<div align="center">
+  
+  <p align="center">
 Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
 <br />
 Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
@@ -37,10 +42,6 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 
     Os jogos cracked devem ser apenas usados para teste do jogo.
     Se gostar do mesmo pense sempre em o adquirir.
-
-<div align="center">
-  
-  <p align="center">
 links
     <br />
     <a href="https://github.com/ice41/minecraft-1.21-NPED"><strong>Explore the docs »</strong></a>
