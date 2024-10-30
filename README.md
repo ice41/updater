@@ -39,19 +39,20 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
     Se gostar do mesmo pense sempre em o adquirir.
 
 <div align="center">
-<h3 align="center">NPED Laucher</h3>
- 
-  <p align="center">
+  
+<h3 align="center">NPED Minecraft 1.21.1</h3>
 
+  <p align="center">
+    project_description
     <br />
-    <a href="https://github.com/ice41/updater"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ice41/minecraft-1.21-NPED"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/ice41/updater/releases/tag/0.0.19">View Demo</a>
+    <a href="https://github.com/ice41/minecraft-1.21-NPED">View Demo</a>
     ·
-    <a href="https://github.com/ice41/updater/issues">Report Bug</a>
+    <a href="https://github.com/ice41/minecraft-1.21-NPED/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ice41/updater/issues">Request Feature</a>
+    <a href="https://github.com/ice41/minecraft-1.21-NPED/issues">Request Feature</a>
   </p>
 </div>
 
