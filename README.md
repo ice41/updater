@@ -28,9 +28,15 @@
   </a>
 
   
-- Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
-- Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
+Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
+<br />
+Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
+<br />
+## Nota
 
+
+    Os jogos cracked devem ser apenas usados para teste do jogo.
+    Se gostar do mesmo pense sempre em o adquirir.
     
 <h3 align="center">NPED Laucher</h3>
  
