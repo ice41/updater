@@ -31,12 +31,12 @@
 
 - Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
 - Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
-|Nota|
-|---|---|---|
-|Os jogos cracked devem ser apenas usados para teste do jogo|
-Nota -
-- Os jogos cracked devem ser apenas usados para teste do jogo.
-- Se gostar do mesmo pense sempre em o adquirir.
+
+## Smart to-HTML destructuring
+Nota
+
+    Os jogos cracked devem ser apenas usados para teste do jogo.
+    Se gostar do mesmo pense sempre em o adquirir.
   <p align="center">
 
     <br />
