@@ -37,7 +37,8 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 
     Os jogos cracked devem ser apenas usados para teste do jogo.
     Se gostar do mesmo pense sempre em o adquirir.
-    
+</div>
+<div align="center">
 <h3 align="center">NPED Laucher</h3>
  
   <p align="center">
