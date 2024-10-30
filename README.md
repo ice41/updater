@@ -124,13 +124,19 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
 
 ## Contato para esta versão Ice41
 - **Comercial: geral@ice41.pt**
-[<a href="[https://discord.gg/Qsr9s6x9Mv]">
-    <img src="https://img.shields.io/badge/discord?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"/>
-</a>](https://img.shields.io/discord/1074111566217220176?style=flat&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv
-)
-- **Discord: **
-- **Website: https://ice41.pt**
 
+- **Website: https://ice41.pt**
+<div id="badges">
+  <a href="[https://discord.gg/Qsr9s6x9Mv]">
+    <img alt="Discord" src="https://img.shields.io/discord/1074111566217220176?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv">
+  </a>
+  <a href="[link to your Medium profile]">
+    <img src="https://img.shields.io/badge/Medium-white?style=for-the-badge&logo=medium&logoColor=black" alt="Medium Badge"/>
+  </a>
+  <a href="[link to your Tableau profile]">
+    <img src="https://img.shields.io/badge/tableau-navy?style=for-the-badge&logo=tableau&logoColor=white" alt="Tableau Badge"/>
+  </a>
+</div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
