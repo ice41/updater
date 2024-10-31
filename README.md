@@ -118,7 +118,9 @@ Plugins verificados
 <!-- CONTACT -->
 
 Project Link: [updater](https://github.com/ice41/updater)
+## Contactos
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 ## Ice41
 
 <br />
