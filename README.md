@@ -120,7 +120,7 @@ Plugins verificados
 Project Link: [updater](https://github.com/ice41/updater)
 ## Contactos
 
-<p align="right"><a href="#readme-top"></a></p>
+<p align="right">(.)</p>
 ## Ice41
 
 <br />
