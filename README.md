@@ -106,7 +106,7 @@ Plugins verificados
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<details>
+
 <!-- CONTRIBUTING -->
 ## Sobre
 - O projecto encontra-se atualmente atualizado para a versão mais recente.
@@ -114,7 +114,7 @@ Plugins verificados
 - Pode buscar suporte no discord da NPED [Discord](https://discord.gg/CxTTt5F6Gj).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-</details>
+
 
 
 <!-- CONTACT -->
@@ -156,7 +156,8 @@ Project Link: [updater](https://github.com/ice41/updater)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<details>
+  <summary><b>Github Stats 📈</b></summary>
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/ice41/Vrpex-ice41-2.4.svg?style=for-the-badge
@@ -188,3 +189,5 @@ Project Link: [updater](https://github.com/ice41/updater)
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+
+</details>
