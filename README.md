@@ -136,6 +136,9 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
   <a href="[https://nped.pt]">
     <img alt="Website" src="https://img.shields.io/badge/website-NPED-blue">
   </a>
+    <a href="[https://steamcommunity.com/groups/Nped]">
+    <img alt="Website" src="https://img.shields.io/badge/NPED%Steam%20Group-8A2BE2">
+  </a>
 </div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
