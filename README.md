@@ -125,6 +125,7 @@ Project Link: [updater](https://github.com/ice41/updater)
 ## Contatos
 
 Ice41
+<br />
 <div id="ice41">
     
   <a href="https://ice41.pt">
@@ -138,6 +139,7 @@ Ice41
     <br />
     <br />
 Nped
+<br />
 <div id="NPED">
   <a href="https://discord.gg/Qsr9s6x9Mv">
     <img alt="Discord" src="https://img.shields.io/discord/1074111566217220176?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv">
