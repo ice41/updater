@@ -126,22 +126,26 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
 - **Comercial: geral@ice41.pt**
 
 - **Website: https://ice41.pt**
-<div id="badges">
-    <a href="[https://discord.gg/Qsr9s6x9Mv]">
-      <img alt="Discord" src="https://img.shields.io/discord/1074111566217220176?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv">
-    </a>
-    <a href="[https://ice41.pt]">
-      <img alt="Website" src="https://img.shields.io/badge/website-ice41-yellow">
-    </a>
-    <a href="[https://nped.pt]">
-      <img alt="Website" src="https://img.shields.io/badge/website-NPED-blue">
-    </a>
-    <a href="[https://steamcommunity.com/groups/Nped]">
-      <img alt="Static Badge" src="https://img.shields.io/badge/NPED_STEAM_GROUP-2A2BE8">
-    </a>
+<div id="ice41">
+    
+  <a href="https://ice41.pt">
+    <img alt="Website" src="https://img.shields.io/badge/website-ice41-yellow">
+  </a>
+  <a href="mailto:ice41pt@gmail.com">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Contacto-2A3BE8">
+  </a>
 </div>
-
-<a href="https://steamcommunity.com/groups/Nped"><img alt="Static Badge" src="https://img.shields.io/badge/NPED_STEAM_GROUP-2A2BE8"></a>
+<div id="NPED">
+  <a href="https://discord.gg/Qsr9s6x9Mv">
+    <img alt="Discord" src="https://img.shields.io/discord/1074111566217220176?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FQsr9s6x9Mv">
+  </a>
+  <a href="https://nped.pt">
+      <img alt="Website" src="https://img.shields.io/badge/website-NPED-blue">
+  </a>
+  <a href="https://steamcommunity.com/groups/Nped">
+    <img alt="Static Badge" src="https://img.shields.io/badge/NPED_STEAM_GROUP-2A2BE8">
+  </a>
+</div>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
