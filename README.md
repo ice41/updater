@@ -124,7 +124,7 @@ Project Link: [updater](https://github.com/ice41/updater)
 
 ## Contatos
 
-##Ice41
+###Ice41
 <br />
 <div id="ice41">
     
@@ -138,7 +138,7 @@ Project Link: [updater](https://github.com/ice41/updater)
 </div>
     <br />
     <br />
-##Nped
+###Nped
 <br />
 <div id="NPED">
   <a href="https://discord.gg/Qsr9s6x9Mv">
