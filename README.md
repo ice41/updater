@@ -133,8 +133,6 @@ Project Link: [updater](https://github.com/ice41/updater)
     <img alt="Static Badge" src="https://img.shields.io/badge/Contacto-2A3BE8">
   </a>
 
-    <br />
-    <br />
 `Nped`
 
   <a href="https://discord.gg/Qsr9s6x9Mv">
