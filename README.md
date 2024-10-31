@@ -106,7 +106,7 @@ Plugins verificados
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
+<details>
 <!-- CONTRIBUTING -->
 ## Sobre
 - O projecto encontra-se atualmente atualizado para a versão mais recente.
@@ -114,7 +114,7 @@ Plugins verificados
 - Pode buscar suporte no discord da NPED [Discord](https://discord.gg/CxTTt5F6Gj).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+</details>
 
 
 <!-- CONTACT -->
