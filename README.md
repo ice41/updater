@@ -45,14 +45,14 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 <p align="center">
 links
     <br />
-    <a href="https://github.com/ice41/minecraft-1.21-NPED"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ice41/updater"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/ice41/minecraft-1.21-NPED">View Demo</a>
+    <a href="https://github.com/ice41/updater">View Demo</a>
     ·
-    <a href="https://github.com/ice41/minecraft-1.21-NPED/issues">Report Bug</a>
+    <a href="https://github.com/ice41/updater/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ice41/minecraft-1.21-NPED/issues">Request Feature</a>
+    <a href="https://github.com/ice41/updater/issues">Request Feature</a>
   </p>
 </div>
 
@@ -120,12 +120,10 @@ Plugins verificados
 
 ice41 - geral@ice41.pt
 
-Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED)
+Project Link: [updater](https://github.com/ice41/updater)
 
-## Contato para esta versão Ice41
-- **Comercial: geral@ice41.pt**
+## Contatos
 
-- **Website: https://ice41.pt**
 <div id="ice41">
     
   <a href="https://ice41.pt">
@@ -146,6 +144,7 @@ Project Link: [minecraft-1.21-NPED](https://github.com/ice41/minecraft-1.21-NPED
   <a href="https://nped.pt">
       <img alt="Website" src="https://img.shields.io/badge/website-NPED-blue">
   </a>
+  <br />
   <a href="https://steamcommunity.com/groups/Nped">
     <img alt="Static Badge" src="https://img.shields.io/badge/NPED_STEAM_GROUP-2A2BE8">
   </a>
