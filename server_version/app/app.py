@@ -34,7 +34,7 @@ class UpdaterApp(App):
         main_layout = BoxLayout(orientation='vertical', padding=[20, 60, 20, 20], spacing=20)
 
         # Logo na parte superior
-        logo_path = resource_path("nped.png")
+        logo_path = resource_path("https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/nped.png")
         if os.path.exists(logo_path):
             logo = KivyImage(source=logo_path, size_hint=(None, None), size=(150, 200))
             logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=200)
