@@ -1,4 +1,7 @@
+# plugins.py
+
 import os
+import importlib
 import requests
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -11,15 +14,34 @@ from kivy.clock import Clock
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
-def carregar_jogos_necessarios():
-    """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
-    try:
-        resposta = requests.get(JOGOS_NECESSARIOS_URL)
-        resposta.raise_for_status()
-        return resposta.json()
-    except requests.RequestException as e:
-        print(f"Erro ao carregar jogos necessários: {e}")
-        return {}
+# Defina os plugins que devem aparecer no menu
+PLUGINS_VISIVEIS = ["jogos", "", ""]  # Exemplo: substituir pelos nomes dos plugins desejados
+
+def carregar_plugins(diretorio="plugins"):
+    """Carrega todos os plugins na pasta especificada, retornando apenas os que estão na lista de visíveis."""
+    plugins = {}
+    if not os.path.exists(diretorio):
+        print(f"Diretório de plugins '{diretorio}' não encontrado.")
+        return plugins
+
+    sys.path.append(diretorio)  # Adiciona o diretório de plugins ao sys.path
+
+    for filename in os.listdir(diretorio):
+        if filename.endswith(".py") and filename != "__init__.py":
+            nome_plugin = filename[:-3]  # Remove ".py"
+            try:
+                modulo = importlib.import_module(nome_plugin)
+                importlib.reload(modulo)  # Recarrega o módulo
+
+                # Garante que o plugin possui a função executar e decide exibi-lo conforme PLUGINS_VISIVEIS
+                if hasattr(modulo, "executar"):
+                    plugins[nome_plugin] = modulo.executar
+                    print(f"Plugin '{nome_plugin}' carregado.")
+            except ImportError as e:
+                print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
+    
+    # Retorna todos os plugins carregados, mas indica quais devem ser visíveis no menu
+    return {nome: funcao for nome, funcao in plugins.items() if nome in PLUGINS_VISIVEIS}
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -136,5 +158,5 @@ class JogoWidget(BoxLayout):
 def executar():
     """Função principal do plugin que será chamada pelo sistema de plugins."""
     jogo_widget = JogoWidget()
-    popup = Popup(title="Jogos", content=jogo_widget, size_hint=(0.9, 0.9))
+    popup = Popup(title="Plugins", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
