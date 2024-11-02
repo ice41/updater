@@ -1,7 +1,6 @@
 # plugins.py
 
 import os
-import importlib
 import requests
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -15,7 +14,17 @@ from kivy.clock import Clock
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
 # Defina os plugins que devem aparecer no menu
-PLUGINS_VISIVEIS = ["jogos", "", ""]  # Exemplo: substituir pelos nomes dos plugins desejados
+PLUGINS_VISIVEIS = ["Jogos cracked"]  # Exemplo: substituir pelos nomes dos plugins desejados
+
+def carregar_jogos_necessarios():
+    """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
+    try:
+        resposta = requests.get(JOGOS_NECESSARIOS_URL)
+        resposta.raise_for_status()
+        return resposta.json()
+    except requests.RequestException as e:
+        print(f"Erro ao carregar jogos necessários: {e}")
+        return {}
 
 def carregar_plugins(diretorio="plugins"):
     """Carrega todos os plugins na pasta especificada, retornando apenas os que estão na lista de visíveis."""
@@ -24,7 +33,9 @@ def carregar_plugins(diretorio="plugins"):
         print(f"Diretório de plugins '{diretorio}' não encontrado.")
         return plugins
 
-    sys.path.append(diretorio)  # Adiciona o diretório de plugins ao sys.path
+    # Adiciona o diretório de plugins ao sys.path para importação
+    import sys
+    sys.path.append(diretorio)
 
     for filename in os.listdir(diretorio):
         if filename.endswith(".py") and filename != "__init__.py":
@@ -40,7 +51,7 @@ def carregar_plugins(diretorio="plugins"):
             except ImportError as e:
                 print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
     
-    # Retorna todos os plugins carregados, mas indica quais devem ser visíveis no menu
+    # Retorna apenas os plugins que devem ser visíveis no menu
     return {nome: funcao for nome, funcao in plugins.items() if nome in PLUGINS_VISIVEIS}
 
 class JogoWidget(BoxLayout):
