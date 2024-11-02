@@ -3,14 +3,12 @@
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
-from kivy.clock import Clock
 
 # URL do JSON que lista a estrutura e versões dos arquivos do launcher
 ESTRUTURA_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/estrutura_launcher.json"
-BASE_DOWNLOAD_URL = "https://github.com/ice41/updater/"
+BASE_DOWNLOAD_URL = "https://raw.githubusercontent.com/ice41/updater/branch/"
 
 def carregar_estrutura_remota():
     """Carrega a estrutura de arquivos e versões mais recentes do launcher do GitHub."""
@@ -78,12 +76,10 @@ class VerificarEstruturaWidget(BoxLayout):
         self.status_label = Label(text="Verificando estrutura do launcher...", size_hint_y=None, height=40)
         self.add_widget(self.status_label)
 
-        # Botão para iniciar a verificação manual
-        self.verificar_button = Button(text="Verificar e Atualizar", size_hint_y=None, height=50)
-        self.verificar_button.bind(on_press=self.verificar_e_atualizar)
-        self.add_widget(self.verificar_button)
+        # Inicia a verificação e atualização automática ao carregar
+        self.verificar_e_atualizar()
 
-    def verificar_e_atualizar(self, instance):
+    def verificar_e_atualizar(self):
         estrutura_remota = carregar_estrutura_remota()
         if not estrutura_remota:
             self.show_popup("Erro", "Não foi possível carregar a estrutura remota.")
