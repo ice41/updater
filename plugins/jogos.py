@@ -15,7 +15,7 @@ from kivy.clock import Clock
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
 # Defina os plugins que devem aparecer no menu
-PLUGINS_VISIVEIS = ["Jogos cracked", "", ""]  # Exemplo: substituir pelos nomes dos plugins desejados
+PLUGINS_VISIVEIS = ["jogos", "", ""]  # Exemplo: substituir pelos nomes dos plugins desejados
 
 def carregar_plugins(diretorio="plugins"):
     """Carrega todos os plugins na pasta especificada, retornando apenas os que estão na lista de visíveis."""
