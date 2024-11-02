@@ -1,13 +1,10 @@
 # utils.py
 
 import os
-import sys
 import requests
 import zipfile
 import shutil
-import subprocess
 import time
-import psutil  # Biblioteca para gerenciar processos
 
 VERSION_FILE_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/versao.txt"
 UPDATE_URL = "https://github.com/ice41/updater/archive/refs/heads/main.zip"
@@ -59,7 +56,13 @@ def extract_update():
     try:
         with zipfile.ZipFile('atualizacao.zip', 'r') as zip_ref:
             zip_ref.extractall('updater-main')
-            return True
+        # Remover arquivos extras após extração
+        cleanup_files = ["updater-main/.gitignore", "updater-main/README.md"]
+        for file in cleanup_files:
+            if os.path.exists(file):
+                os.remove(file)
+                print(f"Removido: {file}")
+        return True
     except Exception as e:
         print("Erro ao extrair a atualização: " + str(e))
         return False
@@ -85,7 +88,7 @@ def update_current_version(new_version):
         f.write(new_version)
 
 def remove_updater_folder():
-    """Remove as pastas temporárias usadas durante a atualização"""
+    """Remove as pastas temporárias usadas durante a atualização e arquivos extras"""
     folders_to_remove = ['updater-main', 'links', 'news', 'server_version']
     for folder in folders_to_remove:
         if os.path.exists(folder):
@@ -102,4 +105,4 @@ if __name__ == "__main__":
             if extract_update():
                 move_files()
                 update_current_version(VERSAO_ATUAL)
-                restart_launcher()
+                remove_updater_folder()
