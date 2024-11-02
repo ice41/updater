@@ -84,47 +84,6 @@ def update_current_version(new_version):
     with open('versao.txt', 'w') as f:
         f.write(new_version)
 
-def terminate_old_launcher():
-    """Encerrar o launcher antigo se estiver em execução."""
-    old_launcher_name = f"nped-{OLD_VERSION}.exe"  # Nome do executável antigo
-    for proc in psutil.process_iter(['pid', 'name']):
-        if proc.info['name'] == old_launcher_name:
-            try:
-                proc.terminate()  # Primeiro tenta encerrar o processo
-                proc.wait(timeout=5)  # Espera até 5 segundos
-                print(f"{old_launcher_name} encerrado com sucesso.")
-            except psutil.TimeoutExpired:
-                print(f"{old_launcher_name} não encerrou, tentando forçar.")
-                proc.kill()  # Força o encerramento se necessário
-                proc.wait()  # Aguarda até o processo terminar completamente
-            except Exception as e:
-                print(f"Erro ao encerrar o processo {old_launcher_name}: {e}")
-
-def restart_launcher():
-    """Reinicia o launcher com a nova versão"""
-    new_launcher_path = f"nped-{VERSAO_ATUAL}.exe"  # Nome do novo executável
-
-    try:
-        # Encerrar o launcher antigo
-        terminate_old_launcher()
-
-        # Remove as pastas temporárias e o antigo executável, se presente
-        remove_updater_folder()
-
-        # Aguarda para garantir a liberação de recursos antes de iniciar o novo launcher
-        time.sleep(1)
-
-        # Inicia o novo launcher
-        if os.path.exists(new_launcher_path):
-            subprocess.Popen([new_launcher_path])
-            print(f"{new_launcher_path} iniciado com sucesso.")
-        else:
-            print(f"Novo executável {new_launcher_path} não encontrado.")
-    except Exception as e:
-        print(f"Erro ao iniciar a nova versão do launcher: {e}")
-    finally:
-        sys.exit(0)  # Encerra o processo atual
-
 def remove_updater_folder():
     """Remove as pastas temporárias usadas durante a atualização"""
     folders_to_remove = ['updater-main', 'links', 'news', 'server_version']
