@@ -255,7 +255,7 @@
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/Auro.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/iZotope.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/MasteringSuite.dll",
-        "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/McDSP.dll",
+        "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/McDSP.dll"
 ],
   "Jogo3": [
     "config.exe",
