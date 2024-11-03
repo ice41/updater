@@ -40,5 +40,10 @@ def criar_botoes_menu(layout, plugins):
     """Cria botões para cada plugin no menu do layout especificado."""
     for nome_amigavel, funcao in plugins.items():
         button = Button(text=nome_amigavel, size_hint=(None, None), size=(120, 50))
-        button.bind(on_release=lambda instance, func=funcao: func())
+
+        # Define a função para o botão com uma closure, evitando problemas com lambda
+        def executar_plugin(instancia, func=funcao):
+            func()
+
+        button.bind(on_release=executar_plugin)
         layout.add_widget(button)
