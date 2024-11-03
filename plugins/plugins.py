@@ -28,6 +28,7 @@ def carregar_plugins(diretorio="plugins"):
                 if nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
                     # Usa o nome formatado ao adicionar ao dicionário de plugins
                     nome_amigavel = formatar_nome_plugin(nome_plugin)
+                    print(f"Nome formatado do plugin: '{nome_amigavel}'")  # Adiciona o print para debug
                     plugins[nome_amigavel] = modulo.executar
                     print(f"Plugin '{nome_amigavel}' carregado para o menu.")
             except ImportError as e:
