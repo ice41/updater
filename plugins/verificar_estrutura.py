@@ -2,6 +2,10 @@
 
 import os
 import requests
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+
 
 # URL do JSON que lista a estrutura e versões dos arquivos do launcher
 ESTRUTURA_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/estrutura_launcher.json"
@@ -77,3 +81,46 @@ def executar():
         print("Atualização concluída!")
     else:
         print("Estrutura do launcher já está atualizada.")
+
+class VerificarEstruturaWidget(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = "vertical"
+        self.padding = 10
+        self.spacing = 10
+
+        # Label de status
+        self.status_label = Label(text="Verificando estrutura do launcher...", size_hint_y=None, height=40)
+        self.add_widget(self.status_label)
+
+        # Inicia a verificação e atualização automática ao carregar
+        self.verificar_e_atualizar()
+
+    def verificar_e_atualizar(self):
+        estrutura_remota = carregar_estrutura_remota()
+        if not estrutura_remota:
+            self.show_popup("Erro", "Não foi possível carregar a estrutura remota.")
+            return
+
+        # Verifica arquivos faltando e desatualizados
+        faltando, desatualizados = verificar_arquivos_locais(estrutura_remota)
+
+        # Atualiza se necessário
+        if faltando or desatualizados:
+            self.status_label.text = "Atualizando arquivos do launcher..."
+            atualizar_arquivos(faltando, desatualizados)
+            self.status_label.text = "Atualização concluída!"
+        else:
+            self.status_label.text = "Estrutura do launcher já está atualizada."
+
+    def show_popup(self, title, message):
+        popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
+        popup.open()
+
+# Função principal do plugin
+def executar():
+    """Função principal do plugin para verificar e atualizar a estrutura do launcher."""
+    widget = VerificarEstruturaWidget()
+    popup = Popup(title="Verificar Estrutura do Launcher", content=widget, size_hint=(0.9, 0.9))
+    popup.open()
+

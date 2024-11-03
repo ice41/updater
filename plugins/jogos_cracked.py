@@ -1,6 +1,8 @@
+
 # jogos.py
 
 import os
+import importlib
 import requests
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -13,6 +15,12 @@ from kivy.clock import Clock
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
+# Defina os plugins que devem aparecer no menu
+PLUGINS_VISIVEIS = ["Jogos cracked"]  # Exemplo: substituir pelos nomes dos plugins desejados
+
+# Nome do plugin que deve executar automaticamente sem aparecer no menu
+PLUGIN_VERIFICACAO_AUTOMATICA = "verificar_estrutura"
+
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
     try:
@@ -22,6 +30,39 @@ def carregar_jogos_necessarios():
     except requests.RequestException as e:
         print(f"Erro ao carregar jogos necessários: {e}")
         return {}
+
+def carregar_plugins(diretorio="plugins"):
+    """Carrega todos os plugins na pasta especificada e executa o plugin de verificação automática."""
+    plugins = {}
+    if not os.path.exists(diretorio):
+        print(f"Diretório de plugins '{diretorio}' não encontrado.")
+        return plugins
+
+    import sys
+    sys.path.append(diretorio)
+
+    for filename in os.listdir(diretorio):
+        if filename.endswith(".py") and filename != "__init__.py":
+            nome_plugin = filename[:-3]  # Remove ".py"
+            try:
+                modulo = importlib.import_module(nome_plugin)
+                importlib.reload(modulo)  # Recarrega o módulo
+
+                # Executa automaticamente o plugin de verificação de estrutura
+                if nome_plugin == PLUGIN_VERIFICACAO_AUTOMATICA:
+                    if hasattr(modulo, "executar"):
+                        print(f"Executando verificação automática: {nome_plugin}")
+                        modulo.executar()  # Executa o plugin de verificação
+                # Adiciona os outros plugins ao menu conforme PLUGINS_VISIVEIS
+                elif nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
+                    plugins[nome_plugin] = modulo.executar
+                    print(f"Plugin '{nome_plugin}' carregado para o menu.")
+            except ImportError as e:
+                print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
+
+    return plugins
+
+# Classe e código de `JogoWidget` continuam como antes...
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -61,7 +102,6 @@ class JogoWidget(BoxLayout):
         # Label para mostrar o arquivo atual sendo baixado
         self.download_label = Label(text='', size_hint_y=None, height=40)
         self.add_widget(self.download_label)
-
     def on_toggle_button_press(self, instance):
         """Marca o jogo selecionado quando o botão é pressionado."""
         for button in self.jogo_buttons.values():
@@ -132,7 +172,6 @@ class JogoWidget(BoxLayout):
             Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
         else:
             self.status_label.text = "Todos os arquivos foram baixados."
-
     def show_popup(self, title, message):
         """Exibe um popup com uma mensagem de erro ou aviso."""
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
@@ -141,5 +180,5 @@ class JogoWidget(BoxLayout):
 def executar():
     """Função principal do plugin que será chamada pelo sistema de plugins."""
     jogo_widget = JogoWidget()
-    popup = Popup(title="Jogos", content=jogo_widget, size_hint=(0.9, 0.9))
+    popup = Popup(title="Plugins", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
