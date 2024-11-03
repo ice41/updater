@@ -259,7 +259,13 @@
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/MasteringSuite.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/McDSP.dll"
 ],
-  "Jogo3": [
+  "indisponível": [
+    "config.exe",
+    "arquivo1.dat",
+    "arquivo2.dat",
+    "arquivo3.dat"
+  ]
+  "indisponível": [
     "config.exe",
     "arquivo1.dat",
     "arquivo2.dat",
