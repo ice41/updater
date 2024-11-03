@@ -1,5 +1,5 @@
 
-# jogos.py
+# jogos_cracked.py
 
 import os
 import requests
