@@ -18,8 +18,6 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 # Defina os plugins que devem aparecer no menu
 PLUGINS_VISIVEIS = ["jogos_cracked"]  # Exemplo: substituir pelos nomes dos plugins desejados
 
-# Nome do plugin que deve executar automaticamente sem aparecer no menu
-PLUGIN_VERIFICACAO_AUTOMATICA = "verificar_estrutura"
 
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
