@@ -4,7 +4,7 @@ import os
 import importlib
 import sys
 from kivy.uix.button import Button
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 
 # Lista dos plugins visíveis no menu
 PLUGINS_VISIVEIS = ["jogos_cracked"]
@@ -36,13 +36,13 @@ def carregar_plugins(diretorio="plugins"):
     return plugins
 
 def criar_botoes_menu(layout, plugins):
-    """Cria botões para cada plugin no menu, organizados verticalmente."""
-    # Usa um BoxLayout com orientação vertical para os botões
-    botoes_layout = BoxLayout(orientation='vertical', spacing=10, size_hint_y=None)
+    """Cria botões para cada plugin no menu, organizados verticalmente em um GridLayout."""
+    # Usa um GridLayout com 1 coluna para dispor os botões verticalmente
+    botoes_layout = GridLayout(cols=1, size_hint_y=None, spacing=10)
     botoes_layout.bind(minimum_height=botoes_layout.setter('height'))  # Ajusta a altura conforme o conteúdo
 
     for nome_amigavel, funcao in plugins.items():
-        button = Button(text=nome_amigavel, size_hint=(None, None), size=(120, 50))
+        button = Button(text=nome_amigavel, size_hint_y=None, height=50)
 
         # Define a função para o botão com uma closure, evitando problemas com lambda
         def executar_plugin(instancia, func=funcao):
@@ -51,5 +51,5 @@ def criar_botoes_menu(layout, plugins):
         button.bind(on_release=executar_plugin)
         botoes_layout.add_widget(button)
 
-    # Adiciona o layout de botões vertical ao layout principal
+    # Adiciona o layout de botões ao layout principal
     layout.add_widget(botoes_layout)
