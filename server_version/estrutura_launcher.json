@@ -1,7 +1,6 @@
 {
     "jogos": [
         {"nome": "firstdwarf/iniciar.bat", "versao": "0.2"},
-        {"nome": "firstdwarf/extrator antes do primeiro inicio.bat", "versao": "0.2"},
         {"nome": "soulmask/iniciar.bat", "versao": "0.2"}
     ],
     "plugins": [
