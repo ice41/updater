@@ -1,10 +1,10 @@
 {
     "jogos": [
-        {"nome": "firstdwarf/iniciar.bat", "versao": "1.0"},
-        {"nome": "firstdwarf/extrator antes do primeiro inicio.bat", "versao": "1.0"}
+        {"nome": "firstdwarf/iniciar.bat", "versao": "0.2"},
+        {"nome": "firstdwarf/extrator antes do primeiro inicio.bat", "versao": "0.2"}
     ],
     "plugins": [
-        {"nome": "jogos_cracked.py", "versao": "1.0"},
-        {"nome": "plugins.py", "versao": "1.0"}
+        {"nome": "jogos_cracked.py", "versao": "0.2"},
+        {"nome": "plugins.py", "versao": "0.2"}
     ]
 }
