@@ -26,8 +26,10 @@ def carregar_plugins(diretorio="plugins"):
 
                 # Adiciona ao menu se o plugin estiver na lista de visíveis e tiver uma função executar
                 if nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
-                    plugins[formatar_nome_plugin(nome_plugin)] = modulo.executar
-                    print(f"Plugin '{nome_plugin}' carregado para o menu.")
+                    # Usa o nome formatado ao adicionar ao dicionário de plugins
+                    nome_amigavel = formatar_nome_plugin(nome_plugin)
+                    plugins[nome_amigavel] = modulo.executar
+                    print(f"Plugin '{nome_amigavel}' carregado para o menu.")
             except ImportError as e:
                 print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
 
