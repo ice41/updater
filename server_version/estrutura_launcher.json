@@ -4,7 +4,7 @@
         {"nome": "firstdwarf/extrator antes do primeiro inicio.bat", "versao": "1.0"}
     ],
     "plugins": [
-        {"nome": "jogos.py", "versao": "1.0"},
-        {"nome": "verificar_estrutura.py", "versao": "1.0"}
+        {"nome": "jogos_cracked.py", "versao": "1.0"},
+        {"nome": "plugins.py", "versao": "1.0"}
     ]
 }
