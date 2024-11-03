@@ -1,8 +1,10 @@
+# jogos.py
+
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
@@ -56,17 +58,19 @@ class JogoWidget(BoxLayout):
         self.status_label = Label(text='', size_hint_y=None, height=40)
         self.add_widget(self.status_label)
 
-        # Nova label para mostrar o arquivo atual sendo baixado
+        # Label para mostrar o arquivo atual sendo baixado
         self.download_label = Label(text='', size_hint_y=None, height=40)
         self.add_widget(self.download_label)
 
     def on_toggle_button_press(self, instance):
+        """Marca o jogo selecionado quando o botão é pressionado."""
         for button in self.jogo_buttons.values():
             if button != instance:
                 button.state = 'normal'
         self.selected_game = instance.text if instance.state == 'down' else None
 
     def iniciar_jogo(self, instance):
+        """Inicia o jogo selecionado, baixando arquivos se necessário."""
         if self.selected_game:
             jogo_selecionado = self.selected_game
             caminho_jogos = os.path.join("jogos", jogo_selecionado)
@@ -75,7 +79,7 @@ class JogoWidget(BoxLayout):
                 arquivos_faltando = self.verificar_arquivos(caminho_jogos, self.jogos_necessarios.get(jogo_selecionado, []))
 
                 if not arquivos_faltando:
-                    executavel = os.path.join(caminho_jogos, "abrir.bat")
+                    executavel = os.path.join(caminho_jogos, "iniciar.bat")
                     if os.path.exists(executavel):
                         self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
                         os.startfile(executavel)
@@ -83,7 +87,6 @@ class JogoWidget(BoxLayout):
                         self.show_popup("Erro", f"Executável não encontrado em {caminho_jogos}.")
                 else:
                     self.status_label.text = "Arquivos faltando, iniciando download..."
-                    # Iniciar o download dos arquivos
                     self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
             else:
                 self.show_popup("Erro", f"A pasta {caminho_jogos} não existe.")
@@ -91,6 +94,7 @@ class JogoWidget(BoxLayout):
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
     def verificar_arquivos(self, caminho_jogos, arquivos_necessarios):
+        """Verifica se todos os arquivos necessários estão presentes."""
         faltando = []
         for arquivo in arquivos_necessarios:
             self.status_label.text = f"Verificando: {arquivo}"
@@ -100,10 +104,12 @@ class JogoWidget(BoxLayout):
         return faltando
 
     def baixar_arquivos(self, jogo, arquivos_faltando):
+        """Inicia o processo de download dos arquivos faltando."""
         url_base = f"http://158.178.197.238/jogos/{jogo}/"
         self.download_next_file(url_base, arquivos_faltando)
 
     def download_next_file(self, url_base, arquivos_faltando):
+        """Baixa o próximo arquivo da lista até que todos estejam baixados."""
         if arquivos_faltando:
             arquivo = arquivos_faltando.pop(0)
             url_arquivo = os.path.join(url_base, arquivo)
@@ -118,9 +124,8 @@ class JogoWidget(BoxLayout):
                 with open(caminho_destino, "wb") as f:
                     f.write(resposta.content)
 
-                self.status_label.text = f"Download: {arquivo} com sucesso!"
+                self.status_label.text = f"Download: {arquivo} concluído."
                 self.download_label.text = ''
-
             except Exception as e:
                 self.show_popup("Erro", f"Falha ao baixar {arquivo}")
 
@@ -129,10 +134,10 @@ class JogoWidget(BoxLayout):
             self.status_label.text = "Todos os arquivos foram baixados."
 
     def show_popup(self, title, message):
+        """Exibe um popup com uma mensagem de erro ou aviso."""
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
         popup.open()
 
-# Função para ser reconhecida como um plugin
 def executar():
     """Função principal do plugin que será chamada pelo sistema de plugins."""
     jogo_widget = JogoWidget()
