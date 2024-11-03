@@ -1,10 +1,10 @@
 {
     "jogos": [
-        {"nome": "firstdwarf/iniciar.bat", "versao": "0.2"},
-        {"nome": "soulmask/iniciar.bat", "versao": "0.2"}
+        {"nome": "firstdwarf/iniciar.bat", "versao": "0.3"},
+        {"nome": "soulmask/iniciar.bat", "versao": "0.3"}
     ],
     "plugins": [
-        {"nome": "jogos_cracked.py", "versao": "0.2"},
-        {"nome": "plugins.py", "versao": "0.2"}
+        {"nome": "jogos_cracked.py", "versao": "0.3"},
+        {"nome": "plugins.py", "versao": "0.3"}
     ]
 }
