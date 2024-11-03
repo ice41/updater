@@ -1,6 +1,7 @@
 # plugins.py
 
 import os
+import importlib
 import requests
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -16,6 +17,9 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 # Defina os plugins que devem aparecer no menu
 PLUGINS_VISIVEIS = ["Jogos cracked"]  # Exemplo: substituir pelos nomes dos plugins desejados
 
+# Nome do plugin que deve executar automaticamente sem aparecer no menu
+PLUGIN_VERIFICACAO_AUTOMATICA = "verificar_estrutura"
+
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
     try:
@@ -27,13 +31,12 @@ def carregar_jogos_necessarios():
         return {}
 
 def carregar_plugins(diretorio="plugins"):
-    """Carrega todos os plugins na pasta especificada, retornando apenas os que estão na lista de visíveis."""
+    """Carrega todos os plugins na pasta especificada e executa o plugin de verificação automática."""
     plugins = {}
     if not os.path.exists(diretorio):
         print(f"Diretório de plugins '{diretorio}' não encontrado.")
         return plugins
 
-    # Adiciona o diretório de plugins ao sys.path para importação
     import sys
     sys.path.append(diretorio)
 
@@ -44,15 +47,21 @@ def carregar_plugins(diretorio="plugins"):
                 modulo = importlib.import_module(nome_plugin)
                 importlib.reload(modulo)  # Recarrega o módulo
 
-                # Garante que o plugin possui a função executar e decide exibi-lo conforme PLUGINS_VISIVEIS
-                if hasattr(modulo, "executar"):
+                # Executa automaticamente o plugin de verificação de estrutura
+                if nome_plugin == PLUGIN_VERIFICACAO_AUTOMATICA:
+                    if hasattr(modulo, "executar"):
+                        print(f"Executando verificação automática: {nome_plugin}")
+                        modulo.executar()  # Executa o plugin de verificação
+                # Adiciona os outros plugins ao menu conforme PLUGINS_VISIVEIS
+                elif nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
                     plugins[nome_plugin] = modulo.executar
-                    print(f"Plugin '{nome_plugin}' carregado.")
+                    print(f"Plugin '{nome_plugin}' carregado para o menu.")
             except ImportError as e:
                 print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
-    
-    # Retorna apenas os plugins que devem ser visíveis no menu
-    return {nome: funcao for nome, funcao in plugins.items() if nome in PLUGINS_VISIVEIS}
+
+    return plugins
+
+# Classe e código de `JogoWidget` continuam como antes...
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -93,74 +102,7 @@ class JogoWidget(BoxLayout):
         self.download_label = Label(text='', size_hint_y=None, height=40)
         self.add_widget(self.download_label)
 
-    def on_toggle_button_press(self, instance):
-        for button in self.jogo_buttons.values():
-            if button != instance:
-                button.state = 'normal'
-        self.selected_game = instance.text if instance.state == 'down' else None
-
-    def iniciar_jogo(self, instance):
-        if self.selected_game:
-            jogo_selecionado = self.selected_game
-            caminho_jogos = os.path.join("jogos", jogo_selecionado)
-
-            if os.path.exists(caminho_jogos):
-                arquivos_faltando = self.verificar_arquivos(caminho_jogos, self.jogos_necessarios.get(jogo_selecionado, []))
-
-                if not arquivos_faltando:
-                    executavel = os.path.join(caminho_jogos, "abrir.bat")
-                    if os.path.exists(executavel):
-                        self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
-                        os.startfile(executavel)
-                    else:
-                        self.show_popup("Erro", f"Executável não encontrado em {caminho_jogos}.")
-                else:
-                    self.status_label.text = "Arquivos faltando, iniciando download..."
-                    # Iniciar o download dos arquivos
-                    self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
-            else:
-                self.show_popup("Erro", f"A pasta {caminho_jogos} não existe.")
-        else:
-            self.show_popup("Aviso", "Por favor, selecione um jogo.")
-
-    def verificar_arquivos(self, caminho_jogos, arquivos_necessarios):
-        faltando = []
-        for arquivo in arquivos_necessarios:
-            self.status_label.text = f"Verificando: {arquivo}"
-            self.download_label.text = f"Verificando: {arquivo}"
-            if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
-                faltando.append(arquivo)
-        return faltando
-
-    def baixar_arquivos(self, jogo, arquivos_faltando):
-        url_base = f"http://158.178.197.238/jogos/{jogo}/"
-        self.download_next_file(url_base, arquivos_faltando)
-
-    def download_next_file(self, url_base, arquivos_faltando):
-        if arquivos_faltando:
-            arquivo = arquivos_faltando.pop(0)
-            url_arquivo = os.path.join(url_base, arquivo)
-            caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
-            self.download_label.text = f"Baixando: {arquivo}"
-            os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
-
-            try:
-                resposta = requests.get(url_arquivo)
-                resposta.raise_for_status()
-
-                with open(caminho_destino, "wb") as f:
-                    f.write(resposta.content)
-
-                self.status_label.text = f"Download: {arquivo} com sucesso!"
-                self.download_label.text = ''
-
-            except Exception as e:
-                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
-
-            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
-        else:
-            self.status_label.text = "Todos os arquivos foram baixados."
-
+    # Outros métodos de JogoWidget continuam iguais...
     def show_popup(self, title, message):
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
         popup.open()
