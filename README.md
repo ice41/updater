@@ -30,7 +30,7 @@
   <img src="https://komarev.com/ghpvc/?username=ice41" alt=""/>
 
 <br />
-<img src="https://img.shields.io/github/downloads/ice41/updater/total)" alt=""/>
+<img src="https://img.shields.io/github/downloads/ice41/updater/total" alt=""/>
 <img src="https://img.shields.io/github/languages/count/ice41/updater" alt=""/>
 <img src="https://img.shields.io/github/languages/top/ice41/updater?color=yellow" alt=""/>
 <img src="https://img.shields.io/bitbucket/issues/ice41/updater" alt=""/>
