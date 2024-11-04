@@ -107,6 +107,7 @@ Plugins verificados
 - :heavy_check_mark: download de jogos Crackeds
 - :heavy_check_mark: criação de pastas
 - :heavy_check_mark: sistema de notícias
+- :heavy_check_mark: sistema verificação de ficheiros
 - :x: sistema ...
 
 
