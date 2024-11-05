@@ -67,7 +67,7 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 ## Sobre o projeto
 
 # Nped Launcher -
-- **Desenvilvido em 2024 para varias finalidades**
+- **Desenvolvido em 2024 para varias finalidades**
 - **Todo o codigo feitos por ice41**.
 - **Ice41 realizou deiversos projectos em servidores de Portugal e Brasil sendo Gestor e programador do servidor**.
 
