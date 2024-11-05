@@ -50,7 +50,7 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
     Se gostar do mesmo pense sempre em o adquirir.
 <div align="center">
 <p align="center">
-links
+  links
     <br />
     <a href="https://github.com/ice41/updater"><strong>Explore the docs »</strong></a>
     <br />
