@@ -136,7 +136,7 @@ Project Link: [updater](https://github.com/ice41/updater)
   <a href="https://ice41.pt">
     <img alt="Website" src="https://img.shields.io/badge/website-ice41-yellow">
   </a>
-  &nbsp;&nbsp;
+  <br>
   <a href="mailto:ice41pt@gmail.com">
     <img alt="e-mail" src="https://img.shields.io/badge/Contacto_de_Email-2A3BE8">
   </a>
@@ -145,10 +145,7 @@ Project Link: [updater](https://github.com/ice41/updater)
 <details align="center">
   <summary><b>Github Stats 📈</b></summary>
   
-![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=ice41&show_icons=true&theme=dark)
-
-
-<a href="https://git.io/streak-stats"><img src="https://streak-stats.demolab.com?user=ice41&theme=dark&hide_border=true&locale=pt_BR&date_format=j%20M%5B%20Y%5D" alt="GitHub Streak" /></a>
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=ice41&show_icons=true&theme=dark)&nbsp;&nbsp;&nbsp;<a href="https://git.io/streak-stats"><img src="https://streak-stats.demolab.com?user=ice41&theme=dark&hide_border=true&locale=pt_BR&date_format=j%20M%5B%20Y%5D" alt="GitHub Streak" /></a>
 
 </details>
 <p align="center">
