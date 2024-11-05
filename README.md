@@ -38,40 +38,51 @@
 
 
 
-  
-
+<br />
+<br />
+ <p align="center">
 Este laucher foi desenvolvido para suprir algumas necessidades de updates diretos em jogos multiplayer para users NPED.
 <br />
 Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 <br />
+</p>
     
 ## Nota
-    Os jogos cracked devem ser apenas usados para teste do jogo.
+
+    Os jogos cracked devem ser apenas usados para teste do jogo.<br>
     Se gostar do mesmo pense sempre em o adquirir.
 <div align="center">
-<p align="center">
-  links
-    <br />
-    <a href="https://github.com/ice41/updater"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/ice41/updater">View Demo</a>
-    ·
-    <a href="https://github.com/ice41/updater/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/ice41/updater/issues">Request Feature</a>
+  <p align="center">
+    <h3 align="center">Links </h3>
+      <br />
+      <a href="https://github.com/ice41/updater"><strong>Explore the docs »</strong></a>
+      <br />
+      <br />
+      <a href="https://github.com/ice41/updater">View Demo</a>
+      ·
+      <a href="https://github.com/ice41/updater/issues">Report Bug</a>
+      ·
+      <a href="https://github.com/ice41/updater/issues">Request Feature</a>
   </p>
 </div>
 
 <!-- ABOUT THE PROJECT -->
-## Sobre o projeto
+##  Sobre o projeto
 
-# Nped Launcher -
+ <p align="center"> Exemplo grafico atual:</p>
+ <div align="center">
+  <a href="https://i.imgur.com/5LNsVWN.png">
+    <img src="https://i.imgur.com/5LNsVWN.png" height="400" width="400" alt="Launcher NPED" title="Launcher NPED">
+  </a>
+</div>
+
+##  Nped Launcher
+
 - **Desenvolvido em 2024 para varias finalidades**
 - **Todo o codigo feitos por ice41**.
 - **Ice41 realizou deiversos projectos em servidores de Portugal e Brasil sendo Gestor e programador do servidor**.
 
-### Instalação
+##  Instalação
 
 1. Clone o projecto pelo guit
 2. Está tendo problemas para baixar?
@@ -82,7 +93,7 @@ Caso o download da base esteja corrompendo, baixe utilizando o [GitHub Desktop](
 
 
 <!-- USAGE EXAMPLES -->
-## Utilidade
+##  Utilidade
 
 - Laucher autoupdater com base no Guithub.
 - O codigo Fonte não foi partilhado neste repositório devido ao mesmo ser usado para o proprio updater funcionar.
@@ -91,21 +102,36 @@ Caso o download da base esteja corrompendo, baixe utilizando o [GitHub Desktop](
 
 
 <!-- ROADMAP -->
-## Roadmap
+##   Roadmap
+<div align="center">
 
-|checked|unchecked|crossed|
-|---|---|---|
-|:x:|:white_circle:|:heavy_check_mark:|
+  <!-- Tabela centralizada -->
+  <table style="margin: 0 auto;">
+    <tr>
+      <th>checked</th>
+      <th>unchecked</th>
+      <th>crossed</th>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>:white_circle:</td>
+      <td>:x:</td>
+    </tr>
+  </table>
+</div>
+  <!-- Lista centralizada -->
+  <p><b>Plugins verificados</b></p>
+  <ul style="list-style-position: inside; text-align: left;">
+    <li>:heavy_check_mark: Interface</li>
+    <li>:heavy_check_mark: Autoupdate</li>
+    <li>:heavy_check_mark: Download de jogos Crackeds</li>
+    <li>:heavy_check_mark: Criação de pastas</li>
+    <li>:heavy_check_mark: Sistema de notícias</li>
+    <li>:heavy_check_mark: Sistema verificação de ficheiros</li>
+    <li>:x: Sistema ...</li>
+  </ul>
 
-Plugins verificados 
 
-- :heavy_check_mark: Interface
-- :heavy_check_mark: Autoupdate
-- :heavy_check_mark: download de jogos Crackeds
-- :heavy_check_mark: criação de pastas
-- :heavy_check_mark: sistema de notícias
-- :heavy_check_mark: sistema verificação de ficheiros
-- :x: sistema ...
 
 
 
@@ -125,8 +151,7 @@ Plugins verificados
 
 <!-- CONTACT -->
 
-Project Link: [updater](https://github.com/ice41/updater)
-## Contactos
+<h3 align="center"> Contactos </h3>
 
 <div id="ice41" align="center">
     
