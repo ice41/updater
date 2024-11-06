@@ -1,6 +1,7 @@
-############################################################
-# by ice41 if you use this code to anything keep the credits
-############################################################
+###################################################################################
+# code by ice41 if you use this code to anything keep the credits
+# you can use the code to learn, use all my code are steal of what are not yours.
+####################################################################################
 # plugins.py
 
 import os
