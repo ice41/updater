@@ -1,4 +1,6 @@
-
+############################################################
+# by ice41 if you use this code to anything keep the credits
+############################################################
 # jogos_cracked.py
 
 import os
