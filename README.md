@@ -104,64 +104,68 @@ Caso o download da base esteja corrompendo, baixe utilizando o [GitHub Desktop](
 <!-- ROADMAP -->
 ## Roadmap
 
-<div>
-  <!-- Tabela à esquerda -->
-  <table style="float: left; margin-right: 10px;">
+<div align="center">
+  <table style="width: 100%;">
     <tr>
-      <th>Funcional</th>
-      <th>Verificação</th>
-      <th>Removido</th>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>:white_circle:</td>
-      <td>:x:</td>
-    </tr>
-  </table>
-
-  <!-- Tabela à direita -->
-  <table style="float: left;">
-    <tr>
-      <th>Status</th>
-      <th>Descrição</th>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Interface Gráfica</td>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Autoupdate</td>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Download de jogos Crackeds</td>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Criação de pastas</td>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Sistema de notícias</td>
-    </tr>
-    <tr>
-      <td>:heavy_check_mark:</td>
-      <td>Sistema de verificação de ficheiros</td>
-    </tr>
-    <tr>
-      <td>:white_circle:</td>
-      <td>Sistema ...</td>
-    </tr>
-    <tr>
-      <td>:x:</td>
-      <td>Sistema2 ...</td>
+      <td style="width: 50%; vertical-align: top;">
+        <!-- Tabela da esquerda -->
+        <table style="width: 100%; text-align: center;">
+          <tr>
+            <th>Funcional</th>
+            <th>Verificação</th>
+            <th>Removido</th>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>:white_circle:</td>
+            <td>:x:</td>
+          </tr>
+        </table>
+      </td>
+      <td style="width: 50%; vertical-align: top;">
+        <!-- Tabela da direita -->
+        <table style="width: 100%; text-align: left;">
+          <tr>
+            <th>Status</th>
+            <th>Descrição</th>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Interface Gráfica</td>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Autoupdate</td>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Download de jogos Crackeds</td>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Criação de pastas</td>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Sistema de notícias</td>
+          </tr>
+          <tr>
+            <td>:heavy_check_mark:</td>
+            <td>Sistema de verificação de ficheiros</td>
+          </tr>
+          <tr>
+            <td>:white_circle:</td>
+            <td>Sistema ...</td>
+          </tr>
+          <tr>
+            <td>:x:</td>
+            <td>Sistema2 ...</td>
+          </tr>
+        </table>
+      </td>
     </tr>
   </table>
 </div>
-
-
-
 
 
 
