@@ -27,6 +27,7 @@
     <img src="https://cdn.discordapp.com/attachments/1074126570920345740/1243687894552674437/NPEDLOGO2023-sem_fundo2.1.png?ex=6724009c&is=6722af1c&hm=f9a1471bf54f0e13dd3d9413c453c08d513d02c367824895c9085bab21c2d246&" alt="Logo" width="140" height="180">
   </a>
 <br />
+<br />
 <img src="https://img.shields.io/github/downloads/ice41/updater/total" alt=""/>
 <img src="https://img.shields.io/github/languages/count/ice41/updater" alt=""/>
 <img src="https://img.shields.io/github/languages/top/ice41/updater?color=yellow" alt=""/>
