@@ -1,3 +1,7 @@
+
+############################################################
+# by ice41 if you use this code to anything keep the credits
+############################################################
 # plugins.py
 
 import os
