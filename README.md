@@ -102,15 +102,15 @@ Caso o download da base esteja corrompendo, baixe utilizando o [GitHub Desktop](
 
 
 <!-- ROADMAP -->
-##   Roadmap
-<div align="center">
+## Roadmap
 
-  <!-- Tabela centralizada -->
-  <table style="margin: 0 auto;">
+<div>
+  <!-- Tabela à esquerda -->
+  <table style="float: left; margin-right: 10px;">
     <tr>
-      <th>checked</th>
-      <th>unchecked</th>
-      <th>crossed</th>
+      <th>Funcional</th>
+      <th>Verificação</th>
+      <th>Removido</th>
     </tr>
     <tr>
       <td>:heavy_check_mark:</td>
@@ -118,18 +118,50 @@ Caso o download da base esteja corrompendo, baixe utilizando o [GitHub Desktop](
       <td>:x:</td>
     </tr>
   </table>
+
+  <!-- Tabela à direita -->
+  <table style="float: left;">
+    <tr>
+      <th>Status</th>
+      <th>Descrição</th>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Interface Gráfica</td>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Autoupdate</td>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Download de jogos Crackeds</td>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Criação de pastas</td>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Sistema de notícias</td>
+    </tr>
+    <tr>
+      <td>:heavy_check_mark:</td>
+      <td>Sistema de verificação de ficheiros</td>
+    </tr>
+    <tr>
+      <td>:white_circle:</td>
+      <td>Sistema ...</td>
+    </tr>
+    <tr>
+      <td>:x:</td>
+      <td>Sistema2 ...</td>
+    </tr>
+  </table>
 </div>
-  <!-- Lista centralizada -->
-  <p><b>Plugins verificados</b></p>
-  <ul style="list-style-position: inside; text-align: left;">
-    <li>:heavy_check_mark: Interface</li>
-    <li>:heavy_check_mark: Autoupdate</li>
-    <li>:heavy_check_mark: Download de jogos Crackeds</li>
-    <li>:heavy_check_mark: Criação de pastas</li>
-    <li>:heavy_check_mark: Sistema de notícias</li>
-    <li>:heavy_check_mark: Sistema verificação de ficheiros</li>
-    <li>:x: Sistema ...</li>
-  </ul>
+
+
+
 
 
 
