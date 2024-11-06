@@ -51,6 +51,17 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 ## Nota
     Os jogos cracked devem ser apenas usados para teste do jogo.
     Se gostar do mesmo pense sempre em o adquirir.
+
+    ###################################################################################
+    # code by ice41 if you use this code to anything keep the credits
+    # you can use the code to learn, use all my code are steal of what are not yours.
+    ####################################################################################
+
+    ###########################################################################################
+    # programado por ice41 se usar codigo para alguma coisa mantenha os creditos
+    # pode usar o codigo para aprendizagem, usar o codigo completo é roubar algo que não é seu.
+    ###########################################################################################
+    
 <div align="center">
 <p align="center">
 links
