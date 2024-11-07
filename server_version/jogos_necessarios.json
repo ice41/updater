@@ -266,7 +266,13 @@
     "arquivo2.dat",
     "arquivo3.dat"
   ],
-  "indisponível_2": [
+  "Jogo_indisponível": [
+    "config.exe",
+    "arquivo1.dat",
+    "arquivo2.dat",
+    "arquivo3.dat"
+  ],
+  "Jogo_indisponível_2": [
     "config.exe",
     "arquivo1.dat",
     "arquivo2.dat",
