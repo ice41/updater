@@ -1,3 +1,5 @@
+#app.py
+
 import os
 import sys
 from kivymd.app import MDApp
@@ -27,7 +29,9 @@ def resource_path(relative_path):
 
 class UpdaterApp(MDApp):
     def build(self):
+        # Configurar tema escuro
         self.title = "Launcher NPED"
+        self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.primary_hue = "700"
         Window.size = (950, 800)
@@ -88,7 +92,7 @@ class UpdaterApp(MDApp):
             text="Menu",
             size_hint=(None, None),
             size=(120, 50),
-            pos_hint={"center_y": 0.5}
+            pos_hint={"center_y": 0.5"}
         )
         plugins_button.bind(on_release=self.show_plugins_popup)
         button_layout.add_widget(plugins_button)
@@ -101,7 +105,7 @@ class UpdaterApp(MDApp):
             text="Atualizar",
             size_hint=(None, None),
             size=(120, 50),
-            pos_hint={"center_y": 0.5},
+            pos_hint={"center_y": 0.5"},
             disabled=True
         )
         self.update_button.bind(on_press=self.on_update_button_press)
