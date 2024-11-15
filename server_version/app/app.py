@@ -92,7 +92,7 @@ class UpdaterApp(MDApp):
             text="Menu",
             size_hint=(None, None),
             size=(120, 50),
-            pos_hint={"center_y": 0.5"}
+            pos_hint={"center_y": 0.5}
         )
         plugins_button.bind(on_release=self.show_plugins_popup)
         button_layout.add_widget(plugins_button)
@@ -105,7 +105,7 @@ class UpdaterApp(MDApp):
             text="Atualizar",
             size_hint=(None, None),
             size=(120, 50),
-            pos_hint={"center_y": 0.5"},
+            pos_hint={"center_y": 0.5},
             disabled=True
         )
         self.update_button.bind(on_press=self.on_update_button_press)
