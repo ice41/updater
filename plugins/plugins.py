@@ -6,12 +6,12 @@ import sys
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 
-# Lista dos plugins visíveis no menu
+# Lista dos plugins visíveis no menu (usando o nome do arquivo)
 PLUGINS_VISIVEIS = ["jogos_cracked"]
 
 def formatar_nome_plugin(nome_arquivo):
     """Converte o nome do arquivo em um título amigável para o menu."""
-    # Remove underscores, substitui por espaços e converte para um formato amigável
+    # Remove underscores e converte para um formato amigável
     return nome_arquivo.replace("_", " ").replace(".py", "").title()
 
 def carregar_plugins(diretorio="plugins"):
@@ -30,7 +30,7 @@ def carregar_plugins(diretorio="plugins"):
                 if nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
                     nome_amigavel = formatar_nome_plugin(nome_plugin)  # Aplica a formatação amigável
                     print(f"Plugin '{nome_amigavel}' carregado para o menu.")  # Exibe o nome formatado no terminal
-                    plugins[nome_amigavel] = modulo.executar
+                    plugins[nome_amigavel] = modulo.executar  # Usa o nome amigável como chave
             except ImportError as e:
                 print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
 
