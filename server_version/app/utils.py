@@ -1,5 +1,3 @@
-# utils.py
-
 import os
 import requests
 import zipfile
@@ -67,21 +65,53 @@ def extract_update():
         print("Erro ao extrair a atualização: " + str(e))
         return False
 
+def merge_directories(source_dir, target_dir):
+    """Mescla os arquivos de uma pasta origem para o destino."""
+    for root, _, files in os.walk(source_dir):
+        relative_path = os.path.relpath(root, source_dir)
+        destination_path = os.path.join(target_dir, relative_path)
+
+        # Garante que a pasta de destino exista
+        os.makedirs(destination_path, exist_ok=True)
+
+        # Move ou substitui os arquivos no destino
+        for file in files:
+            source_file = os.path.join(root, file)
+            destination_file = os.path.join(destination_path, file)
+
+            try:
+                shutil.move(source_file, destination_file)
+                print(f"Arquivo movido: {source_file} -> {destination_file}")
+            except Exception as e:
+                print(f"Erro ao mover arquivo {source_file}: {e}")
+
 def move_files(update_progress_callback=None):
     source_dir = 'updater-main/updater-main'
-    total_files = len(os.listdir(source_dir))
-    moved_files = 0
+
+    # Mescla a pasta "jogos"
+    if os.path.exists(os.path.join(source_dir, "jogos")):
+        merge_directories(os.path.join(source_dir, "jogos"), "jogos")
+
+    # Mescla a pasta "plugins"
+    if os.path.exists(os.path.join(source_dir, "plugins")):
+        merge_directories(os.path.join(source_dir, "plugins"), "plugins")
+
+    # Move outros arquivos ou pastas diretamente para o diretório atual
     for item in os.listdir(source_dir):
         s = os.path.join(source_dir, item)
         d = os.path.join('.', item)
-        try:
-            shutil.move(s, d)
-            moved_files += 1
-            if update_progress_callback and total_files > 0:
-                progress = 50 + int((moved_files / total_files) * 50)  # Progresso de 50% a 100%
-                update_progress_callback(progress)
-        except Exception as e:
-            print(f"Erro ao mover arquivos: {e}")
+        if os.path.isdir(s) and item not in ['jogos', 'plugins']:
+            try:
+                shutil.move(s, d)
+                print(f"Pasta movida: {s} -> {d}")
+            except Exception as e:
+                print(f"Erro ao mover pasta {s}: {e}")
+        elif os.path.isfile(s):
+            try:
+                shutil.move(s, d)
+                print(f"Arquivo movido: {s} -> {d}")
+            except Exception as e:
+                print(f"Erro ao mover arquivo {s}: {e}")
 
 def update_current_version(new_version):
     with open('versao.txt', 'w') as f:
