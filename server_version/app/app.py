@@ -8,7 +8,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDRaisedButton, MDRectangleFlatButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
-from kivymd.uix.anchorlayout import MDAnchorLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.card import MDCard
