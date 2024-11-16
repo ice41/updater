@@ -12,12 +12,17 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.card import MDCard
+from kivy.config import Config
 
 from utils import (get_current_version, get_server_version, download_update,
                    extract_update, move_files, remove_updater_folder, update_current_version)
 from news import NewsWidget
 from plugins import carregar_plugins
 
+# Desativar os provedores de entrada problemáticos
+Config.set('input', 'wm_touch', 'null')
+Config.set('input', 'wm_pen', 'null')
+Config.set('graphics', 'multitouch_on_demand', True)
 
 def resource_path(relative_path):
     try:
