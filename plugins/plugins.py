@@ -11,7 +11,8 @@ PLUGINS_VISIVEIS = ["jogos_cracked"]
 
 def formatar_nome_plugin(nome_arquivo):
     """Converte o nome do arquivo em um título amigável para o menu."""
-    return nome_arquivo.replace("_", " ").title()
+    # Remove underscores, substitui por espaços e converte para um formato amigável
+    return nome_arquivo.replace("_", " ").replace(".py", "").title()
 
 def carregar_plugins(diretorio="plugins"):
     """Carrega os plugins e retorna apenas os que devem aparecer no menu."""
