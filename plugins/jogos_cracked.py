@@ -187,8 +187,8 @@ class JogoWidget(BoxLayout):
 
 
 def executar():
-    """Função principal do plugin que será chamada pelo sistema de plugins."""
+    """Função principal do plugin que será chamada pelo sistema de ."""
     jogo_widget = JogoWidget()
-    popup = Popup(title="Plugins", content=jogo_widget, size_hint=(0.9, 0.9))
+    popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
 
