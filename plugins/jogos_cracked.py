@@ -1,6 +1,3 @@
-
-# jogos_cracked.py
-
 # jogos_cracked.py
 
 import os
