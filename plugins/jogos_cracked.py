@@ -1,6 +1,8 @@
 
 # jogos_cracked.py
 
+# jogos_cracked.py
+
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
@@ -14,6 +16,7 @@ from kivy.clock import Clock
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
+
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
     try:
@@ -23,6 +26,7 @@ def carregar_jogos_necessarios():
     except requests.RequestException as e:
         print(f"Erro ao carregar jogos necessários: {e}")
         return {}
+
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -50,10 +54,14 @@ class JogoWidget(BoxLayout):
 
         self.add_widget(self.jogos_layout)
 
-        # Botão para iniciar o jogo
-        start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50)
-        start_button.bind(on_press=self.iniciar_jogo)
-        self.add_widget(start_button)
+        # Botões para ações
+        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50)
+        self.start_button.bind(on_press=self.iniciar_jogo)
+        self.add_widget(self.start_button)
+
+        self.uninstall_button = Button(text='Desinstalar Jogo', size_hint_y=None, height=50, disabled=True)
+        self.uninstall_button.bind(on_press=self.desinstalar_jogo)
+        self.add_widget(self.uninstall_button)
 
         # Label para status
         self.status_label = Label(text='', size_hint_y=None, height=40)
@@ -69,9 +77,33 @@ class JogoWidget(BoxLayout):
             if button != instance:
                 button.state = 'normal'
         self.selected_game = instance.text if instance.state == 'down' else None
+        self.atualizar_botoes()
+
+    def atualizar_botoes(self):
+        """Atualiza os botões com base no estado do jogo selecionado."""
+        if self.selected_game:
+            caminho_jogo = os.path.join("jogos", self.selected_game)
+            if os.path.exists(caminho_jogo):
+                arquivos_faltando = self.verificar_arquivos(caminho_jogo, self.jogos_necessarios.get(self.selected_game, []))
+                if not arquivos_faltando:
+                    self.start_button.text = "Iniciar Jogo"
+                    self.start_button.disabled = False
+                    self.uninstall_button.disabled = False
+                else:
+                    self.start_button.text = "Instalar Jogo"
+                    self.start_button.disabled = False
+                    self.uninstall_button.disabled = True
+            else:
+                self.start_button.text = "Instalar Jogo"
+                self.start_button.disabled = False
+                self.uninstall_button.disabled = True
+        else:
+            self.start_button.text = "Iniciar Jogo"
+            self.start_button.disabled = True
+            self.uninstall_button.disabled = True
 
     def iniciar_jogo(self, instance):
-        """Inicia o jogo selecionado, baixando arquivos se necessário."""
+        """Inicia ou instala o jogo selecionado, dependendo do estado."""
         if self.selected_game:
             jogo_selecionado = self.selected_game
             caminho_jogos = os.path.join("jogos", jogo_selecionado)
@@ -90,7 +122,7 @@ class JogoWidget(BoxLayout):
                     self.status_label.text = "Arquivos faltando, iniciando download..."
                     self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
             else:
-                self.show_popup("Erro", f"A pasta {caminho_jogos} não existe.")
+                self.baixar_arquivos(jogo_selecionado, self.jogos_necessarios.get(jogo_selecionado, []))
         else:
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
@@ -98,8 +130,8 @@ class JogoWidget(BoxLayout):
         """Verifica se todos os arquivos necessários estão presentes."""
         faltando = []
         for arquivo in arquivos_necessarios:
-            self.status_label.text = f"Verificando: {arquivo}"
-            self.download_label.text = f"Verificando: {arquivo}"
+            # self.status_label.text = f"Verificando: {arquivo}"
+            # self.download_label.text = f"Verificando: {arquivo}"
             if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
                 faltando.append(arquivo)
         return faltando
@@ -133,14 +165,33 @@ class JogoWidget(BoxLayout):
             Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
         else:
             self.status_label.text = "Todos os arquivos foram baixados."
+            self.atualizar_botoes()
+
+    def desinstalar_jogo(self, instance):
+        """Desinstala o jogo selecionado, removendo seus arquivos."""
+        if self.selected_game:
+            caminho_jogo = os.path.join("jogos", self.selected_game)
+            if os.path.exists(caminho_jogo):
+                for root, dirs, files in os.walk(caminho_jogo, topdown=False):
+                    for file in files:
+                        os.remove(os.path.join(root, file))
+                    for dir in dirs:
+                        os.rmdir(os.path.join(root, dir))
+                os.rmdir(caminho_jogo)
+                self.status_label.text = f"Jogo {self.selected_game} desinstalado com sucesso."
+                self.atualizar_botoes()
+            else:
+                self.show_popup("Erro", "Jogo não encontrado para desinstalar.")
 
     def show_popup(self, title, message):
         """Exibe um popup com uma mensagem de erro ou aviso."""
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
         popup.open()
 
+
 def executar():
     """Função principal do plugin que será chamada pelo sistema de plugins."""
     jogo_widget = JogoWidget()
     popup = Popup(title="Plugins", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
+
