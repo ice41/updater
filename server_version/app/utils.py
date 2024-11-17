@@ -1,3 +1,5 @@
+#utils.py
+
 import os
 import requests
 import zipfile
@@ -53,20 +55,20 @@ def download_update(update_progress_callback=None):
 def extract_update():
     try:
         with zipfile.ZipFile('atualizacao.zip', 'r') as zip_ref:
-            zip_ref.extractall('updater-main')
-        # Remover arquivos extras após extração
-        cleanup_files = ["updater-main/.gitignore", "updater-main/README.md"]
-        for file in cleanup_files:
-            if os.path.exists(file):
-                os.remove(file)
-                print(f"Removido: {file}")
+            zip_ref.extractall('.')
         return True
     except Exception as e:
         print("Erro ao extrair a atualização: " + str(e))
         return False
 
-def merge_directories(source_dir, target_dir):
-    """Mescla os arquivos de uma pasta origem para o destino."""
+def merge_directories(source_dir, target_dir, add_only=False):
+    """
+    Mescla os arquivos de uma pasta origem para o destino.
+
+    :param source_dir: Diretório de origem.
+    :param target_dir: Diretório de destino.
+    :param add_only: Se True, apenas adiciona novos arquivos sem sobrescrever.
+    """
     for root, _, files in os.walk(source_dir):
         relative_path = os.path.relpath(root, source_dir)
         destination_path = os.path.join(target_dir, relative_path)
@@ -74,10 +76,13 @@ def merge_directories(source_dir, target_dir):
         # Garante que a pasta de destino exista
         os.makedirs(destination_path, exist_ok=True)
 
-        # Move ou substitui os arquivos no destino
         for file in files:
             source_file = os.path.join(root, file)
             destination_file = os.path.join(destination_path, file)
+
+            if add_only and os.path.exists(destination_file):
+                print(f"Arquivo já existe, ignorado: {destination_file}")
+                continue
 
             try:
                 shutil.move(source_file, destination_file)
@@ -86,15 +91,15 @@ def merge_directories(source_dir, target_dir):
                 print(f"Erro ao mover arquivo {source_file}: {e}")
 
 def move_files(update_progress_callback=None):
-    source_dir = 'updater-main/updater-main'
+    source_dir = 'updater-main'
 
-    # Mescla a pasta "jogos"
+    # Mescla a pasta "jogos" sem sobrescrever arquivos existentes
     if os.path.exists(os.path.join(source_dir, "jogos")):
-        merge_directories(os.path.join(source_dir, "jogos"), "jogos")
+        merge_directories(os.path.join(source_dir, "jogos"), "jogos", add_only=True)
 
-    # Mescla a pasta "plugins"
+    # Mescla a pasta "plugins" (substitui arquivos)
     if os.path.exists(os.path.join(source_dir, "plugins")):
-        merge_directories(os.path.join(source_dir, "plugins"), "plugins")
+        merge_directories(os.path.join(source_dir, "plugins"), "plugins", add_only=False)
 
     # Move outros arquivos ou pastas diretamente para o diretório atual
     for item in os.listdir(source_dir):
@@ -136,3 +141,4 @@ if __name__ == "__main__":
                 move_files()
                 update_current_version(VERSAO_ATUAL)
                 remove_updater_folder()
+
