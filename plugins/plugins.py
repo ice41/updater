@@ -7,7 +7,7 @@ from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 
 # Lista dos plugins visíveis no menu (usando o nome do arquivo)
-PLUGINS_VISIVEIS = ["jogos cracked"]
+PLUGINS_VISIVEIS = ["jogos_cracked"]
 
 def formatar_nome_plugin(nome_arquivo):
     """Converte o nome do arquivo em um título amigável para o menu."""
