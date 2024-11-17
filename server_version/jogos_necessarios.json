@@ -260,22 +260,8 @@
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/MasteringSuite.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/McDSP.dll"
  ],
-   "_indisponível": [
+   "indisponível": [
      "config.exe",
-     "arquivo1.dat",
-     "arquivo2.dat",
-     "arquivo3.dat"
-   ],
-   "_Jogo_indisponível": [
-     "config.exe",
-     "arquivo1.dat",
-     "arquivo2.dat",
-     "arquivo3.dat"
-   ],
-   "_Jogo_indisponível_2": [
-     "config.exe",
-     "arquivo1.dat",
-     "arquivo2.dat",
-     "arquivo3.dat"
-]
+     "iniciar.bat"
+   ]
 }
