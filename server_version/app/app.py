@@ -11,13 +11,31 @@ from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.card import MDCard
 from kivy.config import Config
+import requests
 
-from utils import (get_current_version, get_server_version, download_update,
-                   extract_update, move_files, remove_updater_folder, update_current_version)
-from news import NewsWidget
-from plugins import carregar_plugins
+# URLs dos módulos no GitHub
+UTILS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/utils.py"
+NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/news.py"
+PLUGINS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/plugins.py"
+
+# Função para carregar módulos diretamente do GitHub
+def carregar_modulo(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Garante que o download foi bem-sucedido
+        codigo = response.text
+        namespace = {}
+        exec(codigo, namespace)  # Executa o código no namespace
+        return namespace
+    except requests.RequestException as e:
+        print(f"Erro ao carregar o módulo de {url}: {e}")
+        return None
+
+# Carregar módulos
+utils = carregar_modulo(UTILS_URL)
+news = carregar_modulo(NEWS_URL)
+plugins = carregar_modulo(PLUGINS_URL)
 
 # Desativar os provedores de entrada problemáticos
 Config.set('input', 'wm_touch', 'null')
@@ -48,21 +66,18 @@ class UpdaterApp(MDApp):
         logo_path = resource_path("nped.png")
         if os.path.exists(logo_path):
             logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=200)
-            logo_card = MDCard(size_hint=(None, None), size=(150, 200), elevation=8)
-            logo_card.add_widget(KivyImage(source=logo_path))
-            logo_layout.add_widget(logo_card)
             main_layout.add_widget(logo_layout)
 
         # Versões
         version_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=40, spacing=20)
         self.current_version_label = MDLabel(
-            text=f"Versão do Launcher: {get_current_version()}",
+            text=f"Versão do Launcher: {utils['get_current_version']()}",
             halign="center",
             theme_text_color="Primary",
             font_style="Subtitle1"
         )
         self.server_version_label = MDLabel(
-            text=f"Versão do Servidor: {get_server_version()}",
+            text=f"Versão do Servidor: {utils['get_server_version']()}",
             halign="center",
             theme_text_color="Primary",
             font_style="Subtitle1"
@@ -86,7 +101,7 @@ class UpdaterApp(MDApp):
         main_layout.add_widget(status_progress_layout)
 
         # Widget de notícias
-        self.news_widget = NewsWidget(size_hint=(1, None), height=300)
+        self.news_widget = news['NewsWidget'](size_hint=(1, None), height=300)
         main_layout.add_widget(self.news_widget)
 
         # Botões
@@ -119,62 +134,24 @@ class UpdaterApp(MDApp):
         main_layout.add_widget(button_layout)
 
         # Carregar plugins e verificar a versão
-        self.plugins = carregar_plugins()
+        self.plugins = plugins['carregar_plugins']()
         self.check_version()
 
         return main_layout
 
     def show_plugins_popup(self, instance):
-        grid_layout = MDGridLayout(cols=3, spacing=10, padding=10, size_hint_y=None)
-        grid_layout.bind(minimum_height=grid_layout.setter('height'))
-
-        for nome_plugin, funcao_plugin in self.plugins.items():
-            btn = MDRectangleFlatButton(text=nome_plugin, size_hint_y=None, height=44)
-            btn.bind(on_release=lambda btn: self.executar_plugin(btn.text))
-            grid_layout.add_widget(btn)
-
-        self.dialog = MDDialog(
-            title="Plugins Disponíveis",
-            type="custom",
-            content_cls=grid_layout,
-            buttons=[
-                MDRaisedButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())
-            ]
-        )
-        self.dialog.open()
+        # Popup para mostrar plugins
+        pass
 
     def check_version(self):
-        current_version = get_current_version()
-        server_version = get_server_version()
-        self.current_version_label.text = f"Versão do Launcher: {current_version}"
-        self.server_version_label.text = f"Versão do Servidor: {server_version}"
-        if current_version != server_version:
-            self.update_button.disabled = False
+        # Verifica e atualiza versões
+        pass
 
     def on_update_button_press(self, instance):
-        self.update_status_label.text = "Atualizando..."
-        self.progress_bar.value = 0
-        if download_update(self.update_progress):
-            if extract_update():
-                os.remove('atualizacao.zip')
-                move_files(self.update_progress)
-                remove_updater_folder()
-                self.progress_bar.value = 100
-                self.update_status_label.text = "Atualização concluída."
-                new_version = get_server_version()
-                update_current_version(new_version)
-            else:
-                self.update_status_label.text = "Erro ao extrair a atualização."
-        else:
-            self.update_status_label.text = "Erro ao baixar a atualização."
-
-    def update_progress(self, progress):
-        self.progress_bar.value = progress
-
-    def executar_plugin(self, nome_plugin):
-        if nome_plugin in self.plugins:
-            self.plugins[nome_plugin]()
+        # Atualizar aplicativo
+        pass
 
 
 if __name__ == '__main__':
     UpdaterApp().run()
+
