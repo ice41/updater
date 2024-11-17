@@ -1,28 +1,56 @@
 # plugins.py
 
 import os
-import sys
 import importlib
+import sys
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+
+# Lista dos plugins visíveis no menu (usando o nome do arquivo)
+PLUGINS_VISIVEIS = ["jogos_cracked"]
+
+def formatar_nome_plugin(nome_arquivo):
+    """Converte o nome do arquivo em um título amigável para o menu."""
+    # Remove underscores e converte para um formato amigável
+    return nome_arquivo.replace("_", " ").replace(".py", "").title()
 
 def carregar_plugins(diretorio="plugins"):
+    """Carrega os plugins e retorna apenas os que devem aparecer no menu."""
     plugins = {}
-    plugins_dir = os.path.join(os.path.dirname(sys.executable if getattr(sys, 'frozen', False) else __file__), diretorio)
+    sys.path.append(diretorio)
 
-    if not os.path.exists(plugins_dir):
-        print(f"Diretório '{plugins_dir}' não encontrado.")
-        return plugins
-
-    sys.path.append(plugins_dir)
-
-    for filename in os.listdir(plugins_dir):
+    for filename in os.listdir(diretorio):
         if filename.endswith(".py") and filename != "__init__.py":
-            nome_modulo = filename[:-3]
+            nome_plugin = filename[:-3]  # Remove a extensão .py
             try:
-                modulo = importlib.import_module(nome_modulo)
+                modulo = importlib.import_module(nome_plugin)
                 importlib.reload(modulo)
 
-                if hasattr(modulo, "executar"):
-                    plugins[nome_modulo] = modulo.executar
+                # Adiciona ao menu se o plugin estiver na lista de visíveis e tiver uma função executar
+                if nome_plugin in PLUGINS_VISIVEIS and hasattr(modulo, "executar"):
+                    nome_amigavel = formatar_nome_plugin(nome_plugin)  # Aplica a formatação amigável
+                    print(f"Plugin '{nome_amigavel}' carregado para o menu.")  # Exibe o nome formatado no terminal
+                    plugins[nome_amigavel] = modulo.executar  # Usa o nome amigável como chave
             except ImportError as e:
-                print(f"Erro ao carregar o plugin '{nome_modulo}': {e}")
+                print(f"Erro ao carregar o plugin '{nome_plugin}': {e}")
+
     return plugins
+
+def criar_botoes_menu(layout, plugins):
+    """Cria botões para cada plugin no menu, organizados verticalmente em um GridLayout."""
+    # Usa um GridLayout com 1 coluna para dispor os botões verticalmente
+    botoes_layout = GridLayout(cols=1, size_hint_y=None, spacing=10)
+    botoes_layout.bind(minimum_height=botoes_layout.setter('height'))  # Ajusta a altura conforme o conteúdo
+
+    for nome_amigavel, funcao in plugins.items():
+        button = Button(text=nome_amigavel, size_hint_y=None, height=50)
+
+        # Define a função para o botão com uma closure, evitando problemas com lambda
+        def executar_plugin(instancia, func=funcao):
+            func()
+
+        button.bind(on_release=executar_plugin)
+        botoes_layout.add_widget(button)
+
+    # Adiciona o layout de botões ao layout principal
+    layout.add_widget(botoes_layout)
