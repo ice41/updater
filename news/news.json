@@ -1,17 +1,12 @@
 [
   {
-    "title": "Atualização lançada!",
-    "description": "Agora a versão 0.0.23 está disponível com várias correções de bugs e melhorias.",
-    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/updates.png"
+    "title": "Lançamento de nova versão",
+    "date": "2024-11-20",
+    "content": "Lançamos a versão 1.2 com várias melhorias."
   },
   {
-    "title": "Nova função de notícias",
-    "description": "A função de notícias foi adicionada para manter você atualizado sobre as mudanças do launcher.",
-    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/noticias.png"
-  },
-  {
-    "title": "Manutenção do servidor",
-    "description": "O servidor estará em manutenção no dia 25 de Feveriero às 22h. Verifique o status na nossa página.",
-    "image_url": "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/manutencao.png"
+    "title": "Manutenção programada",
+    "date": "2024-11-25",
+    "content": "O servidor ficará offline para manutenção às 02:00 UTC."
   }
 ]
