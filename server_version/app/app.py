@@ -1,4 +1,4 @@
-#app.py 2.4
+#app.py 2.2
 
 import os
 import sys
@@ -106,7 +106,7 @@ class UpdaterApp(MDApp):
         button_layout.add_widget(MDLabel(size_hint=(1, 1)))
 
         # Botão de atualização
-        self.update_button = MDRectangleFlatButton(
+        self.update_button = MDRaisedButton(
             text="Atualizar",
             size_hint=(None, None),
             size=(120, 50),
@@ -138,7 +138,7 @@ class UpdaterApp(MDApp):
             type="custom",
             content_cls=grid_layout,
             buttons=[
-                MDRectangleFlatButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())
+                MDRaisedButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())
             ]
         )
         self.dialog.open()
@@ -178,3 +178,4 @@ class UpdaterApp(MDApp):
 
 if __name__ == '__main__':
     UpdaterApp().run()
+
