@@ -4,7 +4,7 @@
         {"nome": "soulmask/iniciar.bat", "versao": "0.3"}
     ],
     "plugins": [
-        {"nome": "jogos cracked.py", "versao": "0.8"},
+        {"nome": "jogos_cracked.py", "versao": "0.8"},
         {"nome": "plugins.py", "versao": "0.9"}
     ]
 }
