@@ -1,17 +1,20 @@
+#app.py v-1.3
+
 import os
 import sys
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton, MDRectangleFlatButton
+from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.image import Image
+from kivy.uix.widget import Widget
+from kivy.graphics import Color, Ellipse
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivy.config import Config
-from kivy.uix.image import Image
-from kivy.metrics import dp
 
 from utils import (get_current_version, get_server_version, download_update,
                    extract_update, move_files, remove_updater_folder, update_current_version)
@@ -31,9 +34,28 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
+class GlowingLogo(Widget):
+    """Widget para criar o efeito de brilho ao redor do logo."""
+    def __init__(self, source, **kwargs):
+        super().__init__(**kwargs)
+        self.source = source
+        with self.canvas.before:
+            # Adiciona um brilho azul translúcido
+            Color(0, 0.8, 1, 0.5)  # Azul claro translúcido
+            self.ellipse = Ellipse(size=(200, 200), pos=(self.center_x - 100, self.center_y - 100))
+
+        self.image = Image(source=self.source, size_hint=(None, None), size=(150, 150), pos_hint={"center_x": 0.5})
+        self.add_widget(self.image)
+
+    def on_size(self, *args):
+        """Atualiza a posição do brilho quando o widget for redimensionado."""
+        self.ellipse.size = (200, 200)
+        self.ellipse.pos = (self.center_x - 100, self.center_y - 100)
+
+
 class UpdaterApp(MDApp):
     def build(self):
-        # Configurar tema futurista
+        # Configurar tema
         self.title = "Launcher NPED"
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
@@ -46,8 +68,8 @@ class UpdaterApp(MDApp):
         # Logo no topo
         logo_path = resource_path("nped.png")
         if os.path.exists(logo_path):
-            logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=200)
-            logo = Image(source=logo_path, size_hint=(None, None), size=(150, 200))
+            logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=250)
+            logo = GlowingLogo(source=logo_path)
             logo_layout.add_widget(logo)
             main_layout.add_widget(logo_layout)
 
@@ -90,29 +112,35 @@ class UpdaterApp(MDApp):
         self.news_widget = NewsWidget(size_hint=(1, None), height=300)
         main_layout.add_widget(self.news_widget)
 
-        # Botões
-        button_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=80, spacing=20)
+        # Botões (Menu à esquerda, Atualizar à direita)
+        button_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=80, padding=[20, 0, 20, 0])
 
         # Botão de menu (à esquerda)
         plugins_button = MDRaisedButton(
             text="Menu",
             size_hint=(None, None),
-            size=(dp(150), dp(50)),
-            md_bg_color=(0, 0.8, 1, 1),
+            size=(150, 50),
+            md_bg_color=(0, 0.5, 1, 1),
             text_color=(1, 1, 1, 1),
-            on_release=self.show_plugins_popup
+            radius=[30]
         )
+        plugins_button.bind(on_release=self.show_plugins_popup)
         button_layout.add_widget(plugins_button)
+
+        # Espaço flexível entre os botões
+        button_layout.add_widget(Widget(size_hint=(1, 1)))
 
         # Botão de atualização (à direita)
         self.update_button = MDRaisedButton(
             text="Atualizar",
             size_hint=(None, None),
-            size=(dp(150), dp(50)),
-            md_bg_color=(0, 0.5, 1, 1),
-            disabled=True,
-            on_release=self.on_update_button_press
+            size=(150, 50),
+            md_bg_color=(0, 0.8, 1, 1),
+            text_color=(1, 1, 1, 1),
+            radius=[30],
+            disabled=True
         )
+        self.update_button.bind(on_press=self.on_update_button_press)
         button_layout.add_widget(self.update_button)
 
         main_layout.add_widget(button_layout)
@@ -128,14 +156,15 @@ class UpdaterApp(MDApp):
         grid_layout.bind(minimum_height=grid_layout.setter('height'))
 
         for nome_plugin, funcao_plugin in self.plugins.items():
-            btn = MDRectangleFlatButton(
+            btn = MDRaisedButton(
                 text=nome_plugin,
                 size_hint=(None, None),
                 size=(150, 50),
                 md_bg_color=(0, 0.8, 1, 1),
                 text_color=(1, 1, 1, 1),
-                on_release=lambda btn: self.executar_plugin(btn.text)
+                radius=[30]
             )
+            btn.bind(on_release=lambda btn: self.executar_plugin(btn.text))
             grid_layout.add_widget(btn)
 
         self.dialog = MDDialog(
