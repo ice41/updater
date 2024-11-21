@@ -1,4 +1,4 @@
-# app.py v-3.4
+# app.py v-3.5
 
 import os
 import sys
@@ -9,9 +9,9 @@ from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Ellipse
+from kivy.uix.image import Image
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivy.config import Config
@@ -34,23 +34,27 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-class GlowingLogo(Widget):
+class GlowingLogo(AnchorLayout):
     """Widget para criar o efeito de brilho ao redor do logo."""
     def __init__(self, source, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(anchor_x='center', anchor_y='center', **kwargs)
         self.source = source
         with self.canvas.before:
             # Adiciona um brilho azul translúcido
             Color(0, 0.8, 1, 0.5)  # Azul claro translúcido
-            self.ellipse = Ellipse(size=(200, 200), pos=(self.center_x - 100, self.center_y - 100))
+            self.ellipse = Ellipse(size=(250, 250), pos=(0, 0))  # Brilho inicial
 
-        self.image = Image(source=self.source, size_hint=(None, None), size=(150, 150), pos_hint={"center_x": 0.5})
+        # Logo centralizado no brilho
+        self.image = Image(source=self.source, size_hint=(None, None), size=(150, 150))
         self.add_widget(self.image)
 
     def on_size(self, *args):
         """Atualiza a posição do brilho quando o widget for redimensionado."""
-        self.ellipse.size = (200, 200)
-        self.ellipse.pos = (self.center_x - 100, self.center_y - 100)
+        self.ellipse.size = (250, 250)
+        self.ellipse.pos = (
+            self.center_x - self.ellipse.size[0] / 2,
+            self.center_y - self.ellipse.size[1] / 2
+        )
 
 
 class UpdaterApp(MDApp):
@@ -65,10 +69,10 @@ class UpdaterApp(MDApp):
         # Layout principal
         main_layout = MDBoxLayout(orientation='vertical', padding=[20, 60, 20, 20], spacing=20)
 
-        # Logo no topo
+        # Logo no topo, centralizado
         logo_path = resource_path("nped.png")
         if os.path.exists(logo_path):
-            logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=250)
+            logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=300)
             logo = GlowingLogo(source=logo_path)
             logo_layout.add_widget(logo)
             main_layout.add_widget(logo_layout)
