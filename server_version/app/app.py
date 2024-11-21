@@ -11,6 +11,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivy.config import Config
 from kivy.uix.image import Image
+from kivy.metrics import dp
 
 from utils import (get_current_version, get_server_version, download_update,
                    extract_update, move_files, remove_updater_folder, update_current_version)
