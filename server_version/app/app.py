@@ -1,11 +1,11 @@
-#app.py v-3.3
+# app.py v-3.4
 
 import os
 import sys
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.button import MDFillRoundFlatButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
@@ -116,13 +116,12 @@ class UpdaterApp(MDApp):
         button_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=80, padding=[20, 0, 20, 0])
 
         # Botão de menu (à esquerda)
-        plugins_button = MDRaisedButton(
+        plugins_button = MDFillRoundFlatButton(
             text="Menu",
             size_hint=(None, None),
             size=(150, 50),
             md_bg_color=(0, 0.5, 1, 1),
-            text_color=(1, 1, 1, 1),
-            radius=[30]
+            text_color=(1, 1, 1, 1)
         )
         plugins_button.bind(on_release=self.show_plugins_popup)
         button_layout.add_widget(plugins_button)
@@ -131,13 +130,12 @@ class UpdaterApp(MDApp):
         button_layout.add_widget(Widget(size_hint=(1, 1)))
 
         # Botão de atualização (à direita)
-        self.update_button = MDRaisedButton(
+        self.update_button = MDFillRoundFlatButton(
             text="Atualizar",
             size_hint=(None, None),
             size=(150, 50),
             md_bg_color=(0, 0.8, 1, 1),
             text_color=(1, 1, 1, 1),
-            radius=[30],
             disabled=True
         )
         self.update_button.bind(on_press=self.on_update_button_press)
@@ -156,13 +154,12 @@ class UpdaterApp(MDApp):
         grid_layout.bind(minimum_height=grid_layout.setter('height'))
 
         for nome_plugin, funcao_plugin in self.plugins.items():
-            btn = MDRaisedButton(
+            btn = MDFillRoundFlatButton(
                 text=nome_plugin,
                 size_hint=(None, None),
                 size=(150, 50),
                 md_bg_color=(0, 0.8, 1, 1),
-                text_color=(1, 1, 1, 1),
-                radius=[30]
+                text_color=(1, 1, 1, 1)
             )
             btn.bind(on_release=lambda btn: self.executar_plugin(btn.text))
             grid_layout.add_widget(btn)
@@ -172,7 +169,7 @@ class UpdaterApp(MDApp):
             type="custom",
             content_cls=grid_layout,
             buttons=[
-                MDRaisedButton(
+                MDFillRoundFlatButton(
                     text="Fechar",
                     on_release=lambda _: self.dialog.dismiss()
                 )
@@ -210,7 +207,7 @@ class UpdaterApp(MDApp):
 
     def executar_plugin(self, nome_plugin):
         if nome_plugin in self.plugins:
-            self.plugins[nome_plugin]()
+            self.plugins[nome_plugin]() 
 
 
 if __name__ == '__main__':
