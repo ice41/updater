@@ -1,11 +1,11 @@
-#app.py 2.2
+#app.py 2.3
 
 import os
 import sys
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDRaisedButton, MDRectangleFlatButton
+from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
@@ -13,6 +13,8 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.card import MDCard
 from kivy.config import Config
+from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.button import MDFlatButton
 
 from utils import (get_current_version, get_server_version, download_update,
                    extract_update, move_files, remove_updater_folder, update_current_version)
