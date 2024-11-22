@@ -1,11 +1,10 @@
-#app.py 2.3
-
+# app.py versao 2.2
 import os
 import sys
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDTextButton
+from kivymd.uix.button import MDRaisedButton, MDRectangleFlatButton
 from kivymd.uix.progressbar import MDProgressBar
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
@@ -106,7 +105,7 @@ class UpdaterApp(MDApp):
         button_layout.add_widget(MDLabel(size_hint=(1, 1)))
 
         # Botão de atualização
-        self.update_button = MDTextButton(
+        self.update_button = MDRaisedButton(
             text="Atualizar",
             size_hint=(None, None),
             size=(120, 50),
@@ -138,7 +137,7 @@ class UpdaterApp(MDApp):
             type="custom",
             content_cls=grid_layout,
             buttons=[
-                MDTextButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())
+                MDRaisedButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())
             ]
         )
         self.dialog.open()
@@ -178,4 +177,3 @@ class UpdaterApp(MDApp):
 
 if __name__ == '__main__':
     UpdaterApp().run()
-
