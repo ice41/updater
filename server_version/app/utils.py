@@ -8,8 +8,8 @@ import time
 
 VERSION_FILE_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/versao.txt"
 UPDATE_URL = "https://github.com/ice41/updater/archive/refs/heads/main.zip"
-OLD_VERSION = "0.0.26"
-VERSAO_ATUAL = "0.0.27"
+OLD_VERSION = "0.0.27"
+VERSAO_ATUAL = "0.0.28"
 
 def get_current_version():
     version_file_path = 'versao.txt'
