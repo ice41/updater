@@ -82,7 +82,7 @@ class UpdaterApp(MDApp):
             logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=200)
            # logo_card = MDCard(size_hint=(None, None), size=(150, 200), elevation=8)
             logo_card.add_widget(KivyImage(source=logo_path))
-            logo_layout.add_widget(logo_card)
+            #logo_layout.add_widget(logo_card)
             main_layout.add_widget(logo_layout)
 
         # Versões
