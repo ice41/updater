@@ -1,11 +1,10 @@
-# app.py versão 2.4 (com design integrado)
+# app.py versão 2.5
+# app.py com novo design aplicado
 import os
 import sys
 import requests
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.config import Config
 
@@ -56,29 +55,29 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-# Design em formato KV (substituindo o layout principal)
+# Design em formato KV (com base na imagem fornecida)
 KV = '''
 BoxLayout:
     orientation: "vertical"
-    padding: 20
-    spacing: 10
+    padding: [20, 60, 20, 20]
+    spacing: 20
     canvas.before:
         Color:
-            rgba: 0.1, 0.1, 0.1, 1  # Cor de fundo (preto)
+            rgba: 0.1, 0.1, 0.1, 1  # Fundo preto
         Rectangle:
             pos: self.pos
             size: self.size
 
     # Imagem do topo
     Image:
-        source: "nped.png"  # Substitua pelo seu arquivo
+        source: "pharaoh_image.png"  # Substitua pela imagem do faraó
         size_hint: None, None
         size: 150, 150
         pos_hint: {"center_x": 0.5}
 
     # Texto de versão
     MDLabel:
-        text: "Versão do Launcher: 0.0.1 | Servidor: 0.0.1"
+        text: app.get_versions()
         halign: "center"
         theme_text_color: "Custom"
         text_color: 0.8, 0.8, 0.8, 1
@@ -88,10 +87,10 @@ BoxLayout:
     MDBoxLayout:
         orientation: "vertical"
         padding: 10
-        md_bg_color: 0, 0, 0.2, 1
+        md_bg_color: 0.1, 0.1, 0.3, 1
         radius: [20, 20, 20, 20]
         size_hint_y: None
-        height: 150
+        height: 200
         pos_hint: {"center_x": 0.5}
         spacing: 10
 
@@ -104,8 +103,8 @@ BoxLayout:
             font_size: "22sp"
 
         MDLabel:
-            text: "Manutenção agendada para 20/11/2024.\\nNova atualização disponível com correções de bugs!\\nEvento especial no fim de semana."
-            halign: "center"
+            text: app.get_news()
+            halign: "left"
             theme_text_color: "Custom"
             text_color: 1, 1, 1, 1
             font_size: "16sp"
@@ -116,24 +115,21 @@ BoxLayout:
         spacing: 10
         size_hint_y: None
         height: 50
-        padding: [10, 0, 10, 0]
 
         MDRaisedButton:
-            text: "MENU"
+            text: "Menu"
             md_bg_color: 0, 0.4, 1, 1
-            size_hint_x: 0.5
-            pos_hint: {"center_x": 0.5}
+            on_release: app.show_plugins_popup()
 
         MDRaisedButton:
-            text: "ATUALIZAR"
-            md_bg_color: 0.5, 0.5, 0.5, 1
-            size_hint_x: 0.5
-            pos_hint: {"center_x": 0.5}"
+            text: "Atualizar"
+            md_bg_color: 0.2, 0.8, 0.2, 1
+            on_press: app.on_update_button_press()
 '''
 
 class UpdaterApp(MDApp):
     def build(self):
-        # Configurar tema escuro
+        # Configuração inicial
         self.title = "Launcher NPED"
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
@@ -141,6 +137,28 @@ class UpdaterApp(MDApp):
 
         # Renderizar o layout do KV
         return Builder.load_string(KV)
+
+    def get_versions(self):
+        """Obtém as versões do launcher e servidor."""
+        current_version = get_current_version() if get_current_version else "N/A"
+        server_version = get_server_version() if get_server_version else "N/A"
+        return f"Versão atual: {current_version} | Servidor: {server_version}"
+
+    def get_news(self):
+        """Obtém notícias do módulo carregado dinamicamente."""
+        if news and "get_news" in news:
+            return news["get_news"]()  # Exemplo de método para obter notícias
+        return "Sem notícias disponíveis."
+
+    def on_update_button_press(self):
+        """Lógica para o botão de atualização."""
+        print("Iniciando atualização...")
+        # Adicione aqui a lógica de atualização (baixa, extrai e aplica arquivos)
+
+    def show_plugins_popup(self):
+        """Exibe o menu de plugins."""
+        print("Abrindo menu de plugins...")
+        # Aqui você pode implementar um diálogo ou menu com os plugins disponíveis
 
 if __name__ == '__main__':
     UpdaterApp().run()
