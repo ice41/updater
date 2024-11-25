@@ -104,10 +104,10 @@ BoxLayout:
 
         MDLabel:
             text: app.get_news()
+            markup: True  # Ativa o suporte a BBCode para o texto
             halign: "left"
             theme_text_color: "Custom"
             text_color: 1, 1, 1, 1
-            font_size: "16sp"
 
     # Botões
     MDBoxLayout:
@@ -145,10 +145,26 @@ class UpdaterApp(MDApp):
         return f"Versão atual: {current_version} | Servidor: {server_version}"
 
     def get_news(self):
-        """Obtém notícias do módulo carregado dinamicamente."""
-        if news and "get_news" in news:
-            return news["get_news"]()  # Exemplo de método para obter notícias
-        return "Sem notícias disponíveis."
+    """Obtém notícias do arquivo JSON hospedado no GitHub e retorna como string."""
+    url = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
+
+    try:
+        # Faz o download do JSON
+        response = requests.get(url)
+        response.raise_for_status()  # Verifica se a requisição foi bem-sucedida
+        news_data = response.json()  # Converte para um objeto Python (lista de dicionários)
+
+        # Constrói uma string para exibir no label
+        news_text = ""
+        for item in news_data:
+            title = item.get("title", "Sem título")
+            description = item.get("description", "Sem descrição")
+            news_text += f"[b]{title}[/b]\n{description}\n\n"  # Exemplo de formatação usando BBCode
+
+        return news_text.strip()  # Remove espaços ou quebras extras no final
+    except Exception as e:
+        print("Erro ao obter notícias:", e)
+        return "Erro ao carregar notícias."
 
     def on_update_button_press(self):
         """Lógica para o botão de atualização."""
