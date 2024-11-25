@@ -71,7 +71,7 @@ BoxLayout:
 
     # Imagem do topo
     Image:
-        source: "pharaoh_image.png"  # Substitua pelo seu arquivo
+        source: "nped.png"  # Substitua pelo seu arquivo
         size_hint: None, None
         size: 150, 150
         pos_hint: {"center_x": 0.5}
