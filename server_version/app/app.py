@@ -1,5 +1,5 @@
-# app.py versão 2.5
-# app.py com novo design aplicado
+# app.py versão 2.5 com novo design aplicado
+
 import os
 import sys
 import requests
