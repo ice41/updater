@@ -144,9 +144,9 @@ class UpdaterApp(MDApp):
         server_version = get_server_version() if get_server_version else "N/A"
         return f"Versão atual: {current_version} | Servidor: {server_version}"
 
-    def get_news():
-    """Obtém notícias do arquivo JSON hospedado no GitHub e retorna como string."""
-    url = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
+    def get_news(self):
+        """Obtém notícias do arquivo JSON hospedado no GitHub e retorna como string."""
+        url = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
 
     try:
         # Faz o download do JSON
@@ -159,9 +159,9 @@ class UpdaterApp(MDApp):
         for item in news_data:
             title = item.get("title", "Sem título")
             description = item.get("description", "Sem descrição")
-            news_text += f"[b]{title}[/b]\n{description}\n\n"
+            news_text += f"[b]{title}[/b]\n{description}\n\n"  # Exemplo de formatação usando BBCode
 
-        return news_text.strip()
+        return news_text.strip()  # Remove espaços ou quebras extras no final
     except Exception as e:
         print("Erro ao obter notícias:", e)
         return "Erro ao carregar notícias."
