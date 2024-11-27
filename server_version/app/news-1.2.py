@@ -1,4 +1,4 @@
-#news.py 1.2.1
+#news.py 1.2.2
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
