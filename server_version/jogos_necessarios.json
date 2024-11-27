@@ -60,7 +60,7 @@
         "FirstDwarf/Plugins/XeSS/Binaries/ThirdParty/Win64/libxess.dll"
 ],
   "soulmask": [
-        "launch_data.of",
+       "launch_data.of",
         "LICENSE_ThirdParty.txt",
         "Manifest_DebugFiles_Win64.txt",
         "Manifest_NonUFSFiles_Win64.txt",
@@ -94,6 +94,7 @@
         "Engine/Plugins/Runtime/Nvidia/DLSS/Binaries/ThirdParty/Win64/nvngx_dlss.dll",
         "Engine/Programs/CrashReportClient/Content/Paks/CrashReportClient.pak",
         "WS/Binaries/Win64/dlllist.txt",
+        "WS/Binaries/Win64/EOSSDK-Win64-Shipping.dll",
         "WS/Binaries/Win64/Launch game with DirectX 11 Version.bat",
         "WS/Binaries/Win64/Launch game with DirectX 12 Version.bat",
         "WS/Binaries/Win64/OnlineFix.ini",
@@ -259,6 +260,7 @@
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/iZotope.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/MasteringSuite.dll",
         "WS/Plugins/Wwise/ThirdParty/x64_vc170/Release/bin/McDSP.dll"
+
  ],
    "indisponível": [
      "config.exe",
