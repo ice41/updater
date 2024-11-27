@@ -1,4 +1,4 @@
-#news.py 1.2.4
+#news.py 1.2.5
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -113,7 +113,7 @@ class NewsWidget(BoxLayout):
                     FitImage(
                         source=local_image_path,
                         size_hint_y=None,
-                        height=80,
+                        height=200,
                         radius=[15, 15, 0, 0],
                     )
                 )
