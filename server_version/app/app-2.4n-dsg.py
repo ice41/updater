@@ -13,6 +13,8 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.card import MDCard
 from kivy.config import Config
+from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.button import MDRaisedButton
 
 # URLs para os arquivos remotos
 NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/news.py"
