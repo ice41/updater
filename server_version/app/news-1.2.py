@@ -1,4 +1,4 @@
-#news.py 1.2.2
+#news.py 1.2.3
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -64,7 +64,7 @@ class NewsWidget(BoxLayout):
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=10, spacing=10)
+        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=20, spacing=10)
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
@@ -86,7 +86,7 @@ class NewsWidget(BoxLayout):
         # Card para encapsular a notícia
         news_card = MDCard(
             orientation="vertical",
-            padding=15,
+            padding=25,
             size_hint=(1, None),
             height=200,
             radius=[15, 15, 15, 15],
