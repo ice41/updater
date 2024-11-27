@@ -1,4 +1,4 @@
-#news.py 1.2.3
+#news.py 1.2.4
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -101,7 +101,7 @@ class NewsWidget(BoxLayout):
                 font_style="H6",
                 halign="center",
                 size_hint_y=None,
-                height=50,
+                height=25,
             )
         )
 
@@ -119,7 +119,7 @@ class NewsWidget(BoxLayout):
                 )
             else:
                 news_card.add_widget(
-                    MDLabel(text="Imagem indisponível", halign="center", size_hint_y=None, height=50)
+                    MDLabel(text="Imagem indisponível", halign="center", size_hint_y=None, height=25)
                 )
 
         # Descrição
@@ -135,12 +135,13 @@ class NewsWidget(BoxLayout):
         )
 
         # Botão para mais informações
-        more_info_button = MDIconButton(
-            icon="chevron-right",
-            pos_hint={"center_x": 0.5},
-            on_release=lambda x: Logger.info(f"NewsWidget: Exibindo mais informações sobre {title}"),
-        )
-        news_card.add_widget(more_info_button)
+        # Botão para mais informações
+        # more_info_button = MDIconButton(
+        #     icon="chevron-right",
+        #     pos_hint={"center_x": 0.5},
+        #     on_release=lambda x: Logger.info(f"NewsWidget: Exibindo mais informações sobre {title}"),
+        # )
+        # news_card.add_widget(more_info_button)
 
         self.news_layout.add_widget(news_card)
 
