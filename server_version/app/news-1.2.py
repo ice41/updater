@@ -3,7 +3,7 @@ from kivy.clock import Clock
 from kivy.logger import Logger
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from kivymd.uix.image import FitImage
+from kivymd.uix.fitimage import FitImage
 from kivymd.uix.button import MDIconButton
 from kivymd.app import MDApp
 import requests
