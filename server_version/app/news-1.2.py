@@ -1,9 +1,11 @@
+#news.py 1.2
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.logger import Logger
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from kivymd.uix.fitimage import FitImage
+from kivymd.uix.image import FitImage
 from kivymd.uix.button import MDIconButton
 from kivymd.app import MDApp
 import requests
@@ -62,7 +64,7 @@ class NewsWidget(BoxLayout):
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=10, spacing=10)
+        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=400, padding=10, spacing=10)
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
@@ -86,7 +88,7 @@ class NewsWidget(BoxLayout):
             orientation="vertical",
             padding=15,
             size_hint=(1, None),
-            height=300,
+            height=400,
             radius=[15, 15, 15, 15],
             elevation=8,
         )
@@ -128,7 +130,7 @@ class NewsWidget(BoxLayout):
                 font_style="Body1",
                 halign="center",
                 size_hint_y=None,
-                height=200,
+                height=100,
             )
         )
 
