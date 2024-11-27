@@ -64,7 +64,7 @@ class NewsWidget(BoxLayout):
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=400, padding=10, spacing=10)
+        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=10, spacing=10)
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
@@ -88,7 +88,7 @@ class NewsWidget(BoxLayout):
             orientation="vertical",
             padding=15,
             size_hint=(1, None),
-            height=400,
+            height=200,
             radius=[15, 15, 15, 15],
             elevation=8,
         )
@@ -113,7 +113,7 @@ class NewsWidget(BoxLayout):
                     FitImage(
                         source=local_image_path,
                         size_hint_y=None,
-                        height=200,
+                        height=80,
                         radius=[15, 15, 0, 0],
                     )
                 )
