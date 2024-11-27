@@ -86,7 +86,7 @@ class NewsWidget(BoxLayout):
             orientation="vertical",
             padding=15,
             size_hint=(1, None),
-            height=200,
+            height=300,
             radius=[15, 15, 15, 15],
             elevation=8,
         )
@@ -111,7 +111,7 @@ class NewsWidget(BoxLayout):
                     FitImage(
                         source=local_image_path,
                         size_hint_y=None,
-                        height=100,
+                        height=200,
                         radius=[15, 15, 0, 0],
                     )
                 )
@@ -128,7 +128,7 @@ class NewsWidget(BoxLayout):
                 font_style="Body1",
                 halign="center",
                 size_hint_y=None,
-                height=100,
+                height=200,
             )
         )
 
