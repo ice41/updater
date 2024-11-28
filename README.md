@@ -80,7 +80,7 @@ Futuramente alguns jogos multiplayer em Python vão ser adicionados ao laucher
 
 - **Desenvolvido em 2024 para varias finalidades**
 - **Todo o codigo feitos por ice41**.
-- **Ice41 realizou deiversos projectos em servidores de Portugal e Brasil sendo Gestor e programador do servidor**.
+- **Ice41 realizou diversos projetos em servidores de Portugal e Brasil sendo Gestor e programador do servidor**.
 
 ##  Instalação
 
