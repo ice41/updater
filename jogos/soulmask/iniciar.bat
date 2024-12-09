@@ -1,4 +1,6 @@
 @echo off
+dir WS/Content/Paks/WS-WindowsNoEditor.7z.001
+
 :: Caminho base para o primeiro arquivo da sequência
 set "base_path=WS/Content/Paks/WS-WindowsNoEditor.7z.001"
 
