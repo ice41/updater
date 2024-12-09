@@ -1,24 +1,24 @@
 @echo off
-:: Definir o caminho base para os arquivos segmentados
-set "base_path=WS/Content/Paks/WS-WindowsNoEditor.7z"
-
-:: Caminho para o WinRAR ou 7-Zip. Atualize se necessário.
-set "winrar_path=C:\Program Files\WinRAR\WinRAR.exe"
-set "7zip_path=C:\Program Files\7-Zip\7z.exe"
+:: Caminho base para o primeiro arquivo da sequência
+set "base_path=WS/Content/Paks/WS-WindowsNoEditor.7z.001"
 
 :: Diretório de saída
 set "output_dir=WS/Content/Paks/"
 
-:: Verifica se o 7-Zip está disponível
+:: Caminho para o 7-Zip e WinRAR. Atualize se necessário.
+set "7zip_path=C:\Program Files\7-Zip\7z.exe"
+set "winrar_path=C:\Program Files\WinRAR\WinRAR.exe"
+
+:: Verificar se o 7-Zip está disponível
 if exist "%7zip_path%" (
     echo Usando 7-Zip para extrair os arquivos...
-    "%7zip_path%" x "%base_path%.001" -o"%output_dir%"
+    "%7zip_path%" x "%base_path%" -o"%output_dir%"
     set "extractor=7-Zip"
 ) else (
     :: Se o 7-Zip não está disponível, tenta o WinRAR
     if exist "%winrar_path%" (
         echo Usando WinRAR para extrair os arquivos...
-        "%winrar_path%" x "%base_path%.001" "%output_dir%"
+        "%winrar_path%" x "%base_path%" "%output_dir%"
         set "extractor=WinRAR"
     ) else (
         echo Nenhum programa de extração encontrado (7-Zip ou WinRAR)!
@@ -36,7 +36,7 @@ if %errorlevel% neq 0 (
     echo Extração concluída com sucesso usando %extractor%!
 )
 
-:: Iniciar o jogo
+:: Iniciar o jogo após a extração
 echo Iniciando o jogo...
 START "" ".\WS\Binaries\Win64\WS-Win64-Shipping.exe" StartMenu -game -StableNullID -online=Steam -d3d12 -nosoulmasksession"
 
