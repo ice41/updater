@@ -1,19 +1,17 @@
 @echo off
-dir WS/Content/Paks/WS-WindowsNoEditor.7z.001
-
-:: Caminho base para o primeiro arquivo da sequência
-set "base_path=WS/Content/Paks/WS-WindowsNoEditor.7z.001"
+:: Caminho base relativo ao local do script .bat
+set "base_path=WS\Content\Paks\WS-WindowsNoEditor.7z.001"
 
 :: Diretório de saída
-set "output_dir=WS/Content/Paks/"
+set "output_dir=WS\Content\Paks\"
 
-:: Caminho para o 7-Zip e WinRAR (alterar se necessário)
+:: Caminho para o 7-Zip e WinRAR (ajustar se necessário)
 set "7zip_path=C:\Program Files\7-Zip\7z.exe"
 set "winrar_path=C:\Program Files\WinRAR\WinRAR.exe"
 
-:: Verificar se o arquivo base existe
+:: Verificar se o arquivo base existe (com aspas no caminho para evitar problemas)
 if not exist "%base_path%" (
-    echo Arquivo base %base_path% não encontrado! Verifique o caminho e tente novamente.
+    echo Arquivo base "%base_path%" não encontrado! Verifique o caminho e tente novamente.
     pause
     exit /b
 )
