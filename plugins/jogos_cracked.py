@@ -7,6 +7,7 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
+import subprocess
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
@@ -151,13 +152,18 @@ class JogoWidget(BoxLayout):
 
             if os.path.exists(primeiro_arquivo):
                 self.status_label.text = "Extraindo arquivos..."
-                comando = f"7z x \"{primeiro_arquivo}\" -o\"{caminho_jogo}\""
-                import subprocess
-                resultado = subprocess.run(comando, shell=True)
-                if resultado.returncode == 0:
-                    self.status_label.text = "Arquivos extraídos com sucesso!"
-                else:
-                    self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
+                comando = ["7z", "x", primeiro_arquivo, f"-o{caminho_jogo}"]
+
+                try:
+                    resultado = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+                    if resultado.returncode == 0:
+                        self.status_label.text = "Arquivos extraídos com sucesso!"
+                    else:
+                        self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
+                        print("Erro:", resultado.stderr)
+                except FileNotFoundError:
+                    self.show_popup("Erro", "O programa 7z não foi encontrado. Certifique-se de que está instalado e acessível.")
             else:
                 self.show_popup("Erro", "Arquivo base para extração não encontrado.")
 
