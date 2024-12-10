@@ -13,8 +13,8 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 
 # Mapeamento de nomes de arquivos iniciais para cada jogo
 ARQUIVOS_INICIAIS = {
-    "SoulMask": "WS/Content/Paks/WS-WindowsNoEditor.7z.001",
-    "FirstDward": "FirstDwarf/Content/Paks/FirstDwarf-Windows.7z.001"
+    "SoulMask": "jogos/soulmask/WS/Content/Paks/WS-WindowsNoEditor.7z.001",
+    "FirstDward": "jogos/firstdwarf/Content/Paks/FirstDwarf-Windows.7z.001"
 }
 
 def carregar_jogos_necessarios():
