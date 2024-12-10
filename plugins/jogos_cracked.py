@@ -152,12 +152,12 @@ class JogoWidget(BoxLayout):
             if os.path.exists(primeiro_arquivo):
                 self.status_label.text = "Extraindo arquivos..."
                 comando = f"7z x \"{primeiro_arquivo}\" -o\"{caminho_jogo}\""
-                resultado = os.system(comando)
-
-                if resultado == 0:
+                import subprocess
+                resultado = subprocess.run(comando, shell=True)
+                if resultado.returncode == 0:
                     self.status_label.text = "Arquivos extraídos com sucesso!"
                 else:
-                    self.status_label.text = "Falha na extração dos arquivos."
+                    self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
             else:
                 self.show_popup("Erro", "Arquivo base para extração não encontrado.")
 
