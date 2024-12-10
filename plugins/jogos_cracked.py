@@ -224,3 +224,38 @@ def executar():
     jogo_widget = JogoWidget()
     popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
+
+def encontrar_7z():
+    """Tenta localizar o executável do 7-Zip no sistema."""
+    caminhos_possiveis = [
+        r"C:\Program Files\7-Zip\7z.exe",
+        r"C:\Program Files (x86)\7-Zip\7z.exe"
+    ]
+    for caminho in caminhos_possiveis:
+        if os.path.exists(caminho):
+            return caminho
+    return "7z"  # Retorna o comando genérico, se não encontrar nos caminhos padrão.
+
+def extrair_arquivos(self, instance):
+    """Extrai os arquivos segmentados (.7z.001) se existirem."""
+    if self.selected_game:
+        caminho_jogo = os.path.join("jogos", self.selected_game)
+        primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
+
+        if os.path.exists(primeiro_arquivo):
+            self.status_label.text = "Extraindo arquivos..."
+            caminho_7z = encontrar_7z()
+            comando = [caminho_7z, "x", primeiro_arquivo, f"-o{caminho_jogo}"]
+
+            try:
+                resultado = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+                if resultado.returncode == 0:
+                    self.status_label.text = "Arquivos extraídos com sucesso!"
+                else:
+                    self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
+                    print("Erro:", resultado.stderr)
+            except FileNotFoundError:
+                self.show_popup("Erro", "O programa 7z não foi encontrado. Certifique-se de que está instalado e acessível.")
+        else:
+            self.show_popup("Erro", "Arquivo base para extração não encontrado.")
