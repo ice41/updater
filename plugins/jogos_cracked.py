@@ -1,5 +1,3 @@
-# jogos_cracked.py
-
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
@@ -13,6 +11,11 @@ from kivy.clock import Clock
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
 
+# Mapeamento de nomes de arquivos iniciais para cada jogo
+ARQUIVOS_INICIAIS = {
+    "SoulMask": "WS/Content/Paks/WS-WindowsNoEditor.7z.001",
+    "FirstDward": "FirstDwarf/Content/Paks/FirstDwarf-Windows.7z.001"
+}
 
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
@@ -23,7 +26,6 @@ def carregar_jogos_necessarios():
     except requests.RequestException as e:
         print(f"Erro ao carregar jogos necessários: {e}")
         return {}
-
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -52,7 +54,11 @@ class JogoWidget(BoxLayout):
         self.add_widget(self.jogos_layout)
 
         # Botões para ações
-        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50)
+        self.extract_button = Button(text='Extrair Arquivos', size_hint_y=None, height=50, disabled=True)
+        self.extract_button.bind(on_press=self.extrair_arquivos)
+        self.add_widget(self.extract_button)
+
+        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50, disabled=True)
         self.start_button.bind(on_press=self.iniciar_jogo)
         self.add_widget(self.start_button)
 
@@ -90,14 +96,20 @@ class JogoWidget(BoxLayout):
                     self.start_button.text = "Instalar Jogo"
                     self.start_button.disabled = False
                     self.uninstall_button.disabled = True
+
+                # Habilita o botão de extração se arquivos .7z.001 forem encontrados
+                primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
+                self.extract_button.disabled = not os.path.exists(primeiro_arquivo)
             else:
                 self.start_button.text = "Instalar Jogo"
                 self.start_button.disabled = False
                 self.uninstall_button.disabled = True
+                self.extract_button.disabled = True
         else:
             self.start_button.text = "Iniciar Jogo"
             self.start_button.disabled = True
             self.uninstall_button.disabled = True
+            self.extract_button.disabled = True
 
     def iniciar_jogo(self, instance):
         """Inicia ou instala o jogo selecionado, dependendo do estado."""
@@ -127,11 +139,27 @@ class JogoWidget(BoxLayout):
         """Verifica se todos os arquivos necessários estão presentes."""
         faltando = []
         for arquivo in arquivos_necessarios:
-            # self.status_label.text = f"Verificando: {arquivo}"
-            # self.download_label.text = f"Verificando: {arquivo}"
             if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
                 faltando.append(arquivo)
         return faltando
+
+    def extrair_arquivos(self, instance):
+        """Extrai os arquivos segmentados (.7z.001) se existirem."""
+        if self.selected_game:
+            caminho_jogo = os.path.join("jogos", self.selected_game)
+            primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
+
+            if os.path.exists(primeiro_arquivo):
+                self.status_label.text = "Extraindo arquivos..."
+                comando = f"7z x \"{primeiro_arquivo}\" -o\"{caminho_jogo}\""
+                resultado = os.system(comando)
+
+                if resultado == 0:
+                    self.status_label.text = "Arquivos extraídos com sucesso!"
+                else:
+                    self.status_label.text = "Falha na extração dos arquivos."
+            else:
+                self.show_popup("Erro", "Arquivo base para extração não encontrado.")
 
     def baixar_arquivos(self, jogo, arquivos_faltando):
         """Inicia o processo de download dos arquivos faltando."""
@@ -185,10 +213,8 @@ class JogoWidget(BoxLayout):
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
         popup.open()
 
-
 def executar():
     """Função principal do plugin que será chamada pelo sistema de ."""
     jogo_widget = JogoWidget()
     popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
-
