@@ -1,5 +1,7 @@
 import os
+import zipfile
 import requests
+import shutil
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -7,16 +9,9 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
-import subprocess
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
-
-# Mapeamento de nomes de arquivos iniciais para cada jogo
-ARQUIVOS_INICIAIS = {
-    "SoulMask": "jogos/soulmask/WS/Content/Paks/WS-WindowsNoEditor.7z.001",
-    "FirstDward": "jogos/firstdwarf/Content/Paks/FirstDwarf-Windows.7z.001"
-}
 
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
@@ -55,11 +50,7 @@ class JogoWidget(BoxLayout):
         self.add_widget(self.jogos_layout)
 
         # Botões para ações
-        self.extract_button = Button(text='Extrair Arquivos', size_hint_y=None, height=50, disabled=True)
-        self.extract_button.bind(on_press=self.extrair_arquivos)
-        self.add_widget(self.extract_button)
-
-        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50, disabled=True)
+        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50)
         self.start_button.bind(on_press=self.iniciar_jogo)
         self.add_widget(self.start_button)
 
@@ -89,39 +80,77 @@ class JogoWidget(BoxLayout):
             caminho_jogo = os.path.join("jogos", self.selected_game)
             if os.path.exists(caminho_jogo):
                 arquivos_faltando = self.verificar_arquivos(caminho_jogo, self.jogos_necessarios.get(self.selected_game, []))
-                if not arquivos_faltando:
+                if not arquivos_faltando and not self.verificar_arquivos_zip(caminho_jogo):
                     self.start_button.text = "Iniciar Jogo"
                     self.start_button.disabled = False
                     self.uninstall_button.disabled = False
                 else:
-                    self.start_button.text = "Instalar Jogo"
+                    self.start_button.text = "Preparar Jogo"
                     self.start_button.disabled = False
                     self.uninstall_button.disabled = True
-
-                # Habilita o botão de extração se arquivos .7z.001 forem encontrados
-                primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
-                self.extract_button.disabled = not os.path.exists(primeiro_arquivo)
             else:
                 self.start_button.text = "Instalar Jogo"
                 self.start_button.disabled = False
                 self.uninstall_button.disabled = True
-                self.extract_button.disabled = True
         else:
             self.start_button.text = "Iniciar Jogo"
             self.start_button.disabled = True
             self.uninstall_button.disabled = True
-            self.extract_button.disabled = True
+
+    def verificar_arquivos_zip(self, caminho_jogo):
+        """Verifica e extrai arquivos .zip fragmentados no diretório do jogo."""
+        fragmentados = []
+        for root, _, files in os.walk(caminho_jogo):
+            for file in files:
+                if file.endswith(".zip.001"):
+                    fragmentados.append(os.path.join(root, file))
+
+        for arquivo in fragmentados:
+            if not self.extrair_zip_fragmentado(arquivo):
+                return True  # Retorna True se falhar em extrair algum arquivo
+
+        return False  # Todos os arquivos foram extraídos com sucesso
+
+    def extrair_zip_fragmentado(self, primeiro_arquivo):
+        """Extrai arquivos .zip fragmentados começando pelo arquivo dado."""
+        diretorio = os.path.dirname(primeiro_arquivo)
+        zip_final = primeiro_arquivo.replace(".001", "")
+
+        if os.path.exists(zip_final.replace(".zip", "")):
+            return True  # Já extraído
+
+        arquivos = sorted([
+            os.path.join(diretorio, f) for f in os.listdir(diretorio)
+            if f.startswith(os.path.basename(primeiro_arquivo).split(".zip")[0])
+        ])
+
+        try:
+            with open(zip_final, "wb") as output:
+                for arquivo in arquivos:
+                    with open(arquivo, "rb") as part:
+                        shutil.copyfileobj(part, output)
+
+            with zipfile.ZipFile(zip_final, "r") as zip_ref:
+                zip_ref.extractall(diretorio)
+
+            os.remove(zip_final)
+            for arquivo in arquivos:
+                os.remove(arquivo)
+
+            return True
+        except Exception as e:
+            self.show_popup("Erro", f"Falha ao extrair {primeiro_arquivo}: {e}")
+            return False
 
     def iniciar_jogo(self, instance):
-        """Inicia ou instala o jogo selecionado, dependendo do estado."""
+        """Inicia ou prepara o jogo selecionado, dependendo do estado."""
         if self.selected_game:
             jogo_selecionado = self.selected_game
             caminho_jogos = os.path.join("jogos", jogo_selecionado)
 
             if os.path.exists(caminho_jogos):
                 arquivos_faltando = self.verificar_arquivos(caminho_jogos, self.jogos_necessarios.get(jogo_selecionado, []))
-
-                if not arquivos_faltando:
+                if not arquivos_faltando and not self.verificar_arquivos_zip(caminho_jogos):
                     executavel = os.path.join(caminho_jogos, "iniciar.bat")
                     if os.path.exists(executavel):
                         self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
@@ -129,8 +158,8 @@ class JogoWidget(BoxLayout):
                     else:
                         self.show_popup("Erro", f"Executável não encontrado em {caminho_jogos}.")
                 else:
-                    self.status_label.text = "Arquivos faltando, iniciando download..."
-                    self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
+                    self.status_label.text = "Preparando os arquivos do jogo..."
+                    self.atualizar_botoes()
             else:
                 self.baixar_arquivos(jogo_selecionado, self.jogos_necessarios.get(jogo_selecionado, []))
         else:
@@ -143,29 +172,6 @@ class JogoWidget(BoxLayout):
             if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
                 faltando.append(arquivo)
         return faltando
-
-    def extrair_arquivos(self, instance):
-        """Extrai os arquivos segmentados (.7z.001) se existirem."""
-        if self.selected_game:
-            caminho_jogo = os.path.join("jogos", self.selected_game)
-            primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
-
-            if os.path.exists(primeiro_arquivo):
-                self.status_label.text = "Extraindo arquivos..."
-                comando = ["7z", "x", primeiro_arquivo, f"-o{caminho_jogo}"]
-
-                try:
-                    resultado = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-                    if resultado.returncode == 0:
-                        self.status_label.text = "Arquivos extraídos com sucesso!"
-                    else:
-                        self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
-                        print("Erro:", resultado.stderr)
-                except FileNotFoundError:
-                    self.show_popup("Erro", "O programa 7z não foi encontrado. Certifique-se de que está instalado e acessível.")
-            else:
-                self.show_popup("Erro", "Arquivo base para extração não encontrado.")
 
     def baixar_arquivos(self, jogo, arquivos_faltando):
         """Inicia o processo de download dos arquivos faltando."""
@@ -224,38 +230,3 @@ def executar():
     jogo_widget = JogoWidget()
     popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
-
-def encontrar_7z():
-    """Tenta localizar o executável do 7-Zip no sistema."""
-    caminhos_possiveis = [
-        r"C:\Program Files\7-Zip\7z.exe",
-        r"C:\Program Files (x86)\7-Zip\7z.exe"
-    ]
-    for caminho in caminhos_possiveis:
-        if os.path.exists(caminho):
-            return caminho
-    return "7z"  # Retorna o comando genérico, se não encontrar nos caminhos padrão.
-
-def extrair_arquivos(self, instance):
-    """Extrai os arquivos segmentados (.7z.001) se existirem."""
-    if self.selected_game:
-        caminho_jogo = os.path.join("jogos", self.selected_game)
-        primeiro_arquivo = os.path.join(caminho_jogo, ARQUIVOS_INICIAIS.get(self.selected_game, ""))
-
-        if os.path.exists(primeiro_arquivo):
-            self.status_label.text = "Extraindo arquivos..."
-            caminho_7z = encontrar_7z()
-            comando = [caminho_7z, "x", primeiro_arquivo, f"-o{caminho_jogo}"]
-
-            try:
-                resultado = subprocess.run(comando, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
-                if resultado.returncode == 0:
-                    self.status_label.text = "Arquivos extraídos com sucesso!"
-                else:
-                    self.status_label.text = f"Falha na extração dos arquivos. Código de erro: {resultado.returncode}"
-                    print("Erro:", resultado.stderr)
-            except FileNotFoundError:
-                self.show_popup("Erro", "O programa 7z não foi encontrado. Certifique-se de que está instalado e acessível.")
-        else:
-            self.show_popup("Erro", "Arquivo base para extração não encontrado.")
