@@ -144,10 +144,10 @@ class JogoWidget(BoxLayout):
             with zipfile.ZipFile(zip_final, "r") as zip_ref:
                 zip_ref.extractall(diretorio)
 
-            print(f"Removendo arquivos temporários: {arquivos + [zip_final]}")
-            os.remove(zip_final)
-            for arquivo in arquivos:
-                os.remove(arquivo)
+           # print(f"Removendo arquivos temporários: {arquivos + [zip_final]}")
+           # os.remove(zip_final)
+           # for arquivo in arquivos:
+           #    os.remove(arquivo)
 
             return True
         except Exception as e:
