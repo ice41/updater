@@ -81,9 +81,15 @@ class JogoWidget(BoxLayout):
             if os.path.exists(caminho_jogo):
                 arquivos_faltando = self.verificar_arquivos(caminho_jogo, self.jogos_necessarios.get(self.selected_game, []))
                 if not arquivos_faltando and not self.verificar_arquivos_zip(caminho_jogo):
-                    self.start_button.text = "Iniciar Jogo"
-                    self.start_button.disabled = False
-                    self.uninstall_button.disabled = False
+                    executavel = os.path.join(caminho_jogo, "iniciar.bat")
+                    if os.path.exists(executavel):
+                        self.start_button.text = "Iniciar Jogo"
+                        self.start_button.disabled = False
+                        self.uninstall_button.disabled = False
+                    else:
+                        self.start_button.text = "Preparar Jogo"
+                        self.start_button.disabled = False
+                        self.uninstall_button.disabled = True
                 else:
                     self.start_button.text = "Preparar Jogo"
                     self.start_button.disabled = False
@@ -144,10 +150,10 @@ class JogoWidget(BoxLayout):
             with zipfile.ZipFile(zip_final, "r") as zip_ref:
                 zip_ref.extractall(diretorio)
 
-           # print(f"Removendo arquivos temporários: {arquivos + [zip_final]}")
-           # os.remove(zip_final)
-           # for arquivo in arquivos:
-           #    os.remove(arquivo)
+            print(f"Removendo arquivos temporários: {arquivos + [zip_final]}")
+            os.remove(zip_final)
+            for arquivo in arquivos:
+                os.remove(arquivo)
 
             return True
         except Exception as e:
@@ -169,6 +175,7 @@ class JogoWidget(BoxLayout):
                         self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
                         os.startfile(executavel)
                     else:
+                        self.status_label.text = "Preparando os arquivos do jogo..."
                         self.show_popup("Erro", f"Executável não encontrado em {caminho_jogos}.")
                 else:
                     self.status_label.text = "Preparando os arquivos do jogo..."
@@ -242,7 +249,7 @@ class JogoWidget(BoxLayout):
         popup.open()
 
 def executar():
-    """Função principal do plugin que será chamada pelo sistema de ."""
+    """Função principal do plugin que será chamada pelo sistema."""
     jogo_widget = JogoWidget()
     popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
