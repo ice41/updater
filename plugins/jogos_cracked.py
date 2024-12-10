@@ -105,10 +105,17 @@ class JogoWidget(BoxLayout):
                 if file.endswith(".zip.001"):
                     fragmentados.append(os.path.join(root, file))
 
+        if not fragmentados:
+            print("Nenhum arquivo fragmentado encontrado.")
+            return False  # Nenhum arquivo para extrair
+
         for arquivo in fragmentados:
+            print(f"Tentando extrair: {arquivo}")
             if not self.extrair_zip_fragmentado(arquivo):
+                print(f"Falha ao extrair: {arquivo}")
                 return True  # Retorna True se falhar em extrair algum arquivo
 
+        print("Todos os arquivos fragmentados foram extraídos com sucesso.")
         return False  # Todos os arquivos foram extraídos com sucesso
 
     def extrair_zip_fragmentado(self, primeiro_arquivo):
@@ -117,6 +124,7 @@ class JogoWidget(BoxLayout):
         zip_final = primeiro_arquivo.replace(".001", "")
 
         if os.path.exists(zip_final.replace(".zip", "")):
+            print(f"Arquivo já extraído: {zip_final.replace('.zip', '')}")
             return True  # Já extraído
 
         arquivos = sorted([
@@ -124,21 +132,26 @@ class JogoWidget(BoxLayout):
             if f.startswith(os.path.basename(primeiro_arquivo).split(".zip")[0])
         ])
 
+        print(f"Arquivos para unir: {arquivos}")
+
         try:
             with open(zip_final, "wb") as output:
                 for arquivo in arquivos:
                     with open(arquivo, "rb") as part:
                         shutil.copyfileobj(part, output)
 
+            print(f"Extraindo: {zip_final}")
             with zipfile.ZipFile(zip_final, "r") as zip_ref:
                 zip_ref.extractall(diretorio)
 
+            print(f"Removendo arquivos temporários: {arquivos + [zip_final]}")
             os.remove(zip_final)
             for arquivo in arquivos:
                 os.remove(arquivo)
 
             return True
         except Exception as e:
+            print(f"Erro ao extrair {primeiro_arquivo}: {e}")
             self.show_popup("Erro", f"Falha ao extrair {primeiro_arquivo}: {e}")
             return False
 
@@ -159,6 +172,9 @@ class JogoWidget(BoxLayout):
                         self.show_popup("Erro", f"Executável não encontrado em {caminho_jogos}.")
                 else:
                     self.status_label.text = "Preparando os arquivos do jogo..."
+                    if self.verificar_arquivos_zip(caminho_jogos):
+                        self.status_label.text = "Falha ao extrair arquivos fragmentados."
+                        return
                     self.atualizar_botoes()
             else:
                 self.baixar_arquivos(jogo_selecionado, self.jogos_necessarios.get(jogo_selecionado, []))
