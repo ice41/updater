@@ -16,7 +16,7 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 JOGOS_CONFIG = {
     "soulmask": {
         "pak": "WS-WindowsNoEditor.pak",
-        "diretorio_pak": "jogos/soulmask/ws/Content/Paks",
+        "diretorio_pak": "jogos/soulmask/WS/Content/Paks",
         "executavel": "jogos/soulmask/iniciar.bat"
     },
     "firstdwarf": {
