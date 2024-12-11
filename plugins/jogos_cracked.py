@@ -128,7 +128,7 @@ class JogoWidget(BoxLayout):
     config = JOGOS_CONFIG[jogo]
     caminho_diretorio = config["diretorio_pak"]
     arquivos_fragmentados = [
-        os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.startswith("WindowsNoEditor.zip.")
+        os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.startswith("WS-WindowsNoEditor.zip.")
     ]
 
     if not arquivos_fragmentados:
@@ -137,7 +137,7 @@ class JogoWidget(BoxLayout):
 
     try:
         os.makedirs(caminho_diretorio, exist_ok=True)
-        caminho_zip_unido = os.path.join(caminho_diretorio, "WindowsNoEditor.zip")
+        caminho_zip_unido = os.path.join(caminho_diretorio, "WS-WindowsNoEditor.zip")
 
         # Combinar arquivos fragmentados em um único arquivo ZIP
         with open(caminho_zip_unido, "wb") as zip_unido:
