@@ -16,11 +16,13 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 JOGOS_CONFIG = {
     "soulmask": {
         "pak": "WS-WindowsNoEditor.pak",
-        "diretorio": "jogos/soulmask/WS/Content/Paks"
+        "diretorio_pak": "jogos/soulmask/ws/Content/Paks",
+        "executavel": "jogos/soulmask/iniciar.bat"
     },
     "firstdwarf": {
         "pak": "FirstDwarf-Windows.pak",
-        "diretorio": "jogos/firstdwarf/Content/Paks"
+        "diretorio_pak": "jogos/firstdwarf/Content/Paks",
+        "executavel": "jogos/firstdwarf/iniciar.bat"
     }
 }
 
@@ -89,13 +91,13 @@ class JogoWidget(BoxLayout):
         """Atualiza os botões com base no estado do jogo selecionado."""
         if self.selected_game:
             config = JOGOS_CONFIG[self.selected_game]
-            caminho_pak = os.path.join(config["diretorio"], config["pak"])
+            caminho_pak = os.path.join(config["diretorio_pak"], config["pak"])
             if os.path.exists(caminho_pak):
                 self.start_button.text = "Iniciar Jogo"
             else:
                 self.start_button.text = "Preparar Jogo"
             self.start_button.disabled = False
-            self.uninstall_button.disabled = not os.path.exists(config["diretorio"])
+            self.uninstall_button.disabled = not os.path.exists(config["diretorio_pak"])
         else:
             self.start_button.text = "Iniciar Jogo"
             self.start_button.disabled = True
@@ -106,15 +108,15 @@ class JogoWidget(BoxLayout):
         if self.selected_game:
             jogo_selecionado = self.selected_game
             config = JOGOS_CONFIG[jogo_selecionado]
-            caminho_pak = os.path.join(config["diretorio"], config["pak"])
+            caminho_pak = os.path.join(config["diretorio_pak"], config["pak"])
 
             if os.path.exists(caminho_pak):
-                executavel = os.path.join(config["diretorio"], "iniciar.bat")
+                executavel = config["executavel"]
                 if os.path.exists(executavel):
                     self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
                     os.startfile(executavel)
                 else:
-                    self.show_popup("Erro", f"Executável não encontrado em {config['diretorio']}.")
+                    self.show_popup("Erro", f"Executável não encontrado em {executavel}.")
             else:
                 self.status_label.text = "Preparando o jogo..."
                 self.preparar_jogo(jogo_selecionado)
@@ -124,7 +126,7 @@ class JogoWidget(BoxLayout):
     def preparar_jogo(self, jogo):
         """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
         config = JOGOS_CONFIG[jogo]
-        caminho_diretorio = config["diretorio"]
+        caminho_diretorio = config["diretorio_pak"]
         arquivos_zip = [
             os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.endswith(".zip")
         ]
@@ -154,7 +156,7 @@ class JogoWidget(BoxLayout):
         """Desinstala o jogo selecionado, removendo seus arquivos."""
         if self.selected_game:
             config = JOGOS_CONFIG[self.selected_game]
-            caminho_diretorio = config["diretorio"]
+            caminho_diretorio = config["diretorio_pak"]
             if os.path.exists(caminho_diretorio):
                 for root, dirs, files in os.walk(caminho_diretorio, topdown=False):
                     for file in files:
