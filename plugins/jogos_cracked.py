@@ -146,13 +146,13 @@ class JogoWidget(BoxLayout):
                                 f.write(chunk)
                                 tamanho_baixado += len(chunk)
                                 restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
-                                Clock.schedule_once(lambda dt: self.update_download_label(restante_mb))
+                                self.update_download_label(restante_mb)
 
                 self.status_label.text = f"Download: {arquivo} concluído."
             except Exception as e:
-                Clock.schedule_once(lambda dt: self.show_popup("Erro", f"Falha ao baixar {arquivo}"))
+                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
 
-            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando))
+            self.download_next_file(url_base, arquivos_faltando)
         else:
             self.status_label.text = "Todos os arquivos foram baixados."
             self.atualizar_botoes()
