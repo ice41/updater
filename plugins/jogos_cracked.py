@@ -166,7 +166,6 @@ class JogoWidget(BoxLayout):
         if restante_mb == 0:
         # Download concluído, iniciar o extractor
         print("Download completo. Executando o Extractor...")
-
         try:
             Extractor.extrair_arquivos()
             print("Extração dos arquivos concluída com sucesso.")
