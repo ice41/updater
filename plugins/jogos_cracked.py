@@ -160,6 +160,7 @@ class JogoWidget(BoxLayout):
     def update_download_label(self, restante_mb):
     def atualizar_label(dt):
         self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
+    
     Clock.schedule_once(atualizar_label)
 
     def desinstalar_jogo(self, instance):
