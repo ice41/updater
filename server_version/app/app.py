@@ -185,7 +185,7 @@ class UpdaterApp(MDApp):
             self.progress_bar.opacity = 0  # Oculta a barra se não houver atualizações
 
     def on_update_button_press(self, instance):
-        self.update_status_label.text = "Atualizando..."
+        self.update_status_label.text = "A Atualizar..."
         self.progress_bar.value = 0
         if download_update(self.update_progress):
             if extract_update():
@@ -196,6 +196,7 @@ class UpdaterApp(MDApp):
                 self.update_status_label.text = "Atualização concluída."
                 new_version = get_server_version()
                 update_current_version(new_version)
+                self.update_status_label.text = "Abra o novo Laucher."
             else:
                 self.update_status_label.text = "Erro ao extrair a atualização."
         else:
