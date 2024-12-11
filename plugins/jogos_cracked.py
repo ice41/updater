@@ -199,6 +199,46 @@ class JogoWidget(BoxLayout):
         """Exibe um popup com uma mensagem de erro ou aviso."""
         popup = Popup(title=title, content=Label(text=message), size_hint=(0.8, 0.5))
         popup.open()
+ def verificar_arquivos(self, caminho_jogos, arquivos_necessarios):
+        """Verifica se todos os arquivos necessários estão presentes."""
+        faltando = []
+        for arquivo in arquivos_necessarios:
+            # self.status_label.text = f"Verificando: {arquivo}"
+            # self.download_label.text = f"Verificando: {arquivo}"
+            if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
+                faltando.append(arquivo)
+        return faltando
+
+    def baixar_arquivos(self, jogo, arquivos_faltando):
+        """Inicia o processo de download dos arquivos faltando."""
+        url_base = f"http://158.178.197.238/jogos/{jogo}/"
+        self.download_next_file(url_base, arquivos_faltando)
+
+    def download_next_file(self, url_base, arquivos_faltando):
+        """Baixa o próximo arquivo da lista até que todos estejam baixados."""
+        if arquivos_faltando:
+            arquivo = arquivos_faltando.pop(0)
+            url_arquivo = os.path.join(url_base, arquivo)
+            caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
+            self.download_label.text = f"Baixando: {arquivo}"
+            os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
+
+            try:
+                resposta = requests.get(url_arquivo)
+                resposta.raise_for_status()
+
+                with open(caminho_destino, "wb") as f:
+                    f.write(resposta.content)
+
+                self.status_label.text = f"Download: {arquivo} concluído."
+                self.download_label.text = ''
+            except Exception as e:
+                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
+
+            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
+        else:
+            self.status_label.text = "Todos os arquivos foram baixados."
+            self.atualizar_botoes()
 
 def executar():
     """Função principal do plugin que será chamada pelo sistema de ."""
