@@ -1,24 +1,25 @@
+# extractor.py
+
 import os
-from threading import Thread
+import zipfile
 
 class Extractor:
-    def __init__(self, path):
-        self.path = path
+    @staticmethod
+    def extrair_arquivos():
+        caminho_jogos = "jogos"
+        zip_files = [f for f in os.listdir(caminho_jogos) if f.endswith('.zip')]
 
-    def executar_tarefas_backend(self):
-        def background_task():
-            print(f"Iniciando tarefas no backend para o caminho: {self.path}")
+        if not zip_files:
+            print("Nenhum arquivo .zip encontrado para extrair.")
+            return
 
+        for zip_file in zip_files:
+            caminho_zip = os.path.join(caminho_jogos, zip_file)
             try:
-                arquivos = os.listdir(self.path)
-                for arquivo in arquivos:
-                    print(f"Processando o arquivo {arquivo}")
-                    # Coloque aqui a lógica das tarefas que deseja executar
-                    # Exemplo: compactação, verificação, limpeza de arquivos, etc.
+                with zipfile.ZipFile(caminho_zip, 'r') as zip_ref:
+                    zip_ref.extractall(caminho_jogos)
+                    print(f"{zip_file} extraído com sucesso.")
+            except zipfile.BadZipFile:
+                print(f"{zip_file} está corrompido e não pôde ser extraído.")
 
-                print(f"Tarefas em segundo plano concluídas em {self.path}")
-
-            except FileNotFoundError:
-                print("Erro: caminho não encontrado.")
-
-        Thread(target=background_task).start()
+        print("Extração concluída. Todos os arquivos .zip foram extraídos.")
