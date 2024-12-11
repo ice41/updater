@@ -5,6 +5,7 @@
     ],
     "plugins": [
         {"nome": "jogos_cracked.py", "versao": "0.8"},
-        {"nome": "plugins.py", "versao": "0.9"}
+        {"nome": "plugins.py", "versao": "0.9"},
+        {"nome": "extractor.py", "versao": "0.1"}
     ]
 }
