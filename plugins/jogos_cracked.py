@@ -8,6 +8,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
 from threading import Thread
+from extractor import Extractor
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
@@ -161,7 +162,13 @@ class JogoWidget(BoxLayout):
     def update_download_label(self, restante_mb, total_mb):
         def atualizar_label(dt):
             self.remaining_label.text = f"Restam: {restante_mb:.2f} MB de: {total_mb:.2f} MB"
+        
+        if restante_mb == 0:
+            caminho_jogo = os.path.join("jogos", self.selected_game)
+            extractor = Extractor(caminho_jogo)
+            extractor.executar_tarefas_backend()
 
+    Clock.schedule_once(atualizar_label)
         Clock.schedule_once(atualizar_label)
 
     def desinstalar_jogo(self, instance):
