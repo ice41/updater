@@ -1,11 +1,12 @@
-# app.py versão 2.3
+# app.py versão 2.4 com novo design aplicado
+
 import os
 import sys
 import requests
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.progressbar import MDProgressBar
+from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.dialog import MDDialog
@@ -16,7 +17,7 @@ from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.button import MDRaisedButton
 
 # URLs para os arquivos remotos
-NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/news-1.2.py"
+NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/news.py"
 PLUGINS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/plugins.py"
 UTILS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/utils.py"
 
@@ -24,7 +25,6 @@ UTILS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/ser
 Config.set('input', 'wm_touch', 'null')
 Config.set('input', 'wm_pen', 'null')
 Config.set('graphics', 'multitouch_on_demand', True)
-
 
 def load_remote_module(url, module_name):
     """Carrega e executa um módulo Python remoto diretamente."""
@@ -39,7 +39,6 @@ def load_remote_module(url, module_name):
     except requests.RequestException as e:
         print(f"Erro ao carregar {module_name} de {url}: {e}")
         return None
-
 
 # Carregar os módulos necessários dinamicamente
 news = load_remote_module(NEWS_URL, "news")
@@ -67,7 +66,7 @@ def resource_path(relative_path):
 
 class UpdaterApp(MDApp):
     def build(self):
-        # Configurar tema escuro
+        # Configurar tema escuro com novo design
         self.title = "Launcher NPED"
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Blue"
