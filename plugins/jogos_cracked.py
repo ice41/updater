@@ -160,13 +160,14 @@ class JogoWidget(BoxLayout):
             Extractor.extrair_arquivos()
             self.atualizar_botoes()
 
-    def update_download_label(self, restante_mb, total_mb):
+def update_download_label(self, restante_mb, total_mb):
         def atualizar_label(dt):
             self.remaining_label.text = f"Restam: {restante_mb:.2f} MB de: {total_mb:.2f} MB"
-            
-            self.update_status_label.text = "Atualização concluída."
-            
-            Extractor.extrair_arquivos()
+        
+        if restante_mb == 0:
+            caminho_jogo = os.path.join("jogos", self.selected_game)
+            extractor = Extractor(caminho_jogo)
+            extractor.executar_tarefas_backend()
             
             Clock.schedule_once(atualizar_label)
 
