@@ -9,6 +9,7 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
+from functools import partial
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
@@ -136,13 +137,17 @@ class JogoWidget(BoxLayout):
                     tamanho_total = int(resposta.headers.get('Content-Length', 0))
                     tamanho_baixado = 0
 
-                    with open(caminho_destino, "wb") as f:
-                        for chunk in resposta.iter_content(chunk_size=1024 * 1024):
-                            if chunk:
+                    def atualizar_progresso(chunk):
+                        nonlocal tamanho_baixado
+                        tamanho_baixado += len(chunk)
+                        restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
+                        self.download_label.text = f"Restam: {restante_mb:.2f} MB"
+
+                    for chunk in resposta.iter_content(chunk_size=1024 * 1024):
+                        if chunk:
+                            with open(caminho_destino, "ab") as f:
                                 f.write(chunk)
-                                tamanho_baixado += len(chunk)
-                                restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
-                                self.download_label.text = f"Restam: {restante_mb:.2f} MB"
+                            Clock.schedule_once(partial(atualizar_progresso, chunk))
 
                 self.status_label.text = f"Download: {arquivo} concluído."
                 self.download_label.text = ''
