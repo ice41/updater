@@ -16,13 +16,15 @@ JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/he
 JOGOS_CONFIG = {
     "soulmask": {
         "pak": "WS-WindowsNoEditor.pak",
-        "diretorio_pak": "jogos/soulmask/WS/Content/Paks",
-        "executavel": "jogos/soulmask/iniciar.bat"
+        "diretorio_pak": "jogos/soulmask/ws/Content/Paks",
+        "executavel": "jogos/soulmask/iniciar.bat",
+        "fragmentos_zip": "WS-WindowsNoEditor.zip"
     },
     "firstdwarf": {
         "pak": "FirstDwarf-Windows.pak",
         "diretorio_pak": "jogos/firstdwarf/Content/Paks",
-        "executavel": "jogos/firstdwarf/iniciar.bat"
+        "executavel": "jogos/firstdwarf/iniciar.bat",
+        "fragmentos_zip": "FirstDwarf-Windows.zip"
     }
 }
 
@@ -35,6 +37,35 @@ def carregar_jogos_necessarios():
     except requests.RequestException as e:
         print(f"Erro ao carregar jogos necessários: {e}")
         return {}
+
+def encontrar_fragmentos(diretorio, nome_base):
+    """Encontra todos os fragmentos de um arquivo ZIP no diretório especificado."""
+    return sorted(
+        [os.path.join(diretorio, f) for f in os.listdir(diretorio) if f.startswith(nome_base) and f.endswith(".zip.001")],
+        key=lambda x: x.lower()
+    )
+
+def juntar_fragmentos(fragmentos, arquivo_final):
+    """Une os fragmentos de um arquivo ZIP em um único arquivo."""
+    try:
+        with open(arquivo_final, "wb") as f_out:
+            for fragmento in fragmentos:
+                with open(fragmento, "rb") as f_in:
+                    f_out.write(f_in.read())
+        return True
+    except Exception as e:
+        print(f"Erro ao juntar fragmentos: {e}")
+        return False
+
+def extrair_zip(arquivo_zip, destino):
+    """Extrai o conteúdo de um arquivo ZIP para o destino especificado."""
+    try:
+        with zipfile.ZipFile(arquivo_zip, 'r') as zip_ref:
+            zip_ref.extractall(destino)
+        return True
+    except zipfile.BadZipFile as e:
+        print(f"Erro ao extrair ZIP: {e}")
+        return False
 
 class JogoWidget(BoxLayout):
     def __init__(self, **kwargs):
@@ -124,47 +155,28 @@ class JogoWidget(BoxLayout):
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
     def preparar_jogo(self, jogo):
-    """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
-    config = JOGOS_CONFIG[jogo]
-    caminho_diretorio = config["diretorio_pak"]
-    arquivos_fragmentados = [
-        os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.startswith("WS-WindowsNoEditor.zip.")
-    ]
+        """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
+        config = JOGOS_CONFIG[jogo]
+        caminho_diretorio = os.path.dirname(config["diretorio_pak"])
+        nome_base = config["fragmentos_zip"]
+        fragmentos = encontrar_fragmentos(caminho_diretorio, nome_base)
 
-    if not arquivos_fragmentados:
-        self.show_popup("Erro", "Nenhum arquivo ZIP fragmentado encontrado para preparar o jogo.")
-        return
+        if not fragmentos:
+            self.show_popup("Erro", "Nenhum arquivo ZIP fragmentado encontrado para preparar o jogo.")
+            return
 
-    try:
-        os.makedirs(caminho_diretorio, exist_ok=True)
-        caminho_zip_unido = os.path.join(caminho_diretorio, "WS-WindowsNoEditor.zip")
-
-        # Combinar arquivos fragmentados em um único arquivo ZIP
-        with open(caminho_zip_unido, "wb") as zip_unido:
-            for arquivo_fragmentado in sorted(arquivos_fragmentados):
-                with open(arquivo_fragmentado, "rb") as parte:
-                    zip_unido.write(parte.read())
-
-        # Extrair o conteúdo do arquivo ZIP unido
-        with zipfile.ZipFile(caminho_zip_unido, "r") as zip_ref:
-            zip_ref.extractall(caminho_diretorio)
-
-        # Renomear o arquivo extraído para o formato esperado (.pak)
-        caminho_pak = os.path.join(caminho_diretorio, config["pak"])
-        arquivo_extraido = next((f for f in os.listdir(caminho_diretorio) if f.endswith(".pak")), None)
-        if arquivo_extraido:
-            os.rename(os.path.join(caminho_diretorio, arquivo_extraido), caminho_pak)
-
-        # Remover arquivos temporários
-        os.remove(caminho_zip_unido)
-        for arquivo_fragmentado in arquivos_fragmentados:
-            os.remove(arquivo_fragmentado)
-
-        self.status_label.text = "Jogo preparado com sucesso."
-        self.atualizar_botoes()
-    except Exception as e:
-        self.show_popup("Erro", f"Falha ao preparar o jogo: {e}")
-
+        zip_final = os.path.join(caminho_diretorio, f"{nome_base}.zip")
+        if juntar_fragmentos(fragmentos, zip_final):
+            if extrair_zip(zip_final, caminho_diretorio):
+                self.status_label.text = "Jogo preparado com sucesso."
+                os.remove(zip_final)
+                for frag in fragmentos:
+                    os.remove(frag)
+                self.atualizar_botoes()
+            else:
+                self.show_popup("Erro", "Falha ao extrair o arquivo ZIP final.")
+        else:
+            self.show_popup("Erro", "Falha ao juntar os fragmentos do arquivo ZIP.")
 
     def desinstalar_jogo(self, instance):
         """Desinstala o jogo selecionado, removendo seus arquivos."""
