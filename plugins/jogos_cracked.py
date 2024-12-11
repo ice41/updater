@@ -1,7 +1,3 @@
-# jogos_cracked.py
-
-# jogos_cracked.py
-
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
@@ -114,7 +110,6 @@ class JogoWidget(BoxLayout):
                     self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
             else:
                 self.baixar_arquivos(jogo_selecionado, self.jogos_necessarios.get(jogo_selecionado, []))
-
         else:
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
@@ -134,6 +129,7 @@ class JogoWidget(BoxLayout):
             arquivo = arquivos_faltando.pop(0)
             url_arquivo = os.path.join(url_base, arquivo)
             caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
+
             self.download_label.text = f"Baixando: {arquivo}"
             os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
 
@@ -149,9 +145,11 @@ class JogoWidget(BoxLayout):
                                 f.write(chunk)
                                 tamanho_baixado += len(chunk)
                                 restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
-                                self.update_download_label(restante_mb)
 
-                self.status_label.text = f"Download: {arquivo} concluído."
+                                # Atualiza a label restante com total e restante
+                                self.update_download_label(restante_mb, tamanho_total / (1024 * 1024))
+
+                self.status_label.text = f"Download {arquivo} concluído."
             except Exception as e:
                 self.show_popup("Erro", f"Falha ao baixar {arquivo}")
 
@@ -160,9 +158,9 @@ class JogoWidget(BoxLayout):
             self.status_label.text = "Todos os arquivos foram baixados."
             self.atualizar_botoes()
 
-    def update_download_label(self, restante_mb):
+    def update_download_label(self, restante_mb, total_mb):
         def atualizar_label(dt):
-            self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
+            self.remaining_label.text = f"Restam: {restante_mb:.2f} MB / Total: {total_mb:.2f} MB"
 
         Clock.schedule_once(atualizar_label)
 
@@ -175,6 +173,7 @@ class JogoWidget(BoxLayout):
                         os.remove(os.path.join(root, file))
                     for dir in dirs:
                         os.rmdir(os.path.join(root, dir))
+
                 os.rmdir(caminho_jogo)
                 self.status_label.text = f"Jogo {self.selected_game} desinstalado com sucesso."
                 self.atualizar_botoes()
