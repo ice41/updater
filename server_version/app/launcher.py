@@ -1,4 +1,4 @@
-# launcher.py 
+# launcher.py 1.7
 
 import os
 import requests
@@ -13,10 +13,17 @@ from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
-from utils import (get_current_version, get_server_version, download_update,
-                   extract_update, move_files, remove_updater_folder, update_current_version)
-from news import NewsWidget
-from plugins import carregar_plugins
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDLabel
+from kivymd.uix.progressbar import MDProgressBar
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.card import MDCard
+from kivy.config import Config
+from kivy.clock import Clock
+from threading import Thread
+
 
 # URL para o app.py no GitHub
 APP_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/app/app.py"
@@ -112,3 +119,4 @@ def load_and_run_app():
 if __name__ == "__main__":
     executar_verificacao_estrutura()  # Executa a verificação de estrutura antes de carregar o app principal
     load_and_run_app()
+
