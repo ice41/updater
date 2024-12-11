@@ -60,6 +60,9 @@ class JogoWidget(BoxLayout):
         self.download_label = Label(text='', size_hint_y=None, height=40)
         self.add_widget(self.download_label)
 
+        self.remaining_label = Label(text='', size_hint_y=None, height=40)
+        self.add_widget(self.remaining_label)
+
     def on_toggle_button_press(self, instance):
         for button in self.jogo_buttons.values():
             if button != instance:
@@ -155,7 +158,7 @@ class JogoWidget(BoxLayout):
             self.atualizar_botoes()
 
     def update_download_label(self, restante_mb):
-        self.download_label.text = f"Restam: {restante_mb:.2f} MB"
+        self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
 
     def desinstalar_jogo(self, instance):
         if self.selected_game:
