@@ -124,33 +124,47 @@ class JogoWidget(BoxLayout):
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
     def preparar_jogo(self, jogo):
-        """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
-        config = JOGOS_CONFIG[jogo]
-        caminho_diretorio = config["diretorio_pak"]
-        arquivos_zip = [
-            os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.endswith(".zip")
-        ]
+    """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
+    config = JOGOS_CONFIG[jogo]
+    caminho_diretorio = config["diretorio_pak"]
+    arquivos_fragmentados = [
+        os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.startswith("WindowsNoEditor.zip.")
+    ]
 
-        if not arquivos_zip:
-            self.show_popup("Erro", "Nenhum arquivo ZIP encontrado para preparar o jogo.")
-            return
+    if not arquivos_fragmentados:
+        self.show_popup("Erro", "Nenhum arquivo ZIP fragmentado encontrado para preparar o jogo.")
+        return
 
-        try:
-            os.makedirs(caminho_diretorio, exist_ok=True)
-            caminho_pak = os.path.join(caminho_diretorio, config["pak"])
+    try:
+        os.makedirs(caminho_diretorio, exist_ok=True)
+        caminho_zip_unido = os.path.join(caminho_diretorio, "WindowsNoEditor.zip")
 
-            with open(caminho_pak, "wb") as pak:
-                for arquivo_zip in sorted(arquivos_zip):
-                    with open(arquivo_zip, "rb") as f:
-                        pak.write(f.read())
+        # Combinar arquivos fragmentados em um único arquivo ZIP
+        with open(caminho_zip_unido, "wb") as zip_unido:
+            for arquivo_fragmentado in sorted(arquivos_fragmentados):
+                with open(arquivo_fragmentado, "rb") as parte:
+                    zip_unido.write(parte.read())
 
-            for arquivo_zip in arquivos_zip:
-                os.remove(arquivo_zip)
+        # Extrair o conteúdo do arquivo ZIP unido
+        with zipfile.ZipFile(caminho_zip_unido, "r") as zip_ref:
+            zip_ref.extractall(caminho_diretorio)
 
-            self.status_label.text = "Jogo preparado com sucesso."
-            self.atualizar_botoes()
-        except Exception as e:
-            self.show_popup("Erro", f"Falha ao preparar o jogo: {e}")
+        # Renomear o arquivo extraído para o formato esperado (.pak)
+        caminho_pak = os.path.join(caminho_diretorio, config["pak"])
+        arquivo_extraido = next((f for f in os.listdir(caminho_diretorio) if f.endswith(".pak")), None)
+        if arquivo_extraido:
+            os.rename(os.path.join(caminho_diretorio, arquivo_extraido), caminho_pak)
+
+        # Remover arquivos temporários
+        os.remove(caminho_zip_unido)
+        for arquivo_fragmentado in arquivos_fragmentados:
+            os.remove(arquivo_fragmentado)
+
+        self.status_label.text = "Jogo preparado com sucesso."
+        self.atualizar_botoes()
+    except Exception as e:
+        self.show_popup("Erro", f"Falha ao preparar o jogo: {e}")
+
 
     def desinstalar_jogo(self, instance):
         """Desinstala o jogo selecionado, removendo seus arquivos."""
