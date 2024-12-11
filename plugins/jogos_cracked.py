@@ -163,17 +163,10 @@ class JogoWidget(BoxLayout):
     def update_download_label(self, restante_mb, total_mb):
         def atualizar_label(dt):
             self.remaining_label.text = f"Restam: {restante_mb:.2f} MB de: {total_mb:.2f} MB"
-            if restante_mb == 0:
-                # Download concluído, iniciar o extractor
-                print("Download completo. Executando o Extractor...")
-            try:
-                Extractor.extrair_arquivos()
-                print("Extração dos arquivos concluída com sucesso.")
-    
-            except Exception as ex:
-                print(f"Erro ao extrair arquivos: {str(ex)}")
-                
+            
             self.update_status_label.text = "Atualização concluída."
+            
+            Extractor.extrair_arquivos()
             
             Clock.schedule_once(atualizar_label)
 
