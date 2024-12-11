@@ -9,6 +9,7 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.popup import Popup
 from kivy.uix.gridlayout import GridLayout
 from kivy.clock import Clock
+from threading import Thread
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
@@ -120,7 +121,7 @@ class JogoWidget(BoxLayout):
 
     def baixar_arquivos(self, jogo, arquivos_faltando):
         url_base = f"http://158.178.197.238/jogos/{jogo}/"
-        self.download_next_file(url_base, arquivos_faltando)
+        Thread(target=self.download_next_file, args=(url_base, arquivos_faltando)).start()
 
     def download_next_file(self, url_base, arquivos_faltando):
         if arquivos_faltando:
@@ -142,17 +143,19 @@ class JogoWidget(BoxLayout):
                                 f.write(chunk)
                                 tamanho_baixado += len(chunk)
                                 restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
-                                self.download_label.text = f"Restam: {restante_mb:.2f} MB"
+                                Clock.schedule_once(lambda dt: self.update_download_label(restante_mb))
 
                 self.status_label.text = f"Download: {arquivo} concluído."
-                self.download_label.text = ''
             except Exception as e:
-                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
+                Clock.schedule_once(lambda dt: self.show_popup("Erro", f"Falha ao baixar {arquivo}"))
 
-            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
+            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando))
         else:
             self.status_label.text = "Todos os arquivos foram baixados."
             self.atualizar_botoes()
+
+    def update_download_label(self, restante_mb):
+        self.download_label.text = f"Restam: {restante_mb:.2f} MB"
 
     def desinstalar_jogo(self, instance):
         if self.selected_game:
