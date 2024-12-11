@@ -1,4 +1,6 @@
 # app.py versão 2.4
+# app.py versão 2.3
+
 import os
 import sys
 import requests
@@ -11,7 +13,6 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.card import MDCard
-from kivy.config import Config
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.button import MDRaisedButton
 
@@ -25,21 +26,19 @@ Config.set('input', 'wm_touch', 'null')
 Config.set('input', 'wm_pen', 'null')
 Config.set('graphics', 'multitouch_on_demand', True)
 
-
 def load_remote_module(url, module_name):
     """Carrega e executa um módulo Python remoto diretamente."""
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Verifica se o download foi bem-sucedido
+        response.raise_for_status()
         module_code = response.text
         module = {}
-        exec(module_code, module)  # Executa o código no dicionário `module`
+        exec(module_code, module)
         print(f"Carregado: {module_name}")
         return module
     except requests.RequestException as e:
         print(f"Erro ao carregar {module_name} de {url}: {e}")
         return None
-
 
 # Carregar os módulos necessários dinamicamente
 news = load_remote_module(NEWS_URL, "news")
@@ -55,15 +54,6 @@ if utils:
     remove_updater_folder = utils.get("remove_updater_folder")
     update_current_version = utils.get("update_current_version")
 
-
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except AttributeError:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
-
-
 class UpdaterApp(MDApp):
     def build(self):
         self.title = "Launcher NPED"
@@ -74,6 +64,7 @@ class UpdaterApp(MDApp):
 
         main_layout = MDBoxLayout(orientation='vertical', padding=[20, 60, 20, 20], spacing=20)
 
+        # Logo no topo
         logo_path = resource_path("nped.png")
         if os.path.exists(logo_path):
             logo_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint=(1, None), height=200)
@@ -81,6 +72,7 @@ class UpdaterApp(MDApp):
             logo_layout.add_widget(logo_image)
             main_layout.add_widget(logo_layout)
 
+        # Versões
         version_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=40, spacing=20)
         self.current_version_label = MDLabel(
             text=f"Versão do Launcher: {get_current_version()}",
@@ -98,6 +90,7 @@ class UpdaterApp(MDApp):
         version_layout.add_widget(self.server_version_label)
         main_layout.add_widget(version_layout)
 
+        # Status da atualização e barra de progresso
         status_progress_layout = MDBoxLayout(orientation='vertical', size_hint=(1, None), height=80, spacing=10)
         self.update_status_label = MDLabel(
             text="",
@@ -111,7 +104,29 @@ class UpdaterApp(MDApp):
         status_progress_layout.add_widget(self.progress_bar)
         main_layout.add_widget(status_progress_layout)
 
+        self.open_launcher_label = MDLabel(
+            text="Abrir o novo Launcher",
+            size_hint=(1, None),
+            halign="center",
+            font_style="H6",
+            theme_text_color="Primary",
+            opacity=0  # Inicialmente invisível
+        )
+        main_layout.add_widget(self.open_launcher_label)
+
+        # Botões
         button_layout = MDBoxLayout(orientation='horizontal', size_hint=(1, None), height=80, padding=[0, 0, 20, 0])
+        plugins_button = MDRectangleFlatButton(
+            text="Menu",
+            size_hint=(None, None),
+            size=(120, 50),
+            pos_hint={"center_y": 0.5}
+        )
+        plugins_button.bind(on_release=self.show_plugins_popup)
+        button_layout.add_widget(plugins_button)
+
+        button_layout.add_widget(MDLabel(size_hint=(1, 1)))
+
         self.update_button = MDRaisedButton(
             text="Atualizar",
             size_hint=(None, None),
@@ -134,11 +149,10 @@ class UpdaterApp(MDApp):
         server_version = get_server_version()
         self.current_version_label.text = f"Versão do Launcher: {current_version}"
         self.server_version_label.text = f"Versão do Servidor: {server_version}"
-
         if current_version != server_version:
             self.update_button.disabled = False
         else:
-            self.progress_bar.opacity = 0  # Oculta a barra se não há atualizações
+            self.progress_bar.opacity = 0  # Oculta a barra se não houver atualizações
 
     def on_update_button_press(self, instance):
         self.update_status_label.text = "Atualizando..."
@@ -150,27 +164,36 @@ class UpdaterApp(MDApp):
                 move_files(self.update_progress)
                 remove_updater_folder()
 
+                self.progress_bar.value = 100
                 self.update_status_label.text = "Atualização concluída."
+
+                self.open_launcher_label.opacity = 1  # Mostra a nova label
                 new_version = get_server_version()
                 update_current_version(new_version)
-
-                self.update_label_success()
-
             else:
                 self.update_status_label.text = "Erro ao extrair a atualização."
-        else:
-            self.update_status_label.text = "Erro ao baixar a atualização."
 
     def update_progress(self, progress):
         self.progress_bar.value = progress
 
-    def update_label_success(self):
-        self.label_success = MDLabel(
-            text="Abrir o novo Launcher",
-            halign="center",
-            theme_text_color="Primary"
+    def show_plugins_popup(self, instance):
+        grid_layout = MDGridLayout(cols=3, spacing=10, padding=10, size_hint_y=None)
+        grid_layout.bind(minimum_height=grid_layout.setter('height'))
+
+        for nome_plugin, funcao_plugin in self.plugins.items():
+            btn = MDRectangleFlatButton(
+                text=nome_plugin, size_hint_y=None, height=44
+            )
+            btn.bind(on_release=lambda btn: self.executar_plugin(btn.text))
+            grid_layout.add_widget(btn)
+
+        self.dialog = MDDialog(
+            title="Plugins Disponíveis",
+            type="custom",
+            content_cls=grid_layout,
+            buttons=[MDRaisedButton(text="Fechar", on_release=lambda _: self.dialog.dismiss())]
         )
-        self.update_status_label.parent.add_widget(self.label_success)
+        self.dialog.open()
 
     def executar_plugin(self, nome_plugin):
         if nome_plugin in self.plugins:
