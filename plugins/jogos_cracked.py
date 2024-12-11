@@ -126,39 +126,39 @@ class JogoWidget(BoxLayout):
         url_base = f"http://158.178.197.238/jogos/{jogo}/"
         Thread(target=self.download_next_file, args=(url_base, arquivos_faltando)).start()
 
-   def download_next_file(self, url_base, arquivos_faltando):
-    if arquivos_faltando:
-        arquivo = arquivos_faltando.pop(0)
-        url_arquivo = os.path.join(url_base, arquivo)
-        caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
-        self.download_label.text = f"Baixando: {arquivo}"
-        os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
+    def download_next_file(self, url_base, arquivos_faltando):
+        if arquivos_faltando:
+            arquivo = arquivos_faltando.pop(0)
+            url_arquivo = os.path.join(url_base, arquivo)
+            caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
+            self.download_label.text = f"Baixando: {arquivo}"
+            os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
 
-        try:
-            with requests.get(url_arquivo, stream=True) as resposta:
-                resposta.raise_for_status()
-                tamanho_total = int(resposta.headers.get('Content-Length', 0))
-                tamanho_baixado = 0
+            try:
+                with requests.get(url_arquivo, stream=True) as resposta:
+                    resposta.raise_for_status()
+                    tamanho_total = int(resposta.headers.get('Content-Length', 0))
+                    tamanho_baixado = 0
 
-                with open(caminho_destino, "wb") as f:
-                    for chunk in resposta.iter_content(chunk_size=1024 * 1024):
-                        if chunk:
-                            f.write(chunk)
-                            tamanho_baixado += len(chunk)
-                            restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
-                            self.update_download_label(restante_mb)  # Atualiza em tempo real
+                    with open(caminho_destino, "wb") as f:
+                        for chunk in resposta.iter_content(chunk_size=1024 * 1024):
+                            if chunk:
+                                f.write(chunk)
+                                tamanho_baixado += len(chunk)
+                                restante_mb = (tamanho_total - tamanho_baixado) / (1024 * 1024)
+                                self.update_download_label(restante_mb)
 
-            self.status_label.text = f"Download: {arquivo} concluído."
-        except Exception as e:
-            self.show_popup("Erro", f"Falha ao baixar {arquivo}")
+                self.status_label.text = f"Download: {arquivo} concluído."
+            except Exception as e:
+                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
 
-        self.download_next_file(url_base, arquivos_faltando)
-    else:
-        self.status_label.text = "Todos os arquivos foram baixados."
-        self.atualizar_botoes()
+            self.download_next_file(url_base, arquivos_faltando)
+        else:
+            self.status_label.text = "Todos os arquivos foram baixados."
+            self.atualizar_botoes()
 
-def update_download_label(self, restante_mb):
-    Clock.schedule_once(lambda dt: self.remaining_label.text = f"Restam: {restante_mb:.2f} MB")
+    def update_download_label(self, restante_mb):
+        Clock.schedule_once(lambda dt: self.remaining_label.text = f"Restam: {restante_mb:.2f} MB")
 
     def desinstalar_jogo(self, instance):
         if self.selected_game:
