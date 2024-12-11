@@ -1,7 +1,6 @@
 import os
 import zipfile
 import requests
-import shutil
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -12,6 +11,18 @@ from kivy.clock import Clock
 
 # URL do JSON com os arquivos necessários para cada jogo
 JOGOS_NECESSARIOS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/server_version/jogos_necessarios.json"
+
+# Definições específicas para cada jogo
+JOGOS_CONFIG = {
+    "soulmask": {
+        "pak": "WS-WindowsNoEditor.pak",
+        "diretorio": "jogos/soulmask/ws/Content/Paks"
+    },
+    "firstdwarf": {
+        "pak": "FirstDwarf-Windows.pak",
+        "diretorio": "jogos/firstdwarf/Content/Paks"
+    }
+}
 
 def carregar_jogos_necessarios():
     """Carrega a lista de arquivos necessários para cada jogo a partir de um arquivo JSON remoto."""
@@ -41,7 +52,7 @@ class JogoWidget(BoxLayout):
 
         # Adicionando ToggleButtons para cada jogo
         self.jogo_buttons = {}
-        for jogo in self.jogos_necessarios.keys():
+        for jogo in JOGOS_CONFIG.keys():
             button = ToggleButton(text=jogo, group='jogos')
             button.bind(on_press=self.on_toggle_button_press)
             self.jogos_layout.add_widget(button)
@@ -50,8 +61,8 @@ class JogoWidget(BoxLayout):
         self.add_widget(self.jogos_layout)
 
         # Botões para ações
-        self.start_button = Button(text='Preparar Jogo', size_hint_y=None, height=50)
-        self.start_button.bind(on_press=self.preparar_jogo)
+        self.start_button = Button(text='Iniciar Jogo', size_hint_y=None, height=50, disabled=True)
+        self.start_button.bind(on_press=self.iniciar_jogo)
         self.add_widget(self.start_button)
 
         self.uninstall_button = Button(text='Desinstalar Jogo', size_hint_y=None, height=50, disabled=True)
@@ -77,150 +88,80 @@ class JogoWidget(BoxLayout):
     def atualizar_botoes(self):
         """Atualiza os botões com base no estado do jogo selecionado."""
         if self.selected_game:
-            caminho_jogo = os.path.join("jogos", self.selected_game)
-            if os.path.exists(caminho_jogo):
-                arquivos_faltando = self.verificar_arquivos(caminho_jogo, self.jogos_necessarios.get(self.selected_game, []))
-                if not arquivos_faltando:
-                    executavel = os.path.join(caminho_jogo, "iniciar.bat")
-                    if os.path.exists(executavel):
-                        self.start_button.text = "Iniciar Jogo"
-                        self.start_button.disabled = False
-                        self.uninstall_button.disabled = False
-                    else:
-                        self.start_button.text = "Preparar Jogo"
-                        self.start_button.disabled = False
-                        self.uninstall_button.disabled = True
-                else:
-                    self.start_button.text = "Preparar Jogo"
-                    self.start_button.disabled = False
-                    self.uninstall_button.disabled = True
+            config = JOGOS_CONFIG[self.selected_game]
+            caminho_pak = os.path.join(config["diretorio"], config["pak"])
+            if os.path.exists(caminho_pak):
+                self.start_button.text = "Iniciar Jogo"
             else:
-                self.start_button.text = "Instalar Jogo"
-                self.start_button.disabled = False
-                self.uninstall_button.disabled = True
+                self.start_button.text = "Preparar Jogo"
+            self.start_button.disabled = False
+            self.uninstall_button.disabled = not os.path.exists(config["diretorio"])
         else:
-            self.start_button.text = "Preparar Jogo"
+            self.start_button.text = "Iniciar Jogo"
             self.start_button.disabled = True
             self.uninstall_button.disabled = True
 
-    def verificar_arquivos_zip(self, caminho_jogo):
-        """Verifica e extrai arquivos .zip fragmentados no diretório do jogo."""
-        fragmentados = []
-        for root, _, files in os.walk(caminho_jogo):
-            for file in files:
-                if file.endswith(".zip.001"):
-                    fragmentados.append(os.path.join(root, file))
-
-        if not fragmentados:
-            return False  # Nenhum arquivo para extrair
-
-        for arquivo in fragmentados:
-            if not self.extrair_zip_fragmentado(arquivo):
-                return True  # Retorna True se falhar em extrair algum arquivo
-
-        return False  # Todos os arquivos foram extraídos com sucesso
-
-    def extrair_zip_fragmentado(self, primeiro_arquivo):
-        """Extrai arquivos .zip fragmentados começando pelo arquivo dado."""
-        diretorio = os.path.dirname(primeiro_arquivo)
-        zip_final = primeiro_arquivo.replace(".001", "")
-
-        if os.path.exists(zip_final.replace(".zip", "")):
-            return True  # Já extraído
-
-        arquivos = sorted([
-            os.path.join(diretorio, f) for f in os.listdir(diretorio)
-            if f.startswith(os.path.basename(primeiro_arquivo).split(".zip")[0])
-        ])
-
-        try:
-            with open(zip_final, "wb") as output:
-                for arquivo in arquivos:
-                    with open(arquivo, "rb") as part:
-                        shutil.copyfileobj(part, output)
-
-            with zipfile.ZipFile(zip_final, "r") as zip_ref:
-                zip_ref.extractall(diretorio)
-
-            os.remove(zip_final)
-            for arquivo in arquivos:
-                os.remove(arquivo)
-
-            return True
-        except Exception as e:
-            self.show_popup("Erro", f"Falha ao extrair {primeiro_arquivo}: {e}")
-            return False
-
-    def preparar_jogo(self, instance):
-        """Prepara o jogo selecionado, verificando e extraindo arquivos."""
+    def iniciar_jogo(self, instance):
+        """Prepara ou inicia o jogo selecionado, dependendo do estado."""
         if self.selected_game:
-            caminho_jogos = os.path.join("jogos", self.selected_game)
+            jogo_selecionado = self.selected_game
+            config = JOGOS_CONFIG[jogo_selecionado]
+            caminho_pak = os.path.join(config["diretorio"], config["pak"])
 
-            if os.path.exists(caminho_jogos):
-                arquivos_faltando = self.verificar_arquivos(caminho_jogos, self.jogos_necessarios.get(self.selected_game, []))
-                if arquivos_faltando:
-                    self.status_label.text = "Baixando arquivos faltando..."
-                    self.baixar_arquivos(self.selected_game, arquivos_faltando)
-                elif self.verificar_arquivos_zip(caminho_jogos):
-                    self.status_label.text = "Falha ao extrair arquivos fragmentados."
+            if os.path.exists(caminho_pak):
+                executavel = os.path.join(config["diretorio"], "iniciar.bat")
+                if os.path.exists(executavel):
+                    self.status_label.text = f"Iniciando o jogo: {jogo_selecionado}..."
+                    os.startfile(executavel)
                 else:
-                    self.status_label.text = "Preparação concluída com sucesso."
-                self.atualizar_botoes()
+                    self.show_popup("Erro", f"Executável não encontrado em {config['diretorio']}.")
             else:
-                self.baixar_arquivos(self.selected_game, self.jogos_necessarios.get(self.selected_game, []))
+                self.status_label.text = "Preparando o jogo..."
+                self.preparar_jogo(jogo_selecionado)
         else:
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
-    def verificar_arquivos(self, caminho_jogos, arquivos_necessarios):
-        """Verifica se todos os arquivos necessários estão presentes."""
-        faltando = []
-        for arquivo in arquivos_necessarios:
-            if not os.path.exists(os.path.join(caminho_jogos, arquivo)):
-                faltando.append(arquivo)
-        return faltando
+    def preparar_jogo(self, jogo):
+        """Descompacta os arquivos fragmentados e cria o arquivo .pak."""
+        config = JOGOS_CONFIG[jogo]
+        caminho_diretorio = config["diretorio"]
+        arquivos_zip = [
+            os.path.join(caminho_diretorio, f) for f in os.listdir(caminho_diretorio) if f.endswith(".zip")
+        ]
 
-    def baixar_arquivos(self, jogo, arquivos_faltando):
-        """Inicia o processo de download dos arquivos faltando."""
-        url_base = f"http://158.178.197.238/jogos/{jogo}/"
-        self.download_next_file(url_base, arquivos_faltando)
+        if not arquivos_zip:
+            self.show_popup("Erro", "Nenhum arquivo ZIP encontrado para preparar o jogo.")
+            return
 
-    def download_next_file(self, url_base, arquivos_faltando):
-        """Baixa o próximo arquivo da lista até que todos estejam baixados."""
-        if arquivos_faltando:
-            arquivo = arquivos_faltando.pop(0)
-            url_arquivo = os.path.join(url_base, arquivo)
-            caminho_destino = os.path.join("jogos", self.selected_game, arquivo)
-            self.download_label.text = f"Baixando: {arquivo}"
-            os.makedirs(os.path.dirname(caminho_destino), exist_ok=True)
+        try:
+            os.makedirs(caminho_diretorio, exist_ok=True)
+            caminho_pak = os.path.join(caminho_diretorio, config["pak"])
 
-            try:
-                resposta = requests.get(url_arquivo)
-                resposta.raise_for_status()
+            with open(caminho_pak, "wb") as pak:
+                for arquivo_zip in sorted(arquivos_zip):
+                    with open(arquivo_zip, "rb") as f:
+                        pak.write(f.read())
 
-                with open(caminho_destino, "wb") as f:
-                    f.write(resposta.content)
+            for arquivo_zip in arquivos_zip:
+                os.remove(arquivo_zip)
 
-                self.status_label.text = f"Download: {arquivo} concluído."
-                self.download_label.text = ''
-            except Exception as e:
-                self.show_popup("Erro", f"Falha ao baixar {arquivo}")
-
-            Clock.schedule_once(lambda dt: self.download_next_file(url_base, arquivos_faltando), 1)
-        else:
-            self.status_label.text = "Todos os arquivos foram baixados."
+            self.status_label.text = "Jogo preparado com sucesso."
             self.atualizar_botoes()
+        except Exception as e:
+            self.show_popup("Erro", f"Falha ao preparar o jogo: {e}")
 
     def desinstalar_jogo(self, instance):
         """Desinstala o jogo selecionado, removendo seus arquivos."""
         if self.selected_game:
-            caminho_jogo = os.path.join("jogos", self.selected_game)
-            if os.path.exists(caminho_jogo):
-                for root, dirs, files in os.walk(caminho_jogo, topdown=False):
+            config = JOGOS_CONFIG[self.selected_game]
+            caminho_diretorio = config["diretorio"]
+            if os.path.exists(caminho_diretorio):
+                for root, dirs, files in os.walk(caminho_diretorio, topdown=False):
                     for file in files:
                         os.remove(os.path.join(root, file))
                     for dir in dirs:
                         os.rmdir(os.path.join(root, dir))
-                os.rmdir(caminho_jogo)
+                os.rmdir(caminho_diretorio)
                 self.status_label.text = f"Jogo {self.selected_game} desinstalado com sucesso."
                 self.atualizar_botoes()
             else:
@@ -232,7 +173,7 @@ class JogoWidget(BoxLayout):
         popup.open()
 
 def executar():
-    """Função principal do plugin que será chamada pelo sistema."""
+    """Função principal do plugin que será chamada pelo sistema de ."""
     jogo_widget = JogoWidget()
     popup = Popup(title="Jogos Cracked", content=jogo_widget, size_hint=(0.9, 0.9))
     popup.open()
