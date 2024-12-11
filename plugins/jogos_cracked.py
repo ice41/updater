@@ -1,5 +1,7 @@
 # jogos_cracked.py
 
+# jogos_cracked.py
+
 import os
 import requests
 from kivy.uix.boxlayout import BoxLayout
@@ -112,6 +114,7 @@ class JogoWidget(BoxLayout):
                     self.baixar_arquivos(jogo_selecionado, arquivos_faltando)
             else:
                 self.baixar_arquivos(jogo_selecionado, self.jogos_necessarios.get(jogo_selecionado, []))
+
         else:
             self.show_popup("Aviso", "Por favor, selecione um jogo.")
 
@@ -158,10 +161,10 @@ class JogoWidget(BoxLayout):
             self.atualizar_botoes()
 
     def update_download_label(self, restante_mb):
-    def atualizar_label(dt):
-        self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
-    
-    Clock.schedule_once(atualizar_label)
+        def atualizar_label(dt):
+            self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
+
+        Clock.schedule_once(atualizar_label)
 
     def desinstalar_jogo(self, instance):
         if self.selected_game:
