@@ -158,7 +158,9 @@ class JogoWidget(BoxLayout):
             self.atualizar_botoes()
 
     def update_download_label(self, restante_mb):
-        Clock.schedule_once(lambda dt: self.remaining_label.text = f"Restam: {restante_mb:.2f} MB")
+    def atualizar_label(dt):
+        self.remaining_label.text = f"Restam: {restante_mb:.2f} MB"
+    Clock.schedule_once(atualizar_label)
 
     def desinstalar_jogo(self, instance):
         if self.selected_game:
