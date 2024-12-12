@@ -1,4 +1,4 @@
-#news.py 1.5
+#news.py 1.6
 
 import requests
 import os
@@ -9,6 +9,8 @@ from kivy.clock import Clock
 from kivy.logger import Logger
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.metrics import dp
+from kivy.uix.widget import Widget
+from kivy.graphics import Color, Rectangle
 
 NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
 IMAGE_DIR = "temp_images"
@@ -61,11 +63,27 @@ class NewsWidget(BoxLayout):
 
         # Layout de notícia única
         self.news_layout = BoxLayout(orientation='vertical', size_hint=(1, None), height=dp(500), spacing=dp(10), padding=dp(10))
-        self.add_widget(self.news_layout)
+        self.add_widget(self.create_card(self.news_layout))
 
         # Exibe a primeira notícia e inicia o intervalo de troca
         self.display_news(self.current_index)
         Clock.schedule_interval(self.next_news, NEWS_INTERVAL)
+
+    def create_card(self, content):
+        """Envolve o conteúdo em um card com bordas e fundo estilizado."""
+        card = BoxLayout(size_hint=(1, None), height=dp(500), padding=dp(10))
+        with card.canvas.before:
+            Color(1, 1, 1, 1)  # Fundo branco
+            self.bg_rect = Rectangle(size=card.size, pos=card.pos)
+            Color(0, 0, 0, 0.1)  # Sombra leve
+            Rectangle(size=(card.size[0] + dp(10), card.size[1] + dp(10)), pos=(card.pos[0] - dp(5), card.pos[1] - dp(5)))
+        card.bind(size=self.update_rect, pos=self.update_rect)
+        card.add_widget(content)
+        return card
+
+    def update_rect(self, instance, value):
+        self.bg_rect.size = instance.size
+        self.bg_rect.pos = instance.pos
 
     def display_news(self, index):
         """Exibe a notícia no índice especificado."""
