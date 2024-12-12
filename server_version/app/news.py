@@ -79,7 +79,7 @@ class NewsWidget(BoxLayout):
         image_url = item.get('image_url', None)
 
         # Título em negrito e azul, centralizado
-        title_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=40)
+        title_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=45)
         title_label = Label(text=title, color=(0, 0, 1, 1), bold=True)
         title_layout.add_widget(title_label)
         self.news_layout.add_widget(title_layout)
