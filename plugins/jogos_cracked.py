@@ -151,7 +151,7 @@ class JogoWidget(BoxLayout):
                                 # Atualiza a label restante com total e restante
                                 self.update_download_label(restante_mb, tamanho_total / (1024 * 1024))
 
-                self.status_label.text = f"Download {arquivo} concluído."
+                self.status_label.text = f" {arquivo} Download concluído."
             except Exception as e:
                 self.show_popup("Erro", f"Falha ao baixar {arquivo}")
 
@@ -163,7 +163,7 @@ class JogoWidget(BoxLayout):
 
     def update_download_label(self, restante_mb, total_mb):
         def atualizar_label(dt):
-            self.remaining_label.text = f"Restam: {restante_mb:.2f} MB / De: {total_mb:.2f} MB"
+            self.remaining_label.text = f"Restam: {restante_mb:.2f} MB de: {total_mb:.2f} MB"
 
         Clock.schedule_once(atualizar_label)
 
