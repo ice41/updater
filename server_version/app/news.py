@@ -1,4 +1,4 @@
-#news.py 1.4
+#news.py 1.5
 
 import requests
 import os
@@ -8,7 +8,7 @@ from kivy.uix.image import Image as KivyImage
 from kivy.clock import Clock
 from kivy.logger import Logger
 from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.widget import Widget
+from kivy.metrics import dp
 
 NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
 IMAGE_DIR = "temp_images"
@@ -30,10 +30,10 @@ def download_image(url):
     """Downloads the image and returns the local path."""
     if not os.path.exists(IMAGE_DIR):
         os.makedirs(IMAGE_DIR)
-    
+
     image_name = url.split("/")[-1]
     image_path = os.path.join(IMAGE_DIR, image_name)
-    
+
     if not os.path.exists(image_path):
         try:
             response = requests.get(url, stream=True)
@@ -54,13 +54,13 @@ class NewsWidget(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
-        
+
         # Inicializa lista de notícias e índice
         self.news_items = get_news()
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation='vertical', size_hint=(1, None), height=500)
+        self.news_layout = BoxLayout(orientation='vertical', size_hint=(1, None), height=dp(500), spacing=dp(10), padding=dp(10))
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
@@ -71,7 +71,7 @@ class NewsWidget(BoxLayout):
         """Exibe a notícia no índice especificado."""
         self.news_layout.clear_widgets()
         if not self.news_items:
-            self.news_layout.add_widget(Label(text="Nenhuma notícia disponível", size_hint_y=None, height=40))
+            self.news_layout.add_widget(Label(text="Nenhuma notícia disponível", size_hint_y=None, height=dp(40)))
             return
 
         item = self.news_items[index]
@@ -80,35 +80,46 @@ class NewsWidget(BoxLayout):
         image_url = item.get('image_url', None)
 
         # Título estilizado
-        title_layout = AnchorLayout(anchor_x='center', anchor_y='top', size_hint_y=None, height=50)
-        title_label = Label(text=title, color=(0.1, 0.1, 0.5, 1), bold=True, font_size='20sp', halign='center', valign='middle')
+        title_label = Label(
+            text=title,
+            color=(0.1, 0.5, 0.8, 1),  # Azul suave
+            bold=True,
+            font_size='20sp',
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        )
         title_label.bind(size=title_label.setter('text_size'))
-        title_layout.add_widget(title_label)
-        self.news_layout.add_widget(title_layout)
+        self.news_layout.add_widget(title_label)
 
         # Espaço entre título e imagem
-        self.news_layout.add_widget(Widget(size_hint_y=None, height=10))
+        self.news_layout.add_widget(BoxLayout(size_hint_y=None, height=dp(10)))
 
-        # Imagem centralizada
+        # Imagem da notícia
         if image_url:
             local_image_path = download_image(image_url)
             if local_image_path:
-                image_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=300)
-                image = KivyImage(source=local_image_path, size_hint=(None, None), width=800, height=300)
-                image_layout.add_widget(image)
-                self.news_layout.add_widget(image_layout)
+                image = KivyImage(source=local_image_path, size_hint=(1, None), height=dp(300))
+                self.news_layout.add_widget(image)
             else:
-                no_image_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=20)
-                no_image_label = Label(text="Imagem indisponível")
-                no_image_layout.add_widget(no_image_label)
-                self.news_layout.add_widget(no_image_layout)
+                self.news_layout.add_widget(Label(text="Imagem indisponível", size_hint_y=None, height=dp(40)))
+
+        # Espaço entre imagem e descrição
+        self.news_layout.add_widget(BoxLayout(size_hint_y=None, height=dp(10)))
 
         # Descrição estilizada
-        description_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=100)
-        description_label = Label(text=description, font_size='16sp', halign='center', valign='top')
+        description_label = Label(
+            text=description,
+            font_size='16sp',
+            size_hint_y=None,
+            height=dp(80),
+            halign='center',
+            valign='middle',
+            color=(0, 0, 0, 0.8)  # Preto com opacidade
+        )
         description_label.bind(size=description_label.setter('text_size'))
-        description_layout.add_widget(description_label)
-        self.news_layout.add_widget(description_layout)
+        self.news_layout.add_widget(description_label)
 
     def next_news(self, dt):
         """Avança para a próxima notícia e exibe."""
