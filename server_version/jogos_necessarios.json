@@ -1,9 +1,6 @@
 {
     "firstdwarf": [
         "FirstDwarf.exe",
-        "lista.txt",
-        "listar-formatada.bat",
-        "listar.bat",
         "Engine/Binaries/ThirdParty/DbgHelp/dbghelp.dll",
         "Engine/Binaries/ThirdParty/MsQuic/v220/win64/msquic.dll",
         "Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64/GFSDK_Aftermath_Lib.x64.dll",
