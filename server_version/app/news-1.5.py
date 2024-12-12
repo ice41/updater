@@ -98,10 +98,10 @@ class NewsWidget(BoxLayout):
             MDLabel(
                 text=title,
                 theme_text_color="Primary",
-                font_style="H5",
+                font_style="H6",
                 halign="center",
                 size_hint_y=None,
-                height=25,
+                height=30,
             )
         )
 
