@@ -1,4 +1,4 @@
-#news.py 1.6
+#news.py 1.6.1
 
 import requests
 import os
