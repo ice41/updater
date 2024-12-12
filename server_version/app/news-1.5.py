@@ -1,7 +1,5 @@
 #news.py 1.5.2
 
-# news.py 1.3
-
 import requests
 import os
 from kivy.uix.boxlayout import BoxLayout
