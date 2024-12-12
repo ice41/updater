@@ -95,7 +95,7 @@ class NewsWidget(BoxLayout):
             local_image_path = download_image(image_url)
             if local_image_path:
                 image_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=50)
-                image = KivyImage(source=local_image_path, size_hint=(None, None), width=600, height=50)
+                image = KivyImage(source=local_image_path, size_hint=(None, None), width=600, height=60)
                 image_layout.add_widget(image)
                 self.news_layout.add_widget(image_layout)
             else:
