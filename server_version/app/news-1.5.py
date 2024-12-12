@@ -1,4 +1,4 @@
-#news.py 1.5
+#news.py 1.5.1
 
 import requests
 import os
@@ -78,9 +78,9 @@ class NewsWidget(BoxLayout):
         description = item.get('description', 'Descrição não disponível')
         image_url = item.get('image_url', None)
 
-        # Título em negrito e azul, centralizado
+        # Título em negrito e azul claro, centralizado
         title_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=45)
-        title_label = Label(text=title, color=(0, 0, 1, 1), bold=True)
+        title_label = Label(text=title, color=(0.5, 0.8, 1, 1), bold=True)  # Azul claro
         title_layout.add_widget(title_label)
         self.news_layout.add_widget(title_layout)
 
@@ -108,3 +108,4 @@ class NewsWidget(BoxLayout):
         """Avança para a próxima notícia e exibe."""
         self.current_index = (self.current_index + 1) % len(self.news_items)
         self.display_news(self.current_index)
+
