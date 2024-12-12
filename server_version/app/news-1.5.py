@@ -1,4 +1,4 @@
-#news.py 1.5.4
+#news.py 1.5.5
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -64,7 +64,7 @@ class NewsWidget(BoxLayout):
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=20, spacing=10)
+        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=30, spacing=20)
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
