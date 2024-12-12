@@ -71,7 +71,7 @@ class NewsWidget(BoxLayout):
 
     def create_card(self, content):
         """Envolve o conteúdo em um card com bordas e fundo estilizado."""
-        card = BoxLayout(size_hint=(1, None), height=dp(500), padding=dp(10))
+        card = BoxLayout(size_hint=(1, None), height=dp(400), padding=dp(10))
         with card.canvas.before:
             Color(1, 1, 1, 1)  # Fundo branco
             self.bg_rect = Rectangle(size=card.size, pos=card.pos)
