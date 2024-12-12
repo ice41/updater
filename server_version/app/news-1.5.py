@@ -1,17 +1,20 @@
-#news.py 1.5.2
+#news.py 1.5.4
 
-import requests
-import os
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
-from kivy.uix.image import Image as KivyImage
 from kivy.clock import Clock
 from kivy.logger import Logger
-from kivy.uix.anchorlayout import AnchorLayout
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
+from kivymd.uix.fitimage import FitImage
+from kivymd.uix.button import MDIconButton
+from kivymd.app import MDApp
+import requests
+import os
 
 NEWS_URL = "https://raw.githubusercontent.com/ice41/updater/refs/heads/main/news/news.json"
 IMAGE_DIR = "temp_images"
 NEWS_INTERVAL = 5  # Intervalo em segundos para trocar de notícia
+
 
 def get_news():
     try:
@@ -25,14 +28,15 @@ def get_news():
         Logger.error(f"NewsWidget: Error fetching news: {e}")
         return []
 
+
 def download_image(url):
     """Downloads the image and returns the local path."""
     if not os.path.exists(IMAGE_DIR):
         os.makedirs(IMAGE_DIR)
-    
+
     image_name = url.split("/")[-1]
     image_path = os.path.join(IMAGE_DIR, image_name)
-    
+
     if not os.path.exists(image_path):
         try:
             response = requests.get(url, stream=True)
@@ -49,17 +53,18 @@ def download_image(url):
             return None
     return image_path
 
+
 class NewsWidget(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.orientation = 'vertical'
-        
+        self.orientation = "vertical"
+
         # Inicializa lista de notícias e índice
         self.news_items = get_news()
         self.current_index = 0
 
         # Layout de notícia única
-        self.news_layout = BoxLayout(orientation='vertical', size_hint=(1, None), height=400)
+        self.news_layout = BoxLayout(orientation="vertical", size_hint=(1, None), height=300, padding=20, spacing=10)
         self.add_widget(self.news_layout)
 
         # Exibe a primeira notícia e inicia o intervalo de troca
@@ -70,42 +75,89 @@ class NewsWidget(BoxLayout):
         """Exibe a notícia no índice especificado."""
         self.news_layout.clear_widgets()
         if not self.news_items:
-            self.news_layout.add_widget(Label(text="Nenhuma notícia disponível", size_hint_y=None, height=40))
+            self.news_layout.add_widget(MDLabel(text="Nenhuma notícia disponível", halign="center"))
             return
 
         item = self.news_items[index]
-        title = item.get('title', 'Título não disponível')
-        description = item.get('description', 'Descrição não disponível')
-        image_url = item.get('image_url', None)
+        title = item.get("title", "Título não disponível")
+        description = item.get("description", "Descrição não disponível")
+        image_url = item.get("image_url", None)
 
-        # Título em negrito e azul, centralizado
-        title_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=45)
-        title_label = Label(text=title, color=(0.5, 0.8, 1, 1), bold=True)
-        title_layout.add_widget(title_label)
-        self.news_layout.add_widget(title_layout)
+        # Card para encapsular a notícia
+        news_card = MDCard(
+            orientation="vertical",
+            padding=25,
+            size_hint=(1, None),
+            height=200,
+            radius=[15, 15, 15, 15],
+            elevation=8,
+        )
 
-        # Descrição centralizada
-        description_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=60)
-        description_label = Label(text=description)
-        description_layout.add_widget(description_label)
-        self.news_layout.add_widget(description_layout)
+        # Título
+        news_card.add_widget(
+            MDLabel(
+                text=title,
+                theme_text_color="Primary",
+                font_style="H5",
+                halign="center",
+                size_hint_y=None,
+                height=25,
+            )
+        )
 
-        # Imagem da notícia centralizada
+        # Imagem
         if image_url:
             local_image_path = download_image(image_url)
             if local_image_path:
-                image_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=50)
-                image = KivyImage(source=local_image_path, size_hint=(None, None), width=600, height=60)
-                image_layout.add_widget(image)
-                self.news_layout.add_widget(image_layout)
+                news_card.add_widget(
+                    FitImage(
+                        source=local_image_path,
+                        size_hint_y=None,
+                        height=55,
+                        radius=[15, 15, 0, 0],
+                    )
+                )
             else:
-                no_image_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=20)
-                no_image_label = Label(text="Imagem indisponível")
-                no_image_layout.add_widget(no_image_label)
-                self.news_layout.add_widget(no_image_layout)
+                news_card.add_widget(
+                    MDLabel(text="Imagem indisponível", halign="center", size_hint_y=None, height=25)
+                )
+
+        # Descrição
+        news_card.add_widget(
+            MDLabel(
+                text=description,
+                theme_text_color="Secondary",
+                font_style="Body1",
+                halign="center",
+                size_hint_y=None,
+                height=100,
+            )
+        )
+
+        # Botão para mais informações
+        # Botão para mais informações
+        # more_info_button = MDIconButton(
+        #     icon="chevron-right",
+        #     pos_hint={"center_x": 0.5},
+        #     on_release=lambda x: Logger.info(f"NewsWidget: Exibindo mais informações sobre {title}"),
+        # )
+        # news_card.add_widget(more_info_button)
+
+        self.news_layout.add_widget(news_card)
 
     def next_news(self, dt):
         """Avança para a próxima notícia e exibe."""
         self.current_index = (self.current_index + 1) % len(self.news_items)
         self.display_news(self.current_index)
+
+
+class NewsApp(MDApp):
+    def build(self):
+        self.theme_cls.primary_palette = "Blue"  # Tema azul
+        self.theme_cls.theme_style = "Light"  # Tema claro
+        return NewsWidget()
+
+
+if __name__ == "__main__":
+    NewsApp().run()
 
