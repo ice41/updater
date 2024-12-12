@@ -1,4 +1,6 @@
-#news.py 1.5.1
+#news.py 1.5.2
+
+# news.py 1.3
 
 import requests
 import os
@@ -78,9 +80,9 @@ class NewsWidget(BoxLayout):
         description = item.get('description', 'Descrição não disponível')
         image_url = item.get('image_url', None)
 
-        # Título em negrito e azul claro, centralizado
+        # Título em negrito e azul, centralizado
         title_layout = AnchorLayout(anchor_x='center', anchor_y='center', size_hint_y=None, height=45)
-        title_label = Label(text=title, color=(0.5, 0.8, 1, 1), bold=True)  # Azul claro
+        title_label = Label(text=title, color=(0.5, 0.8, 1, 1), bold=True)
         title_layout.add_widget(title_label)
         self.news_layout.add_widget(title_layout)
 
